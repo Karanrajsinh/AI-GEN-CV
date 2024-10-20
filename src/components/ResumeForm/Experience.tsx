@@ -1,16 +1,21 @@
 "use client"
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
 import React, { useEffect, useState } from 'react';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+
 import { useParams } from 'next/navigation';
-import { toast } from 'sonner';
+;
 import { Edit, LoaderCircle } from 'lucide-react';
+
+import { Experience } from '@/Types/ResumeTypes';
+
+import { Checkbox } from '../../../components/ui/checkbox';
+import { useResumeInfo } from '../../context/ResumeInfoContext';
+import { SampleDatePicker } from '../date-picker';
 import RichTextJoditEditor from '../RichTextJoditEditor';
-import { SampleDatePicker } from '@/src/components/date-picker';
-import { Checkbox } from '@/components/ui/checkbox';
-import type { Experience } from '@/src/Types/ResumeTypes';
+
+
 
 // Define the main component that now accepts a single experience via props
 type experienceProps =

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "jodit";
 import JoditEditor from "jodit-react";
 import { useResumeInfo } from "../context/ResumeInfoContext";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import { Brain, LoaderCircle } from "lucide-react";
-import { AIChatSession } from '@/services/AIModal'
+import { AIChatSession } from '../../services/AIModal'
 import 'jodit/es2021/jodit.min.css'
+
 const buttons = [
     "undo",
     "redo",
@@ -22,7 +23,6 @@ const buttons = [
     "|",
     "link",
     "|",
-    "hr",
     "eraser",
     "copyformat",
     "|",
@@ -33,26 +33,21 @@ const buttons = [
 
 
 const editorConfig = {
+
     disablePlugins: 'add-new-line',
     readonly: false,
     toolbar: true,
     spellcheck: true,
     language: "en",
-    // toolbarButtonSize: "medium",
     toolbarAdaptive: false,
     showCharsCounter: false,
     showWordsCounter: false,
     showXPathInStatusbar: false,
     askBeforePasteHTML: false,
     askBeforePasteFromWord: false,
-    //defaultActionOnPaste: "insert_clear_html",
     buttons: buttons,
-    uploader: {
-        insertImageAsBase64URI: true,
-    },
     width: 800,
     height: 400,
-    theme: "summer"
 };
 
 
@@ -62,12 +57,15 @@ type EditorProps = {
     defaultValue: string,
 }
 
-const PROMPT = 'position title: {positionTitle}, Depends on position title give me 5-7 bullet points for my experience in resume (Please do not  position title or add experience level and No JSON array), give me result in HTML tag <p> and only the summary should be the output';
+const PROMPT = 'position title: {positionTitle}, Depends on position title give me 5-7 bullet points for my experience in resume (Please do not state  position title or experience level in the response  and No JSON array no JSON object just the response in html tags nothing more ), give me result in <ul><li></li></ul> where li will be each point the response should not contain the details like the response for this title only the response should be generated nothing else';
 
 export default function RichTextJoditEditor({ index, defaultValue }: EditorProps) {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [data, setData] = useState(defaultValue);
     const [loading, setLoading] = useState(false);
+
+
+
 
 
     const GenerateSummeryFromAI = async () => {
@@ -99,7 +97,6 @@ export default function RichTextJoditEditor({ index, defaultValue }: EditorProps
         }));
     };
 
-
     return (
         <div>
             <div className='flex justify-between my-2'>
@@ -123,9 +120,9 @@ export default function RichTextJoditEditor({ index, defaultValue }: EditorProps
                 style={{ maxWidth: editorConfig.width, margin: "0 auto", border: "2px solid darkcyan" }}
             >
                 <JoditEditor
-                    className="text-black"
-                    value={data}
+                    className="text-black z-[999]"
                     config={editorConfig}
+                    value={data}
                     onChange={(newContent) => handleEditorChange(newContent)}
                 />
             </div>

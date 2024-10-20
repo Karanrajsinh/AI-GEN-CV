@@ -1,12 +1,13 @@
-import { Input } from '@/components/ui/input';
+import { Input } from '../../../components/ui/input';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../components/ui/button';
 import { LoaderCircle } from 'lucide-react';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+
 // import GlobalApi from './../../../../../service/GlobalApi';
 import { useParams } from 'next/navigation';
-import { toast } from 'sonner';
-import { FormSkills } from '@/src/Types/FormTypes';
+import { FormSkills } from '@/Types/FormTypes';
+import { useResumeInfo } from '../../context/ResumeInfoContext';
+
 
 // Define the type for each skill entry
 

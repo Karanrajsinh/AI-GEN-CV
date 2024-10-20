@@ -1,11 +1,12 @@
 "use client"
-import PersonalDetailPreview from '@/src/components/Resume/PersonalDetailPreview';
-import SummeryPreview from '@/src/components/Resume/SummaryPreview';
-import ExperiencePreview from '@/src/components/Resume/ExperiencePreview';
-import EducationalPreview from '@/src/components/Resume/EducationPreview';
-import SkillsPreview from '@/src/components/Resume/SkillsPreview';
+
 import { useResumeInfo } from '../context/ResumeInfoContext';
-import ProjectPreview from './Resume/ProjectPreview';
+import EducationalPreview from '../components/Resume/EducationPreview';
+import ExperiencePreview from '../components/Resume/ExperiencePreview';
+import PersonalDetailPreview from '../components/Resume/PersonalDetailPreview';
+import ProjectPreview from '../components/Resume/ProjectPreview';
+import SkillsPreview from '../components/Resume/SkillsPreview';
+import SummeryPreview from '../components/Resume/SummaryPreview';
 // import { resumeData } from '../data/dummyData';s
 
 
@@ -24,7 +25,7 @@ function ResumePreview() {
 
             {/* Summery */}
             <SummeryPreview resumeInfo={resumeInfo} />
-            {/* {<ProjectPreview resumeInfo={resumeInfo} />} */}
+            {<ProjectPreview resumeInfo={resumeInfo} />}
             {/* Professional Experience */}
             {resumeInfo?.experience?.length >= 0 && <ExperiencePreview resumeInfo={resumeInfo} />}
 

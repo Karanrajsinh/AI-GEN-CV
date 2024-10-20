@@ -156,16 +156,16 @@
 
 "use client";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-// import GlobalApi from './../../../../../service/GlobalApi';
-import { toast } from 'sonner';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { Education } from '@/Types/ResumeTypes';
+import { useResumeInfo } from '../../context/ResumeInfoContext';
 import { SampleDatePicker } from '../date-picker';
-import type { Education } from '@/src/Types/ResumeTypes';
+// import GlobalApi from './../../../../../service/GlobalApi';
+
 
 interface EducationFormProps {
     educationData: Education;

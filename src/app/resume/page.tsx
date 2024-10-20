@@ -1,5 +1,6 @@
-import FormSection from "@/src/components/FormSection";
-import ResumePreview from "@/src/components/ResumePreview";
+import FormSection from "@/components/FormSection";
+import ResumePreview from "@/components/ResumePreview";
+
 export default function ResumePage() {
 
     return (

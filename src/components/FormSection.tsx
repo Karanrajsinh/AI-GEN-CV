@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import PersonalDetail from './ResumeForm/PersonalDetail';
-import { Button } from '@/components/ui/button';
+import PersonalDetail from '../components/ResumeForm/PersonalDetail';
+import { Button } from '../../components/ui/button';
 import { ArrowLeft, ArrowRight, Home } from 'lucide-react';
-import Summery from './ResumeForm/Summary';
-import Experience from './ResumeForm/Experience';
-import Education from './ResumeForm/Education';
-import Skills from './ResumeForm/Skills';
+import Summery from '../components/ResumeForm/Summary';
+import Experience from '../components/ResumeForm/Experience';
+import Education from '../components/ResumeForm/Education';
+import Skills from '../components/ResumeForm/Skills';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

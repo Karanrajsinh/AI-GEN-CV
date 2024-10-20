@@ -2,15 +2,16 @@
 "use client"
 
 import React from "react";
+// import { GridBackgroundDemo } from "../../components/ui/grid";
+import GridBackgroundDemo from "../../components/ui/grid";
+// import ResumePreview from "@/context/ResumePreview";
 
 
-import GridBackgroundDemo from "@/components/ui/grid";
 
 
 
-export default function FloatingDockDemo() {
 
-
+export default function HomePage() {
 
   return (
     <>

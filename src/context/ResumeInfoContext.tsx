@@ -1,8 +1,9 @@
 "use client"
 
 import React, { createContext, useState, ReactNode } from 'react';
-import { ResumeInfo } from '@/src/Types/ResumeTypes';  // Import your existing type
+
 import { resumeData } from '../data/dummyData';
+import { ResumeInfo } from '@/Types/ResumeTypes';
 
 // Define the context type
 type ResumeInfoContextType = {

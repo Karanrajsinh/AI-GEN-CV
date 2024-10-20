@@ -1,6 +1,7 @@
 import React from 'react'
-import { Education } from '@/src/Types/ResumeTypes';
+
 import { formatDate } from 'date-fns';
+import { Education } from '@/Types/ResumeTypes';
 
 
 type ResumeInfo = {

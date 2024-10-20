@@ -108,12 +108,13 @@
 // }
 
 // export default Summery;
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { Button } from '../../../components/ui/button';
+
 import { useEffect, useState } from 'react';
 import { Brain, LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useResumeInfo } from '../../context/ResumeInfoContext';
+import { Textarea } from '../../../components/ui/textarea';
 
 interface SummaryProps {
     summaryData: string | undefined; // Prop to get initial summary
@@ -186,7 +187,7 @@ function Summery({ summaryData, enabledNext }: SummaryProps) {
                 <form className='mt-7' onSubmit={onSave}>
                     <div className='flex justify-between items-end'>
                         <label>Add Summary</label>
-                        <Button type="button" size="sm" className="flex gap-2" onClick={GenerateSummaryFromAI}>
+                        <Button variant={'default'} type="button" size="sm" className="flex gap-2" onClick={GenerateSummaryFromAI}>
                             <Brain className='h-4 w-4' /> Generate from AI
                         </Button>
                     </div>

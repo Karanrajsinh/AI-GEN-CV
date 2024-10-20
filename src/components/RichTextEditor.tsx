@@ -1,12 +1,13 @@
 "use client"
 
-import { Button } from '@/components/ui/button';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { Button } from '../../components/ui/button';
+// import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { Brain, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { BtnBold, BtnBulletList, BtnItalic, BtnLink, BtnNumberedList, BtnStrikeThrough, BtnUnderline, ContentEditableEvent, Editor, EditorProvider, Separator, Toolbar } from 'react-simple-wysiwyg';
 // import { AIChatSession } from './../../../../service/AIModal';
 import { toast } from 'sonner';
+import { useResumeInfo } from '../context/ResumeInfoContext';
 
 // Define the props type for RichTextEditor component
 type RichTextEditorProps = {

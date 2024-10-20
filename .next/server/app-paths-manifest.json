@@ -1,0 +1,4 @@
+{
+  "/api/generatePdf/route": "app/api/generatePdf/route.js",
+  "/page": "app/page.js"
+}

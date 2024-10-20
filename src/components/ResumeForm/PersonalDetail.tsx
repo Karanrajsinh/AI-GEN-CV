@@ -137,12 +137,12 @@
 // export default PersonalDetail;
 
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
 import { LoaderCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useResumeInfo } from '../../context/ResumeInfoContext';
 // import GlobalApi from './../../../../../service/GlobalApi';
 // import { toast } from 'sonner';
 
