@@ -1,133 +1,280 @@
-"use client"
+// import { Button } from '@/components/ui/button';
+// import { Input } from '@/components/ui/input';
+// import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+// import { LoaderCircle } from 'lucide-react';
+// import React, { useEffect, useState } from 'react';
+// import { useParams } from 'next/navigation';
+// // import GlobalApi from './../../../../../service/GlobalApi';
+// import { toast } from 'sonner';
+
+// const PersonalDetail = () => {
+//     const params = useParams<{ resumeId: string }>();
+//     const { resumeInfo, setResumeInfo } = useResumeInfo();
+//     const [formData, setFormData] = useState<Partial<Record<string, string>> | undefined>(undefined);
+//     const [loading, setLoading] = useState<boolean>(false);
+
+//     useEffect(() => {
+//         console.log("---", resumeInfo);
+//         // Initialize formData with resumeInfo if available
+//         if (resumeInfo) {
+//             setFormData({
+//                 firstName: resumeInfo.firstName,
+//                 lastName: resumeInfo.lastName,
+//                 jobTitle: resumeInfo.jobTitle,
+//                 address: resumeInfo.address,
+//                 phone: resumeInfo.phone,
+//                 email: resumeInfo.email,
+//             });
+//         }
+//     }, [resumeInfo]);
+
+//     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//         const { name, value } = e.target;
+
+//         // Update formData with the new value
+//         setFormData(prevData => ({
+//             ...prevData,
+//             [name]: value
+//         }));
+
+//         // Update resumeInfo with the new value
+//         setResumeInfo({
+//             ...resumeInfo,
+//             [name]: value
+//         });
+//     };
+
+//     const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+//         e.preventDefault();
+//         setLoading(true);
+
+//         const data = {
+//             data: formData
+//         };
+
+//         // try {
+//         //     const resp = await GlobalApi.UpdateResumeDetail(params?.resumeId, data);
+//         //     console.log(resp);
+//         //     enabledNext(true);
+//         //     toast("Details updated");
+//         // } catch (error) {
+//         //     console.error(error);
+//         // } finally {
+//         //     setLoading(false);
+//         // }
+//     };
+
+//     return (
+//         <div className=' shadow-lg'>
+
+//             <form onSubmit={onSave}>
+//                 <div className='grid grid-cols-2 mt-5 gap-3'>
+//                     <div>
+//                         <label className='text-sm'>First Name</label>
+//                         <Input
+//                             name="firstName"
+//                             required
+//                             defaultValue={resumeInfo?.firstName}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                     <div>
+//                         <label className='text-sm'>Last Name</label>
+//                         <Input
+//                             name="lastName"
+//                             required
+//                             defaultValue={resumeInfo?.lastName}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                     <div className='col-span-2'>
+//                         <label className='text-sm'>Job Title</label>
+//                         <Input
+//                             name="jobTitle"
+//                             required
+//                             defaultValue={resumeInfo?.jobTitle}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                     <div className='col-span-2'>
+//                         <label className='text-sm'>Address</label>
+//                         <Input
+//                             name="address"
+//                             required
+//                             defaultValue={resumeInfo?.address}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                     <div>
+//                         <label className='text-sm'>Phone</label>
+//                         <Input
+//                             name="phone"
+//                             required
+//                             defaultValue={resumeInfo?.phone}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                     <div>
+//                         <label className='text-sm'>Email</label>
+//                         <Input
+//                             name="email"
+//                             required
+//                             defaultValue={resumeInfo?.email}
+//                             onChange={handleInputChange}
+//                         />
+//                     </div>
+//                 </div>
+//                 <div className='mt-3 flex justify-end'>
+//                     <Button type="submit" disabled={loading}>
+//                         {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
+//                     </Button>
+//                 </div>
+//             </form>
+//         </div>
+//     );
+// }
+
+// export default PersonalDetail;
+
 
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
+import { LoaderCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Edit, LoaderCircle } from 'lucide-react';
-import { Project } from '@/Types/ResumeTypes';
-import { Checkbox } from '../../../components/ui/checkbox';
+import { useParams } from 'next/navigation';
 import { useResumeInfo } from '../../context/ResumeInfoContext';
-import { SampleDatePicker } from '../date-picker';
-import RichTextJoditEditor from '../RichTextJoditEditor';
+// import GlobalApi from './../../../../../service/GlobalApi';
+// import { toast } from 'sonner';
 
-// Define the main component that now accepts a single project via props
-type ProjectProps = {
-    projectData: Project;
-    index: number;
-};
+interface PersonalDetailProps {
+    initialData: {
+        firstName: string;
+        lastName: string;
+        jobTitle: string;
+        address: string;
+        phone: string;
+        email: string;
+    }; // Prop to receive initial data
+}
 
-function ProjectDetails({ projectData, index }: ProjectProps) {
-    const { setResumeInfo } = useResumeInfo();
-    const [loading, setLoading] = useState(false);
-    const [project, setProject] = useState(projectData);
+const PersonalDetail: React.FC<PersonalDetailProps> = ({ initialData }) => {
+    const params = useParams<{ resumeId: string }>();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
+    const [formData, setFormData] = useState<Partial<Record<string, string>>>(initialData);
+    const [loading, setLoading] = useState<boolean>(false);
 
+    // Sync the initial data from props
     useEffect(() => {
-        setProject(projectData);
-    }, [projectData]);
+        setFormData(initialData);
+    }, [initialData]);
 
-    // Handle input changes and update project
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = event.target;
-        const updatedProject = { ...project, [name]: value };
+    // Update resume info when formData changes
+    useEffect(() => {
+        setResumeInfo((prev) => ({
+            ...prev,
+            ...formData,
+        }));
+    }, [formData, setResumeInfo]);
 
-        setProject(updatedProject);
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            projects: prevResumeInfo.projects.map((proj) =>
-                proj.id === updatedProject.id ? updatedProject : proj
-            ),
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        // Update formData with the new value
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
         }));
     };
 
-    const handleCurrentlyWorkingToggle = (checked: boolean) => {
-        const updatedProject = {
-            ...project,
-            currentlyWorking: checked,
-            endDate: checked ? new Date() : project.endDate, // Clear endDate if "Currently Working" is checked
-        };
-
-        setProject(updatedProject);
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            projects: prevResumeInfo.projects.map((proj) =>
-                proj.id === updatedProject.id ? updatedProject : proj
-            ),
-        }));
-    };
-
-    const onSave = async () => {
+    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setLoading(true);
 
         const data = {
-            data: {
-                Project: [project], // Save the single project
-            },
+            data: formData
         };
 
+        // Uncomment and implement your API call logic here to save the personal details
         // try {
-        //     await GlobalApi.UpdateResumeDetail(params.resumeId, data);
-        //     toast('Details updated!');
+        //     const resp = await GlobalApi.UpdateResumeDetail(params?.resumeId, data);
+        //     console.log(resp);
+        //     toast("Details updated");
         // } catch (error) {
-        //     toast.error('Failed to update details!');
+        //     console.error(error);
         // } finally {
         //     setLoading(false);
         // }
     };
 
     return (
-        <div>
-            <div className='p-5 w-[800px]'>
-                <div className='text-center flex ml-2 gap-4 font-semibold'><Edit /><span>Edit Project</span></div>
-                <div className='grid grid-cols-2 gap-3 p-3 my-5 rounded-lg'>
+        <div className='w-[500px] p-5'>
+            <h2 className='font-bold text-lg'>Personal Details</h2>
+            <p>Edit Your Personal Details</p>
+            <form onSubmit={onSave}>
+                <div className='grid grid-cols-2 mt-5 gap-3'>
                     <div>
-                        <label className='text-xs'>Project Name</label>
+                        <label className='text-sm'>First Name</label>
                         <Input
-                            name="name"
-                            onChange={handleChange}
-                            defaultValue={project?.name}
+                            name="firstName"
+                            required
+                            value={formData?.firstName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <label className='text-sm'>Last Name</label>
+                        <Input
+                            name="lastName"
+                            required
+                            value={formData?.lastName}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <div className='col-span-2'>
-                        <label className='text-xs'>Description</label>
-                        <RichTextJoditEditor contentType='projects' index={index} defaultValue={project?.description ?? ""} />
+                        <label className='text-sm'>Job Title</label>
+                        <Input
+                            name="jobTitle"
+                            required
+                            value={formData?.jobTitle}
+                            onChange={handleInputChange}
+                        />
                     </div>
-                    <div>
-                        <label className='text-xs'>Start Date</label>
-                        <SampleDatePicker
-                            index={index}
-                            sectionType="projects"
-                            defaultValue={project?.startDate}
-                            fieldName="startDate"
+                    <div className='col-span-2'>
+                        <label className='text-sm'>Address</label>
+                        <Input
+                            name="address"
+                            required
+                            value={formData?.address}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <div>
-                        <label className='text-xs'>End Date</label>
-                        <SampleDatePicker
-                            index={index}
-                            sectionType="projects"
-                            defaultValue={project?.endDate}
-                            fieldName="endDate"
+                        <label className='text-sm'>Phone</label>
+                        <Input
+                            name="phone"
+                            required
+                            value={formData?.phone}
+                            onChange={handleInputChange}
                         />
-                        <div className='mt-6 ml-2 flex justify-start items-center'>
-                            <Checkbox
-                                className='border data-[state=checked]:bg-cyan-600 border-cyan-800'
-                                checked={project?.currentlyWorking ?? false}
-                                onCheckedChange={handleCurrentlyWorkingToggle}
-                                id="currently-working"
-                            />
-                            <label htmlFor="currently-working" className='ml-2 text-xs'>
-                                Currently Working
-                            </label>
-                        </div>
+                    </div>
+                    <div>
+                        <label className='text-sm'>Email</label>
+                        <Input
+                            name="email"
+                            required
+                            value={formData?.email}
+                            onChange={handleInputChange}
+                        />
                     </div>
                 </div>
-
-                <Button disabled={loading} onClick={onSave}>
-                    {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
-                </Button>
-            </div>
+                <div className='mt-3 flex justify-end'>
+                    <Button type="submit" disabled={loading}>
+                        {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
+                    </Button>
+                </div>
+            </form>
         </div>
     );
-}
+};
 
-export default ProjectDetails;
+export default PersonalDetail;

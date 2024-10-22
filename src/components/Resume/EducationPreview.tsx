@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatDate } from 'date-fns';
+import { format } from 'date-fns';
 import { Education } from '@/Types/ResumeTypes';
 
 
@@ -35,9 +35,9 @@ function EducationalPreview({ resumeInfo }: EducationalPreviewProps) {
                     >{education.universityName}</h2>
                     <h2 className='text-xs flex justify-between'>{education?.degree} in {education?.major}
                         <span className='font-semibold' style={{ color: resumeInfo?.themeColor }}>{education?.startDate
-                            ? formatDate(new Date(education.startDate), 'MMM yyyy')
+                            ? format(new Date(education.startDate), 'MMM yyyy')
                             : 'N/A'} - {education?.endDate
-                                ? formatDate(new Date(education.endDate), 'MMM yyyy')
+                                ? format(new Date(education.endDate), 'MMM yyyy')
                                 : 'N/A'}</span>
                     </h2>
                 </div>

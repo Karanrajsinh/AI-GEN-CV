@@ -11,10 +11,10 @@ import {
 import { Button } from "./button";
 import { Dialog, DialogContent } from "./dialog";
 import ResumePreview from "@/components/ResumePreview";
-import PersonalDetail from "@/components/ResumeForm/PersonalDetail";
-import Summery from "@/components/ResumeForm/Summary";
-import EducationForm from "@/components/ResumeForm/Education";
-import ExperienceDetails from "@/components/ResumeForm/Experience";
+import PersonalDetail from "@/components/ResumeForm/PersonalDetailsForm";
+import Summery from "@/components/ResumeForm/SummaryForm";
+import EducationForm from "@/components/ResumeForm/EducationForm";
+import ExperienceDetails from "@/components/ResumeForm/ExperienceForm";
 import { useResumeInfo } from "@/context/ResumeInfoContext";
 import { Education, Experience, PersonalDetails } from "@/Types/ResumeTypes";
 import { FormEducation } from "@/Types/FormTypes";
@@ -48,7 +48,7 @@ export default function GridBackgroundDemo() {
         id: 1,
         state: "",
         title: "",
-        workSummary: ""
+        description: ""
     });
     const [personalDetails, setPersonalDetails] = useState<PersonalDetails>(
         {
@@ -171,7 +171,7 @@ export default function GridBackgroundDemo() {
                 state: '',
                 startDate: new Date().toISOString(),
                 endDate: new Date().toISOString(),
-                workSummary: '',
+                description: '',
                 currentlyWorking: false
             };
             // setExperienceList([...experienceList, newExperience]);
@@ -376,7 +376,7 @@ export default function GridBackgroundDemo() {
 
             }
             }>
-                <DialogContent style={{ borderRadius: "0px" }} ref={dialogRef} className="bg-slate-900 border min-w-max text-white border-cyan-800 m-0 p-0 modal">
+                <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} style={{ borderRadius: "0px" }} ref={dialogRef} className="bg-slate-900 border min-w-max text-white border-cyan-800 m-0 p-0 modal">
                     {modalType === "experience" && <ExperienceDetails experienceData={experience} index={modalIndex} />}
                     {modalType === "education" && <EducationForm educationData={education} index={modalIndex} />}
                     {modalType === "summary" && <Summery summaryData={summary} />}

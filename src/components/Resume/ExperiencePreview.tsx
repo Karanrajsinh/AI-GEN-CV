@@ -45,7 +45,8 @@
 // }
 
 // export default ExperiencePreview;
-import { Experience } from "@/src/Types/ResumeTypes";
+
+import { Experience } from "@/Types/ResumeTypes";
 import { format } from "date-fns"; // Make sure to import format
 
 // Define the type for resumeInfo

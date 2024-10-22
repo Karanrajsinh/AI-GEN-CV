@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { Calendar } from "../../components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover";
 import { cn } from "@/lib/utils";
-import { formatDate } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useResumeInfo } from "../context/ResumeInfoContext";
 import { ResumeInfo } from "../Types/ResumeTypes";
@@ -74,7 +74,7 @@ export function SampleDatePicker({ sectionType, index, fieldName, defaultValue }
                     className={cn("w-full justify-start modal text-left font-normal border-cyan-800 bg-slate-900", !date && "text-muted-foreground")}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4 modal" />
-                    {date ? formatDate(date, "MMM yyyy") : <span>Pick a date</span>}
+                    {date ? format(date, "MMM yyyy") : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-auto modal border text-white border-cyan-800 bg-slate-900 max-h-max p-0">
