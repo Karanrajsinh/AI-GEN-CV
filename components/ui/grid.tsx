@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 // import { FloatingDock } from "@/components/ui/floating-dock";
 import {
     IconHome,
@@ -17,22 +16,52 @@ import Summery from "@/components/ResumeForm/Summary";
 import EducationForm from "@/components/ResumeForm/Education";
 import ExperienceDetails from "@/components/ResumeForm/Experience";
 import { useResumeInfo } from "@/context/ResumeInfoContext";
-import { Education, Experience, ResumeInfo } from "@/Types/ResumeTypes";
+import { Education, Experience, PersonalDetails } from "@/Types/ResumeTypes";
 import { FormEducation } from "@/Types/FormTypes";
 import { FloatingDock } from "./floating-dock";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useModal } from "@/context/ModalContext";
+import { useState } from "react";
+
+
 
 export default function GridBackgroundDemo() {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
-    const { isOpen, openModal, closeModal, modalPrevent } = useModal() // Control open state of the Dialog
-    const [modalContent, setModalContent] = useState<ResumeInfo | null>(null);
+    const { isOpen, openModal, closeModal, modalPrevent, dialogRef } = useModal() // Control open state of the Dialog
     const [modalType, setModalType] = useState('');
-    const [modalIndex, setIndex] = useState();
+    const [modalIndex, setIndex] = useState<number>(0);
+    const [education, setEducation] = useState<Education>(
+        {
+            universityName: '',
+            degree: '',
+            major: '',
+            startDate: new Date().toISOString(),
+            endDate: new Date().toISOString(),
+        }
+    );
+    const [experience, setExperience] = useState<Experience>({
+        city: '',
+        companyName: '',
+        currentlyWorking: false,
+        endDate: new Date().toISOString(),
+        startDate: new Date().toISOString(),
+        id: 1,
+        state: "",
+        title: "",
+        workSummary: ""
+    });
+    const [personalDetails, setPersonalDetails] = useState<PersonalDetails>(
+        {
+            firstName: "",
+            lastName: "",
+            jobTitle: "",
+            address: "",
+            phone: "",
+            email: ""
+        }
 
-
-
-
+    );
+    const [summary, setSummary] = useState<string>();
 
 
     const links = [
@@ -95,16 +124,18 @@ export default function GridBackgroundDemo() {
                 <h2 className="text-xl font-bold text-white">Personal Details</h2>
                 <div onClick={() => {
                     setModalType("personal-details");
-                    setModalContent({
-                        firstName: resumeInfo.firstName,
-                        lastName: resumeInfo.lastName,
-                        jobTitle: resumeInfo.jobTitle,
-                        address: resumeInfo.address,
-                        phone: resumeInfo.phone,
-                        email: resumeInfo.email
-                    });
+                    setPersonalDetails(
+                        {
+                            firstName: resumeInfo.firstName,
+                            lastName: resumeInfo.lastName,
+                            jobTitle: resumeInfo.jobTitle,
+                            address: resumeInfo.address,
+                            phone: resumeInfo.phone,
+                            email: resumeInfo.email
+                        }
+                    )
                     openModal(); // Open dialog for specific experience
-                }} className="mt-5 p-4 bg-slate-900 border border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30">
+                }} className="mt-5 p-4 bg-slate-900 border cursor-pointer border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30">
                     <h3 className="text-sm font-semibold">{resumeInfo.firstName} {resumeInfo.lastName}</h3>
                     <p className="text-xs">{resumeInfo.jobTitle}</p>
                 </div>
@@ -117,9 +148,9 @@ export default function GridBackgroundDemo() {
         return (
             <div onClick={() => {
                 setModalType("summary");
-                setModalContent(resumeInfo.summary);
+                setSummary(resumeInfo.summary)
                 openModal(); // Open dialog for specific experience
-            }} className="p-5">
+            }} className="p-5 cursor-pointer">
                 <h2 className="text-xl font-bold text-white">Summary</h2>
                 <div className="mt-5 p-4 bg-slate-900 border border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30">
                     <p className="text-xs">{resumeInfo.summary}</p>
@@ -149,7 +180,7 @@ export default function GridBackgroundDemo() {
                 experience: [...prevResumeInfo.experience, newExperience]
             }))
             setIndex(resumeInfo.experience.length)
-            setModalContent(newExperience);
+            setExperience(newExperience);
             setModalType('experience');
             openModal();
         };
@@ -163,10 +194,10 @@ export default function GridBackgroundDemo() {
                         onClick={() => {
                             setIndex(index);
                             setModalType("experience");
-                            setModalContent(exp);
+                            setExperience(exp);
                             openModal(); // Open dialog for specific experience
                         }}
-                        className="mt-5 p-4 bg-slate-900 border border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30"
+                        className="mt-5 p-4 cursor-pointer bg-slate-900 border border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30"
                     >
                         <h3 className="text-sm font-semibold">{exp.companyName}</h3>
                         <p className="text-xs">{exp.title}</p>
@@ -204,7 +235,7 @@ export default function GridBackgroundDemo() {
                         onClick={() => {
                             setIndex(index);
                             setModalType("education");
-                            setModalContent(edu);
+                            setEducation(edu);
                             openModal(); // Open dialog for specific education
                         }}
                         className="mt-5 p-4 bg-slate-900 border border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30"
@@ -234,7 +265,7 @@ export default function GridBackgroundDemo() {
                     } catch (e) {
                         // Ignore stylesheets from different origins
                         console.warn('Could not access stylesheet:', styleSheet.href);
-                        return '';
+                        return e;
                     }
                 }).join('\n');
 
@@ -272,7 +303,8 @@ export default function GridBackgroundDemo() {
                 link.setAttribute('download', 'document.pdf'); // Specify the filename
                 document.body.appendChild(link);
                 link.click();
-                link.parentNode.removeChild(link); // Clean up the link
+                if (link.parentNode)
+                    link?.parentNode.removeChild(link); // Clean up the link
             } else {
                 console.error('Element with ID "pdf" not found');
             }
@@ -307,7 +339,6 @@ export default function GridBackgroundDemo() {
             <div className="flex flex-col items-center">
                 <div className="h-[90vh]  my-auto overflow-hidden border border-cyan-600 bg-slate-900 bg-dot-cyan-900">
                     <TransformWrapper
-                        onPanning={(value) => console.log(value)}
                         smooth={true}
                         limitToBounds={false}           // Constrain the zoom to within bounds
                         initialPositionX={150}
@@ -345,11 +376,11 @@ export default function GridBackgroundDemo() {
 
             }
             }>
-                <DialogContent className="bg-slate-900 border min-w-[800px] text-white border-cyan-800 m-0 p-0 modal">
-                    {modalType === "experience" && <ExperienceDetails experienceData={modalContent} index={modalIndex} />}
-                    {modalType === "education" && <EducationForm educationData={modalContent} index={modalIndex} />}
-                    {modalType === "summary" && <Summery summaryData={modalContent} />}
-                    {modalType === "personal-details" && <PersonalDetail initialData={modalContent} />}
+                <DialogContent style={{ borderRadius: "0px" }} ref={dialogRef} className="bg-slate-900 border min-w-max text-white border-cyan-800 m-0 p-0 modal">
+                    {modalType === "experience" && <ExperienceDetails experienceData={experience} index={modalIndex} />}
+                    {modalType === "education" && <EducationForm educationData={education} index={modalIndex} />}
+                    {modalType === "summary" && <Summery summaryData={summary} />}
+                    {modalType === "personal-details" && <PersonalDetail initialData={personalDetails} />}
                 </DialogContent>
             </Dialog>
         </div >

@@ -71,15 +71,15 @@ export function SampleDatePicker({ sectionType, index, fieldName, defaultValue }
             <PopoverTrigger asChild>
                 <Button
                     disabled={currentlyWorking}
-                    className={cn("w-full justify-start text-left font-normal border-cyan-800 bg-slate-900", !date && "text-muted-foreground")}
+                    className={cn("w-full justify-start modal text-left font-normal border-cyan-800 bg-slate-900", !date && "text-muted-foreground")}
                 >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-2 h-4 w-4 modal" />
                     {date ? formatDate(date, "MMM yyyy") : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-auto border text-white border-cyan-800 bg-slate-900 max-h-max p-0 date-picker">
+            <PopoverContent align="start" className="w-auto modal border text-white border-cyan-800 bg-slate-900 max-h-max p-0">
                 <Calendar
-                    className="outline-none focus:ring-0 date-picker"
+                    className="outline-none focus:ring-0 modal "
                     mode="single"
                     captionLayout="dropdown-buttons"
                     selected={date}

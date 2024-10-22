@@ -53,13 +53,14 @@ const editorConfig = {
 
 
 type EditorProps = {
+    contentType: string,
     index: number,
     defaultValue: string,
 }
 
 const PROMPT = 'position title: {positionTitle}, Depends on position title give me 5-7 bullet points for my experience in resume (Please do not state  position title or experience level in the response  and No JSON array no JSON object just the response in html tags nothing more ), give me result in <ul><li></li></ul> where li will be each point the response should not contain the details like the response for this title only the response should be generated nothing else';
 
-export default function RichTextJoditEditor({ index, defaultValue }: EditorProps) {
+export default function RichTextJoditEditor({ contentType, index, defaultValue }: EditorProps) {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [data, setData] = useState(defaultValue);
     const [loading, setLoading] = useState(false);
@@ -81,19 +82,20 @@ export default function RichTextJoditEditor({ index, defaultValue }: EditorProps
 
     const handleEditorChange = (newContent: string) => {
         // Create a copy of the experience list
-        setData(newContent);
-        const updatedExperienceList = [...(resumeInfo?.experience || [])];
 
-        // Update the workSummary at the correct index
-        updatedExperienceList[index] = {
-            ...updatedExperienceList[index],
-            workSummary: newContent,
+        setData(newContent);
+        const updatedList = [...(resumeInfo[contentType] || [])];
+
+        // Update the description at the correct index
+        updatedList[index] = {
+            ...updatedList[index],
+            description: newContent,
         };
 
-        // Set the local state (data) and update experienceList in resumeInfo
+        // Set the local state (data) and update List in resumeInfo
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
-            experience: updatedExperienceList,
+            [contentType]: updatedList,
         }));
     };
 

@@ -30,7 +30,7 @@ function ExperienceDetails({ experienceData, index }: experienceProps) {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
     const params = useParams<{ resumeId: string }>();
     const [loading, setLoading] = useState(false);
-    const [experience, setExperience] = useState<Experience>(experienceData);
+    const [experience, setExperience] = useState(experienceData);
 
     useEffect(() => {
         setExperience(experienceData);
@@ -89,7 +89,7 @@ function ExperienceDetails({ experienceData, index }: experienceProps) {
 
     return (
         <div>
-            <div className='p-5 shadow-lg rounded-lg border-cyan-800'>
+            <div className='p-5 w-[800px]'>
                 {/* <h2 className='font-bold text-lg'>Professional Experience</h2> */}
                 <div className='text-center flex ml-2 gap-4 font-semibold'><Edit /><span>Edit Experience</span></div>
                 <div className='grid grid-cols-2  gap-3  p-3 my-5 rounded-lg'>
@@ -134,7 +134,7 @@ function ExperienceDetails({ experienceData, index }: experienceProps) {
                             fieldName="startDate"
                         />
                     </div>
-                    <div>
+                    <div className='modal'>
                         <label className='text-xs'>End Date</label>
                         <SampleDatePicker
                             index={index}
@@ -155,7 +155,7 @@ function ExperienceDetails({ experienceData, index }: experienceProps) {
                         </div>
                     </div>
                     <div className='col-span-2'>
-                        <RichTextJoditEditor index={index} defaultValue={experience?.workSummary ?? ""} />
+                        <RichTextJoditEditor contentType='experience' index={index} defaultValue={experience?.description ?? ""} />
                     </div>
                 </div>
 

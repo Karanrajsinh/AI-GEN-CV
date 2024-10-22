@@ -215,7 +215,7 @@ function EducationForm({ educationData, index }: EducationFormProps) {
     };
 
     return (
-        <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 ">
+        <div className="p-5">
             <h2 className="font-bold text-lg">Edit Education</h2>
             <div className="grid grid-cols-2 gap-3 p-3 my-5 rounded-lg">
                 <div className="col-span-2">

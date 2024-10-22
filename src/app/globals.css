@@ -33,3 +33,33 @@ ol {
 td {
     border: solid 1px;
 }
+
+select.rdp-dropdown
+{
+    width: 80px;
+    background-color: #0F172A;
+    border: 1px solid #00838fd2;
+    border-radius: 5px;
+    padding: 4px;
+    
+}
+select.rdp-dropdown:focus
+{
+    outline: none;
+    offset: none;
+}
+
+
+select.rdp-dropdown::-webkit-scrollbar {
+    width: 3px; /* Width of the entire scrollbar */
+}
+select.rdp-dropdown::-webkit-scrollbar-thumb {
+    background-color: #00838F; /* Red color for the scrollbar thumb */
+    border-radius: 20px; /* Roundness of the scrollbar thumb */
+}
+
+
+option:hover{
+    background-color: #00838F;
+    opacity: 0.5;
+}

@@ -207,7 +207,7 @@ const PersonalDetail: React.FC<PersonalDetailProps> = ({ initialData }) => {
     };
 
     return (
-        <div className='shadow-lg p-5'>
+        <div className='w-[500px] p-5'>
             <h2 className='font-bold text-lg'>Personal Details</h2>
             <p>Edit Your Personal Details</p>
             <form onSubmit={onSave}>

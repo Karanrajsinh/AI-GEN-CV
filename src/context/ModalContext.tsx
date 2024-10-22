@@ -1,6 +1,6 @@
 "use client"
 // src/context/ModalContext.tsx
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
 
 // Define the shape of the context state
 type ModalContextType = {
@@ -10,6 +10,7 @@ type ModalContextType = {
     setModalPrevent: React.Dispatch<React.SetStateAction<boolean>>,
     openModal: () => void;
     closeModal: () => void;
+    dialogRef: React.RefObject<HTMLDivElement>;
 };
 
 // Create the context
@@ -21,12 +22,15 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [modalPrevent, setModalPrevent] = useState(false);
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
+    const dialogRef = useRef<HTMLDivElement>(null); // Create a ref for the dialog
 
 
     useEffect(() => {
-        const handleClickOutsideDropdown = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
 
+        const handleClickOutsideDropdown = (e: MouseEvent) => {
+            console.log(dialogRef);
+            const target = e.target as HTMLElement;
+            console.log(e.target)
             // if the click happens on cloes icon close the modal    
             if (target.closest('.modal-close')) {
                 closeModal();
@@ -35,7 +39,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
             if (target.closest('.jodit-toolbar-button') || target.closest('.modal') || target.closest('.jodit-popup__content')) {
                 setModalPrevent(true);
             }
-            else {
+            else if (target.closest('.modal-open')) {
                 setModalPrevent(false);
                 closeModal();
             }
@@ -51,7 +55,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     return (
-        <ModalContext.Provider value={{ isOpen, setIsOpen, openModal, closeModal, modalPrevent, setModalPrevent }}>
+        <ModalContext.Provider value={{ isOpen, setIsOpen, openModal, closeModal, modalPrevent, setModalPrevent, dialogRef }}>
             {children}
         </ModalContext.Provider>
     );

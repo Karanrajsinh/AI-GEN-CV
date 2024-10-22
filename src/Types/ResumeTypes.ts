@@ -1,5 +1,16 @@
 // src/types.ts
 
+export type PersonalDetails =
+    {
+        firstName: string,
+        lastName: string,
+        jobTitle: string,
+        address: string,
+        phone: string,
+        email: string
+    }
+
+
 export type Experience = {
     id: number;
     title: string;
@@ -8,8 +19,8 @@ export type Experience = {
     state: string;
     startDate: Date | string;
     endDate: Date | string;
-    currentlyWorking?: boolean;
-    workSummary: string;
+    currentlyWorking: boolean;
+    description: string;
 };
 
 
@@ -17,9 +28,9 @@ export type Project = {
     id: number;
     name: string;
     description: string;
-    startDate: string;
-    endDate?: string; // Optional if the project is ongoing
-    currentlyWorking?: boolean; // Optional flag for ongoing projects
+    startDate: string | Date;
+    endDate: string | Date; // Optional if the project is ongoing
+    currentlyWorking: boolean; // Optional flag for ongoing projects
 };
 
 

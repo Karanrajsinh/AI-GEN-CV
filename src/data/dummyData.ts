@@ -50,7 +50,7 @@ export const resumeData = {
             startDate: 'Jan 2021',
             endDate: 'March 2022',
             currentlyWorking: true,
-            workSummary: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
                 '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
                 'various devices and browsers.\n' +
                 '• Maintaining the React Native in-house organization application.' +
@@ -66,7 +66,7 @@ export const resumeData = {
             startDate: 'Jan 2021',
             endDate: 'March 2022',
             currentlyWorking: false,
-            workSummary: ' Designed, developed, and maintained full-stack applications using React and Node.js.' +
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.' +
                 '• Implemented responsive user interfaces with React, ensuring seamless user experiences across' +
                 'various devices and browsers.' +
                 '• Maintaining the React Native in-house organization application.' +

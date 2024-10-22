@@ -118,10 +118,9 @@ import { Textarea } from '../../../components/ui/textarea';
 
 interface SummaryProps {
     summaryData: string | undefined; // Prop to get initial summary
-    enabledNext: (value: boolean) => void;
 }
 
-function Summery({ summaryData, enabledNext }: SummaryProps) {
+function Summery({ summaryData }: SummaryProps) {
     const { setResumeInfo } = useResumeInfo(); // Using the context to update resume info
     const [summary, setSummary] = useState<string | undefined>(summaryData || " ");
     const [loading, setLoading] = useState(false);
