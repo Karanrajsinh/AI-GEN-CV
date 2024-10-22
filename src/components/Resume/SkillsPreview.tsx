@@ -1,4 +1,4 @@
-import { Skill } from "@/src/Types/ResumeTypes";
+import { Skill } from "@/Types/ResumeTypes";
 // Define the type for resumeInfo
 type ResumeInfo = {
     themeColor: string;
