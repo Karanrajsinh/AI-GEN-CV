@@ -21,6 +21,7 @@ export const resumeData = {
             name: "Local Art Exhibition",
             description: "Organized and managed an art exhibition showcasing local talents and promoting cultural appreciation.",
             startDate: "2023-01-15",
+            endDate: "2022-12-01",
             currentlyWorking: true, // Ongoing project
         },
         {
