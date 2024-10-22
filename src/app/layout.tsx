@@ -1,8 +1,9 @@
 
+"use client"
+
 import { ResumeInfoProvider } from '@/context/ResumeInfoContext';
 import '@/app/globals.css'
 import { ModalProvider } from '@/context/ModalContext';
-
 
 
 

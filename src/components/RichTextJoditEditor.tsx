@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from "react";
+"use client"
+
+import React, { useState } from "react";
 import "jodit";
-import JoditEditor from "jodit-react";
+// import JoditEditor from "jodit-react";
+import dynamic from 'next/dynamic';
+
+// Dynamically import JoditEditor
+const JoditEditor = dynamic(() => import('jodit-react'), {
+    ssr: false, // Prevent server-side rendering for this component
+});
 import { useResumeInfo } from "../context/ResumeInfoContext";
 import { Button } from "../../components/ui/button";
 import { Brain, LoaderCircle } from "lucide-react";

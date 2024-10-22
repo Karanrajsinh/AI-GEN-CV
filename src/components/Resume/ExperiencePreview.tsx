@@ -45,7 +45,7 @@
 // }
 
 // export default ExperiencePreview;
-
+"use client"
 import { Experience } from "@/Types/ResumeTypes";
 import { format } from "date-fns"; // Make sure to import format
 
