@@ -321,7 +321,7 @@ export default function GridBackgroundDemo() {
             if (pdfElement) {
                 const htmlContent = pdfElement.outerHTML; // Get the HTML content of the element
 
-                const response = await fetch('http://<YOUR-NODE-SERVER-DOMAIN>/generatePdf', {
+                const response = await fetch('https://resume-builder-server-gkxk.onrender.com/generatePdf', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
