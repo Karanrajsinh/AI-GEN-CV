@@ -281,7 +281,7 @@ export default function GridBackgroundDemo() {
                 `;
 
                 // Call the API to generate PDF
-                const response = await fetch('/api/generatePdf', {
+                const response = await fetch('https://resume-builder-delta-eight.vercel.app/api/generatePdf', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
