@@ -1,4 +1,4 @@
-import { ResumeInfo } from "@/src/Types/ResumeTypes";
+import { ResumeInfo } from "@/Types/ResumeTypes";
 
 
 function SummeryPreview({ resumeInfo }: { resumeInfo: ResumeInfo }) {
