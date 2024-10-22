@@ -252,59 +252,98 @@ export default function GridBackgroundDemo() {
     };
 
 
+    // const handleGeneratePdf = async () => {
+    //     try {
+    //         const pdfElement = document.getElementById('pdf');
+    //         if (pdfElement) {
+    //             const htmlContent = pdfElement.outerHTML; // Get the outer HTML of the element
+
+    //             // Optionally extract styles
+    //             const styles = Array.from(document.styleSheets).map(styleSheet => {
+    //                 try {
+    //                     return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
+    //                 } catch (e) {
+    //                     // Ignore stylesheets from different origins
+    //                     console.warn('Could not access stylesheet:', styleSheet.href);
+    //                     return e;
+    //                 }
+    //             }).join('\n');
+
+    //             // Wrap the HTML content with the necessary <html> structure and styles
+    //             const fullHtmlContent = `
+    //                 <!DOCTYPE html>
+    //                 <html>
+    //                     <head>
+    //                         <style>${styles}</style> <!-- Include styles here -->
+    //                     </head>
+    //                     <body>${htmlContent}</body>
+    //                 </html>
+    //             `;
+
+    //             // Call the API to generate PDF
+    //             const response = await fetch('https://resume-builder-delta-eight.vercel.app/api/generatePdf', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify({ htmlContent: fullHtmlContent }), // Pass the HTML content directly
+    //             });
+
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
+
+    //             // Create a blob from the PDF response
+    //             const blob = await response.blob();
+    //             const pdfUrl = window.URL.createObjectURL(blob);
+
+    //             // Create a link element to download the PDF
+    //             const link = document.createElement('a');
+    //             link.href = pdfUrl;
+    //             link.setAttribute('download', 'document.pdf'); // Specify the filename
+    //             document.body.appendChild(link);
+    //             link.click();
+    //             if (link.parentNode)
+    //                 link?.parentNode.removeChild(link); // Clean up the link
+    //         } else {
+    //             console.error('Element with ID "pdf" not found');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error generating PDF:', error);
+    //     }
+    // };
+
+
+
     const handleGeneratePdf = async () => {
         try {
             const pdfElement = document.getElementById('pdf');
             if (pdfElement) {
-                const htmlContent = pdfElement.outerHTML; // Get the outer HTML of the element
+                const htmlContent = pdfElement.outerHTML; // Get the HTML content of the element
 
-                // Optionally extract styles
-                const styles = Array.from(document.styleSheets).map(styleSheet => {
-                    try {
-                        return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
-                    } catch (e) {
-                        // Ignore stylesheets from different origins
-                        console.warn('Could not access stylesheet:', styleSheet.href);
-                        return e;
-                    }
-                }).join('\n');
-
-                // Wrap the HTML content with the necessary <html> structure and styles
-                const fullHtmlContent = `
-                    <!DOCTYPE html>
-                    <html>
-                        <head>
-                            <style>${styles}</style> <!-- Include styles here -->
-                        </head>
-                        <body>${htmlContent}</body>
-                    </html>
-                `;
-
-                // Call the API to generate PDF
-                const response = await fetch('https://resume-builder-delta-eight.vercel.app/api/generatePdf', {
+                const response = await fetch('http://<YOUR-NODE-SERVER-DOMAIN>/generatePdf', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ htmlContent: fullHtmlContent }), // Pass the HTML content directly
+                    body: JSON.stringify({ htmlContent }), // Send the HTML content to the server
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Failed to generate PDF');
                 }
 
-                // Create a blob from the PDF response
+                // Create a blob from the response (PDF) and download it
                 const blob = await response.blob();
                 const pdfUrl = window.URL.createObjectURL(blob);
 
-                // Create a link element to download the PDF
+                // Create a download link
                 const link = document.createElement('a');
                 link.href = pdfUrl;
-                link.setAttribute('download', 'document.pdf'); // Specify the filename
+                link.setAttribute('download', 'document.pdf'); // Set the filename
                 document.body.appendChild(link);
                 link.click();
-                if (link.parentNode)
-                    link?.parentNode.removeChild(link); // Clean up the link
+                link.remove(); // Clean up the link
             } else {
                 console.error('Element with ID "pdf" not found');
             }
@@ -312,7 +351,6 @@ export default function GridBackgroundDemo() {
             console.error('Error generating PDF:', error);
         }
     };
-
 
 
 
