@@ -3,23 +3,18 @@ import puppeteer from 'puppeteer';
 
 export const generatePdf = async (htmlContent, width, height) => {
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'], // Necessary for running Puppeteer on Vercel
-    executablePath: '/vercel/.cache/puppeteer/chrome/linux-130.0.6723.58/chrome-linux64/chrome', // Specify Chrome path for Vercel
+    executablePath: ".cache/puppeteer/chrome/win64-130.0.6723.58/chrome-win64/chrome.exe",
+    args: ['--no-sandbox', '--disable-setuid-sandbox'], // Necessary for running Puppeteer on Vercel // Specify Chrome path for Vercel
     headless: true,  // Ensure it runs in headless mode
   });
   const page = await browser.newPage();
-  console.log(htmlContent, 'pdfGenerate.js')
+  const executablePath = puppeteer.executablePath();
+  console.log('Puppeteer Executable Path:', executablePath);
+  // console.log(htmlContent, 'pdfGenerate.js')
   // Set the content of the page to the passed HTML
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
 
-  // Retrieve width and height of the content dynamically using evaluate
-  // const { width, height } = await page.evaluate(() => {
-  //   const pdfElement = document.getElementById('pdf'); // You can adjust this to target a specific element
-  //   return {
-  //     width: pdfElement.offsetWidth,
-  //     height: pdfElement.offsetHeight,
-  //   };
-  // });
+
 
   // Add dynamic height and width by injecting CSS into the page
   await page.addStyleTag({
