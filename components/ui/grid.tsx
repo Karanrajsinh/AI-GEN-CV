@@ -22,7 +22,7 @@ import { FloatingDock } from "./floating-dock";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useModal } from "@/context/ModalContext";
 import { useState } from "react";
-
+import pako from 'pako'
 
 
 export default function GridBackgroundDemo() {
@@ -252,59 +252,72 @@ export default function GridBackgroundDemo() {
     };
 
 
+
     // const handleGeneratePdf = async () => {
     //     try {
     //         const pdfElement = document.getElementById('pdf');
     //         if (pdfElement) {
-    //             const htmlContent = pdfElement.outerHTML; // Get the outer HTML of the element
+    //             const htmlContent = pdfElement.outerHTML; // Get the HTML content of the element
+
 
     //             // Optionally extract styles
-    //             const styles = Array.from(document.styleSheets).map(styleSheet => {
-    //                 try {
-    //                     return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
-    //                 } catch (e) {
-    //                     // Ignore stylesheets from different origins
-    //                     console.warn('Could not access stylesheet:', styleSheet.href);
-    //                     return e;
-    //                 }
-    //             }).join('\n');
+    //             // const styles = Array.from(document.styleSheets).map(styleSheet => {
+    //             //     try {
+    //             //         return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
+    //             //     } catch (e) {
+    //             //         // Ignore stylesheets from different origins
+    //             //         console.warn('Could not access stylesheet:', styleSheet.href);
+    //             //         return e;
+    //             //     }
+    //             // }).join('\n');
+    //             const styles = Array.from(document.styleSheets)
+    //                 .filter(sheet => !sheet.href || sheet.href.startsWith(window.location.origin)) // Only include same-origin styles
+    //                 .map(styleSheet => {
+    //                     try {
+    //                         return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
+    //                     } catch (e) {
+    //                         console.warn(`Could not access stylesheet:${e}`, styleSheet.href);
+    //                         return '';
+    //                     }
+    //                 })
+    //                 .join('\n');
 
     //             // Wrap the HTML content with the necessary <html> structure and styles
     //             const fullHtmlContent = `
-    //                 <!DOCTYPE html>
-    //                 <html>
-    //                     <head>
-    //                         <style>${styles}</style> <!-- Include styles here -->
-    //                     </head>
-    //                     <body>${htmlContent}</body>
-    //                 </html>
-    //             `;
-
-    //             // Call the API to generate PDF
-    //             const response = await fetch('https://resume-builder-delta-eight.vercel.app/api/generatePdf', {
+    //                                 <!DOCTYPE html>
+    //                                 <html>
+    //                                     <head>
+    //                                         <style>${styles}</style> <!-- Include styles here -->
+    //                                     </head>
+    //                                     <body>${htmlContent}</body>
+    //                                 </html>
+    //                             `;
+    //             console.log(fullHtmlContent)
+    //             // const compressedHtmlContent = pako.deflate(JSON.stringify({ fullHtmlContent }));
+    //             // console.log(compressedHtmlContent);
+    //             const response = await fetch('https://resume-builder-server-gkxk.onrender.com/generatePdf', {
     //                 method: 'POST',
     //                 headers: {
     //                     'Content-Type': 'application/json',
     //                 },
-    //                 body: JSON.stringify({ htmlContent: fullHtmlContent }), // Pass the HTML content directly
+    //                 body: JSON.stringify({ fullHtmlContent }), // Send the HTML content to the server
     //             });
 
     //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
+    //                 throw new Error('Failed to generate PDF');
     //             }
 
-    //             // Create a blob from the PDF response
+    //             // Create a blob from the response (PDF) and download it
     //             const blob = await response.blob();
     //             const pdfUrl = window.URL.createObjectURL(blob);
 
-    //             // Create a link element to download the PDF
+    //             // Create a download link
     //             const link = document.createElement('a');
     //             link.href = pdfUrl;
-    //             link.setAttribute('download', 'document.pdf'); // Specify the filename
+    //             link.setAttribute('download', 'document.pdf'); // Set the filename
     //             document.body.appendChild(link);
     //             link.click();
-    //             if (link.parentNode)
-    //                 link?.parentNode.removeChild(link); // Clean up the link
+    //             link.remove(); // Clean up the link
     //         } else {
     //             console.error('Element with ID "pdf" not found');
     //         }
@@ -313,37 +326,64 @@ export default function GridBackgroundDemo() {
     //     }
     // };
 
-
-
     const handleGeneratePdf = async () => {
         try {
             const pdfElement = document.getElementById('pdf');
             if (pdfElement) {
                 const htmlContent = pdfElement.outerHTML; // Get the HTML content of the element
 
-                const response = await fetch('https://resume-builder-server-gkxk.onrender.com/generatePdf', {
+                // Optionally extract styles
+                const styles = Array.from(document.styleSheets).map(styleSheet => {
+                    try {
+                        return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
+                    } catch (e) {
+                        console.warn('Could not access stylesheet:', styleSheet.href);
+                        return '';
+                    }
+                }).join('\n');
+
+                // Get the width and height of the pdfElement
+                const width = pdfElement.offsetWidth;
+                const height = pdfElement.offsetHeight;
+                // Wrap the HTML content with the necessary <html> structure and styles
+                const fullHtmlContent = `
+                    <!DOCTYPE html>
+                    <html>
+                        <head>
+                            <style>${styles}</style>
+                        </head>
+                        <body>${htmlContent}</body>
+                    </html>
+                `;
+
+                console.log(fullHtmlContent, width, height)
+
+                // Send HTML content along with dimensions
+                const response = await fetch('api/generatePdf', {
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ htmlContent }), // Send the HTML content to the server
+                    body: JSON.stringify({
+                        htmlContent: fullHtmlContent,
+                        width,
+                        height
+                    }), // Include width and height
                 });
 
                 if (!response.ok) {
                     throw new Error('Failed to generate PDF');
                 }
 
-                // Create a blob from the response (PDF) and download it
                 const blob = await response.blob();
                 const pdfUrl = window.URL.createObjectURL(blob);
-
-                // Create a download link
                 const link = document.createElement('a');
                 link.href = pdfUrl;
-                link.setAttribute('download', 'document.pdf'); // Set the filename
+                link.setAttribute('download', 'document.pdf');
                 document.body.appendChild(link);
                 link.click();
-                link.remove(); // Clean up the link
+                link.remove();
             } else {
                 console.error('Element with ID "pdf" not found');
             }
@@ -351,7 +391,6 @@ export default function GridBackgroundDemo() {
             console.error('Error generating PDF:', error);
         }
     };
-
 
 
 

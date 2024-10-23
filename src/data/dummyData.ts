@@ -41,8 +41,112 @@ export const resumeData = {
             endDate: "2021-08-30",
             currentlyWorking: false, // Project is completed
         },
+        {
+            id: 3,
+            name: "Environmental Awareness Campaign",
+            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
+            startDate: "2021-05-01",
+            endDate: "2021-08-30",
+            currentlyWorking: false, // Project is completed
+        },
+        {
+            id: 3,
+            name: "Environmental Awareness Campaign",
+            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
+            startDate: "2021-05-01",
+            endDate: "2021-08-30",
+            currentlyWorking: false, // Project is completed
+        },
+        {
+            id: 3,
+            name: "Environmental Awareness Campaign",
+            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
+            startDate: "2021-05-01",
+            endDate: "2021-08-30",
+            currentlyWorking: false, // Project is completed
+        },
+        {
+            id: 3,
+            name: "Environmental Awareness Campaign",
+            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
+            startDate: "2021-05-01",
+            endDate: "2021-08-30",
+            currentlyWorking: false, // Project is completed
+        },
+        {
+            id: 3,
+            name: "Environmental Awareness Campaign",
+            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
+            startDate: "2021-05-01",
+            endDate: "2021-08-30",
+            currentlyWorking: false, // Project is completed
+        },
     ],
     experience: [
+        {
+            id: 1,
+            title: 'Full Stack Developer',
+            companyName: 'Amazon',
+            city: 'New York',
+            state: 'NY',
+            startDate: 'Jan 2021',
+            endDate: 'March 2022',
+            currentlyWorking: true,
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
+                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
+                'various devices and browsers.\n' +
+                '• Maintaining the React Native in-house organization application.' +
+                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
+                'and back-end'
+        },
+        {
+            id: 1,
+            title: 'Full Stack Developer',
+            companyName: 'Amazon',
+            city: 'New York',
+            state: 'NY',
+            startDate: 'Jan 2021',
+            endDate: 'March 2022',
+            currentlyWorking: true,
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
+                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
+                'various devices and browsers.\n' +
+                '• Maintaining the React Native in-house organization application.' +
+                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
+                'and back-end'
+        },
+        {
+            id: 1,
+            title: 'Full Stack Developer',
+            companyName: 'Amazon',
+            city: 'New York',
+            state: 'NY',
+            startDate: 'Jan 2021',
+            endDate: 'March 2022',
+            currentlyWorking: true,
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
+                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
+                'various devices and browsers.\n' +
+                '• Maintaining the React Native in-house organization application.' +
+                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
+                'and back-end'
+        },
+        {
+            id: 1,
+            title: 'Full Stack Developer',
+            companyName: 'Amazon',
+            city: 'New York',
+            state: 'NY',
+            startDate: 'Jan 2021',
+            endDate: 'March 2022',
+            currentlyWorking: true,
+            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
+                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
+                'various devices and browsers.\n' +
+                '• Maintaining the React Native in-house organization application.' +
+                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
+                'and back-end'
+        },
         {
             id: 1,
             title: 'Full Stack Developer',

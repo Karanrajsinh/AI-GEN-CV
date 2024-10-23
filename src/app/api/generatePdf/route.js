@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 import { generatePdf } from './pdfGenerate';
 
 export async function POST(request) {
-    const { htmlContent } = await request.json(); // Expecting the HTML content to generate the PDF
+    const { htmlContent, width, height } = await request.json(); // Expecting the HTML content to generate the PDF
 
     try {
-        const pdfBuffer = await generatePdf(htmlContent);
-
+        const pdfBuffer = await generatePdf(htmlContent, width, height);
+        console.log(pdfBuffer, "route.js")
         // Return the PDF as a response
         return new NextResponse(pdfBuffer, {
             status: 200,
