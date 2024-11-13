@@ -17,8 +17,8 @@ function ResumeCard({ id, name }: ResuemCardProps) {
     return (
         <ContextMenu>
             <ContextMenuTrigger >
-                <div className=" cursor-pointer w-[250px] lg:w-[300px] min-h-[300px] lg:min-h-[400px]  active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900 border hover:bg-slate-800 border-cyan-700">
-                    <p className="text-sm lg:text-base text-left ">{name}</p>
+                <div className=" cursor-pointer w-[250px] xl:w-[300px] min-h-[300px] xl:min-h-[400px] md:min-h-[300px]  active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900 border hover:bg-slate-800 border-cyan-700">
+                    <p className="text-sm xl:text-base text-left ">{name}</p>
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent className="bg-slate-950 rounded-none  border-gray-600 text-white ">

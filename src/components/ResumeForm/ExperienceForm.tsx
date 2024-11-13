@@ -68,7 +68,7 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
         } else if (actionType === 'add') {
             setResumeInfo((prevResumeInfo) => ({
                 ...prevResumeInfo,
-                experience: [...prevResumeInfo.experience, { ...experience, startDate: startDate, endDate: endDate }],
+                experience: [...prevResumeInfo.experience, { ...experience, startDate: startDate, endDate: endDate, description: summary }],
             }));
         }
         setEditedFields({});
@@ -85,8 +85,8 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
     };
 
     return (
-        <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:p-5 lg:w-[800px]'>
-            <div className='items-center flex ml-4 gap-3 font-semibold'>
+        <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:py-7 lg:px-5 h-[85vh] flex flex-col justify-start  overflow-y-scroll custom-scrollbar  lg:w-[800px]'>
+            <div className='items-center flex  ml-4 gap-3 font-semibold'>
                 <MdOutlineEditNote className='text-2xl' />
                 <span>Edit Experience</span>
             </div>
@@ -128,7 +128,7 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
                     <label className='text-xs'>Location</label>
                     <Input
                         className='mt-1'
-                        name="state"
+                        name="location"
                         onChange={handleChange}
                         defaultValue={experience?.location}
                     />

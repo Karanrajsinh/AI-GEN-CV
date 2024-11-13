@@ -21,12 +21,12 @@ export default function ResumeList() {
         <div className="h-screen min-w-screen flex flex-col lg:flex-row bg-slate-950">
             <div className="border-r hidden lg:flex text-white  py-8 flex-col items-center justify-between border-cyan-600 h-screen w-1/6">
                 <div className="w-[90%] flex  gap-4 flex-col items-center justify-center">
-                    <Link href={'/'} className="  hover:bg-cyan-800 hover:bg-opacity-30 p-2 " ><RxResume className="text-cyan-600 text-3xl" /></Link>
+                    <Link href={'/'} className="  hover:bg-cyan-800 hover:bg-opacity-30 p-2 " ><RxResume className="text-cyan-600 text-xl xl:text-3xl" /></Link>
                     <hr className="border-[0.5] border-cyan-900 w-full " />
                 </div>
                 <div className="w-[90%] flex flex-col gap-4 items-center justify-center">
                     <hr className="border-[0.5] border-cyan-900 w-full " />
-                    <Button className={`${RussoOne.className} w-full flex items-center gap-4 p-6 border-none bg-transparent sm:text-lg`}><span>Logout</span><GrLogout className="text-cyan-300 sm:text-xl" /></Button>
+                    <Button className={`${RussoOne.className} w-full flex items-center gap-4 p-6 border-none bg-transparent sm:text-base xl:text-lg`}><span>Logout</span><GrLogout className="text-cyan-300" /></Button>
                 </div>
             </div>
             <div className="lg:hidden border-b border-cyan-600  px-6 py-4 mt-3 flex items-center justify-between ">

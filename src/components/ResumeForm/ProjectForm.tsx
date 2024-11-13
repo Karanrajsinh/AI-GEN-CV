@@ -98,7 +98,7 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
 
 
     return (
-        <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:p-5 lg:w-[800px]'>
+        <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:py-5 lg:px-5 h-[80vh] flex flex-col justify-start  overflow-y-scroll custom-scrollbar lg:w-[800px]'>
             <div className=' items-center flex ml-4 gap-3 font-semibold'><MdOutlineEditNote className='text-2xl' /><span>Edit Project</span></div>
             <div className='grid grid-cols-2 text-xs sm:text-sm gap-3 p-3 my-5 rounded-lg'>
                 <div className='col-span-2'>

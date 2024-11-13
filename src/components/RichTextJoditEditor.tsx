@@ -83,15 +83,16 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
     const projectPrompt = `From ${projectData?.skillPrompt} and ${projectData?.rolePrompt} With Project ${projectData?.name} create a summary of this project in html tags only which is <p>'your response here'</p> no any other commas or format should be used to generate the response and not to cover the response with any word, symbol or char just response between the html tags nothing else, it should contain the main keywords of the project and the summary should be in normal yet professional and simple words like how a person will explain their project to someone in a casual conversation.`;
 
     const typeWriterEffect = (htmlContent: string, delay = 20) => {
+
         let index = 0;
         let tempContent = "";
         setIsTyping(true);
         setLoadingData(true)
-
         const interval = setInterval(() => {
             if (index < htmlContent.length) {
                 tempContent += htmlContent.charAt(index);
-                setData(tempContent); // Update the display in a different element if desired
+                setData(tempContent);
+                // Update the display in a different element if desired
                 index++;
             } else {
                 clearInterval(interval);
@@ -100,8 +101,11 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
                 if (editor.current) {
                     editor.current.value = tempContent; // Set the editor content with `value`
                 }
+
             }
+
         }, delay);
+
     };
 
 
@@ -139,6 +143,7 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
             const response = result.response.text().replaceAll('"', '').replace(/.*summary:/, '')
                 .replace(/[\{\}]/g, '')
                 .trim();
+            setSummary(response)
             typeWriterEffect(response.replace('[', '').replace(']', '').replaceAll('"', ''));
             console.log(response)
             setLoading(false)

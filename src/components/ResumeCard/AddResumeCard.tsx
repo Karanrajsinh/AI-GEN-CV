@@ -16,9 +16,9 @@ function AddResumeCard() {
 
     return (
         <Dialog open={open}>
-            <DialogTrigger onClick={openDialog} className=" cursor-pointer w-[250px] lg:w-[300px] min-h-[300px] lg:min-h-[400px] active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900  border hover:bg-slate-800 border-cyan-700">
-                <FiPlus className="text-2xl lg:text-4xl  my-auto mx-auto" />
-                <p className="text-left">Add Resume</p>
+            <DialogTrigger onClick={openDialog} className=" cursor-pointer w-[250px] xl:w-[300px] min-h-[300px] xl:min-h-[400px] active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900  border hover:bg-slate-800 border-cyan-700">
+                <FiPlus className="text-2xl xl:text-4xl  my-auto mx-auto" />
+                <p className="text-left text-sm xl:text-base">Add Resume</p>
             </DialogTrigger>
             <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} style={{ borderRadius: "0px" }} className="bg-slate-900 border w-[95vw] min-h-fit sm:h-fit  md:min-w-max  text-white border-cyan-800 m-0 p-0 modal">
                 <ResumeCardForm closeDialog={closeDialog} />
