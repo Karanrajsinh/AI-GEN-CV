@@ -1,10 +1,7 @@
-
-"use client"
-
+'use client'
 import React from "react";
-// import { GridBackgroundDemo } from "../../components/ui/grid";
-import GridBackgroundDemo from "../../components/ui/grid";
-// import ResumePreview from "@/context/ResumePreview";
+import Dashboard from "../Pages/ResumeMain";
+
 
 
 
@@ -15,7 +12,7 @@ export default function HomePage() {
 
   return (
     <>
-      <GridBackgroundDemo />
+      <Dashboard />
     </>
   );
 }

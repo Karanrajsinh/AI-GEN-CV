@@ -1,188 +1,89 @@
 
 export const resumeData = {
+    id: 1,
     firstName: 'James',
     lastName: 'Carter',
-    jobTitle: 'full stack developer',
+    jobTitle: 'Front-End Developer',
     address: '525 N tryon Street, NC 28117',
     phone: '(123)-456-7890',
     email: 'exmaple@gmail.com',
-    themeColor: "#00838F",
+    themeColor: "#4d4d4d",
     summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    summaryVisible: true,
+    isExperienceVisible: true,
+    isProjectVisible: true,
+    isEducationVisible: true,
+    isSkillVisible: true,
+    isCertificateVisible: true,
+    isLanguageVisible: true,
     projects: [
         {
             id: 1,
-            name: "Community Engagement Platform",
-            description: "Developed a platform to enhance community engagement by providing interactive tools and resources.",
-            startDate: "2022-03-01",
-            endDate: "2022-12-01",
-            currentlyWorking: false, // Project is completed
+            isVisible: true,
+            name: "E-commerce Platform",
+            description: "I built a responsive e-commerce platform...",
+            startDate: "2022-05-01",
+            endDate: "2023-02-15",
+            currentlyWorking: false,
+            skillPrompt: "React, Node.js, MySQL, and Stripe API integration for secure payments",
+            rolePrompt: "Developed product browsing, cart functionality, and payment processes. Ensured fast load times and responsive design, improving user retention by 20%."
         },
         {
             id: 2,
-            name: "Local Art Exhibition",
-            description: "Organized and managed an art exhibition showcasing local talents and promoting cultural appreciation.",
-            startDate: "2023-01-15",
-            endDate: "2022-12-01",
-            currentlyWorking: true, // Ongoing project
+            isVisible: true,
+            name: "Social Media Mobile App",
+            description: "I developed a social media app...",
+            startDate: "2021-11-10",
+            endDate: "2022-08-01",
+            currentlyWorking: false,
+            skillPrompt: "React Native, Firebase for authentication, Amazon S3 for media storage",
+            rolePrompt: "Led the implementation of real-time messaging and media sharing features, achieving a 99% uptime and seamless cross-platform performance."
         },
         {
             id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
-        {
-            id: 3,
-            name: "Environmental Awareness Campaign",
-            description: "Led a social media campaign to raise awareness about environmental issues and promote sustainable practices.",
-            startDate: "2021-05-01",
-            endDate: "2021-08-30",
-            currentlyWorking: false, // Project is completed
-        },
+            isVisible: true,
+            name: "Task Management System",
+            description: "This project was a task management system...",
+            startDate: "2023-03-01",
+            endDate: "2023-09-15",
+            currentlyWorking: false,
+            skillPrompt: "Angular, Node.js, WebSocket for real-time updates, OAuth for secure access",
+            rolePrompt: "Created an interactive dashboard for task tracking and organized secure user authentication, reducing login-related support requests by 35%."
+        }
     ],
+
     experience: [
         {
             id: 1,
-            title: 'Full Stack Developer',
+            isVisible: true,
+            title: 'Full Stack Developer Intern',
             companyName: 'Amazon',
-            city: 'New York',
-            state: 'NY',
+            location: "USA",
             startDate: 'Jan 2021',
-            endDate: 'March 2022',
+            endDate: 'March 2023',
             currentlyWorking: true,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
-                'various devices and browsers.\n' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end'
-        },
-        {
-            id: 1,
-            title: 'Full Stack Developer',
-            companyName: 'Amazon',
-            city: 'New York',
-            state: 'NY',
-            startDate: 'Jan 2021',
-            endDate: 'March 2022',
-            currentlyWorking: true,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
-                'various devices and browsers.\n' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end'
-        },
-        {
-            id: 1,
-            title: 'Full Stack Developer',
-            companyName: 'Amazon',
-            city: 'New York',
-            state: 'NY',
-            startDate: 'Jan 2021',
-            endDate: 'March 2022',
-            currentlyWorking: true,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
-                'various devices and browsers.\n' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end'
-        },
-        {
-            id: 1,
-            title: 'Full Stack Developer',
-            companyName: 'Amazon',
-            city: 'New York',
-            state: 'NY',
-            startDate: 'Jan 2021',
-            endDate: 'March 2022',
-            currentlyWorking: true,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
-                'various devices and browsers.\n' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end'
-        },
-        {
-            id: 1,
-            title: 'Full Stack Developer',
-            companyName: 'Amazon',
-            city: 'New York',
-            state: 'NY',
-            startDate: 'Jan 2021',
-            endDate: 'March 2022',
-            currentlyWorking: true,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.\n' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across\n' +
-                'various devices and browsers.\n' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end'
+            description: 'During my time at Amazon...',
+            skillPrompt: "React, Node.js, API development, problem-solving in large-scale systems",
+            rolePrompt: "Built RESTful APIs and optimized frontend performance, reducing page load times by 30% and increasing customer satisfaction scores by 15%."
         },
         {
             id: 2,
-            title: 'Frontend Developer',
+            isVisible: true,
+            title: 'Frontend Developer Intern',
             companyName: 'Google',
-            city: 'Charlotte',
-            state: 'NC',
-            startDate: 'Jan 2021',
-            endDate: 'March 2022',
+            location: "USA",
+            startDate: 'Jan 2018',
+            endDate: 'March 2020',
             currentlyWorking: false,
-            description: ' Designed, developed, and maintained full-stack applications using React and Node.js.' +
-                '• Implemented responsive user interfaces with React, ensuring seamless user experiences across' +
-                'various devices and browsers.' +
-                '• Maintaining the React Native in-house organization application.' +
-                '• CreatedRESTfulAPIs withNode.js and Express,facilitating data communicationbetween the front-end' +
-                'and back-end systems.'
+            description: 'At Google, I had the chance...',
+            skillPrompt: "JavaScript, React, CSS for responsive design, API integration",
+            rolePrompt: "Enhanced in-house applications, implemented designs to improve UX, and reduced reported frontend bugs by 40%."
         }
     ],
     education: [
         {
             id: 1,
+            isVisible: true,
             universityName: 'Western Illinois University',
             startDate: 'Aug 2018',
             endDate: 'Dec 2019',
@@ -191,6 +92,7 @@ export const resumeData = {
         },
         {
             id: 2,
+            isVisible: true,
             universityName: 'Western Illinois University',
             startDate: 'Aug 2018',
             endDate: 'Dec 2019',
@@ -201,23 +103,36 @@ export const resumeData = {
     skills: [
         {
             id: 1,
+            isVisible: true,
             name: 'Angular',
-            rating: 80,
         },
         {
-            id: 1,
+            id: 2,
+            isVisible: true,
             name: 'React',
-            rating: 100,
         },
         {
-            id: 1,
+            id: 3,
+            isVisible: true,
             name: 'MySql',
-            rating: 80,
         },
         {
-            id: 1,
+            id: 4,
+            isVisible: true,
             name: 'React Native',
-            rating: 100,
-        }
-    ]
+        },
+
+    ],
+    certificates:
+        [
+
+        ],
+    languages: []
+}
+
+
+export const resumes =
+{
+    user_id: 1,
+    resumes_id: ['ab1', '22x']
 }

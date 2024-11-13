@@ -1,147 +1,156 @@
 "use client"
 
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import React, { useEffect, useState } from 'react';
-
-import { useParams } from 'next/navigation';
-;
-import { Edit, LoaderCircle } from 'lucide-react';
-
-import { Experience } from '@/Types/ResumeTypes';
-
-import { Checkbox } from '../../../components/ui/checkbox';
-import { useResumeInfo } from '../../context/ResumeInfoContext';
-import { SampleDatePicker } from '../date-picker';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import React, { useState } from 'react';
+import { MdOutlineEditNote } from "react-icons/md";
+import { Checkbox } from '@/components/ui/checkbox';
+import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { SampleDatePicker } from '../CustomDatePicker';
 import RichTextJoditEditor from '../RichTextJoditEditor';
+import { Experience } from '@/src/Types/ResumeTypes';
+import { useForm } from 'react-hook-form';
 
 
+type ExperienceProps = {
+    actionType: 'add' | 'edit';
+    experienceData: Experience;
+    index: number;
+    closeModal: () => void;
+};
 
-// Define the main component that now accepts a single experience via props
-type experienceProps =
-    {
-        experienceData: Experience,
-        index: number
-    }
-
-
-
-function ExperienceDetails({ experienceData, index }: experienceProps) {
+function ExperienceForm({ actionType, experienceData, index, closeModal }: ExperienceProps) {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
-    const params = useParams<{ resumeId: string }>();
+    const [summary, setSummary] = useState(resumeInfo.experience[index]?.description);
     const [loading, setLoading] = useState(false);
     const [experience, setExperience] = useState(experienceData);
+    const [skillPrompt, setSkillPrompt] = useState(experienceData.skillPrompt);
+    const [rolePrompt, setRolePrompt] = useState(experienceData.rolePrompt);
+    const [promptMessage, setPromptMessage] = useState('');
+    const [editedFields, setEditedFields] = useState<{ [key: string]: string }>({});
+    const [startDate, setStartDate] = useState<Date | string>(experienceData.startDate);
+    const [endDate, setEndDate] = useState<Date | string>(experienceData.endDate);
 
-    useEffect(() => {
-        setExperience(experienceData);
-    }, [experienceData]);
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: experience,
+    });
 
-    // Handle input changes and update experience
+
+
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
-        const updatedExperience = { ...experience, [name]: value };
 
-        setExperience(updatedExperience);
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            experience: prevResumeInfo.experience.map((exp) =>
-                exp.id === updatedExperience.id ? updatedExperience : exp
-            ),
+        if (name === "skillPrompt") {
+            setSkillPrompt(value);
+        }
+
+        if (name === "rolePrompt") {
+            setRolePrompt(value);
+        }
+
+        setExperience((prevExperience) => ({ ...prevExperience, [name]: value }));
+        setEditedFields((prevFields) => ({
+            ...prevFields,
+            [name]: value,
         }));
+
     };
 
-
+    const onSave = () => {
+        if (actionType === 'edit') {
+            setResumeInfo((prevResumeInfo) => ({
+                ...prevResumeInfo,
+                experience: prevResumeInfo.experience.map((exp, i) =>
+                    i === index ? { ...exp, ...editedFields, currentlyWorking: experience.currentlyWorking, startDate: startDate, endDate: endDate, description: summary } : exp
+                ),
+            }));
+        } else if (actionType === 'add') {
+            setResumeInfo((prevResumeInfo) => ({
+                ...prevResumeInfo,
+                experience: [...prevResumeInfo.experience, { ...experience, startDate: startDate, endDate: endDate }],
+            }));
+        }
+        setEditedFields({});
+        closeModal();
+    };
 
     const handleCurrentlyWorkingToggle = (checked: boolean) => {
-        const updatedExperience = {
-            ...experience,
-            currentlyWorking: checked,
-            endDate: checked ? new Date() : experience.endDate, // Clear endDate if "Currently Working" is checked
-        };
-
-        setExperience(updatedExperience);
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            experience: prevResumeInfo.experience.map((exp) =>
-                exp.id === updatedExperience.id ? updatedExperience : exp
-            ),
-        }));
-    };
-
-    const onSave = async () => {
-        setLoading(true);
-
-        const data = {
-            data: {
-                Experience: [experience], // Save the single experience
-            },
-        };
-
-        // try {
-        //     await GlobalApi.UpdateResumeDetail(params.resumeId, data);
-        //     toast('Details updated!');
-        // } catch (error) {
-        //     toast.error('Failed to update details!');
-        // } finally {
-        //     setLoading(false);
-        // }
+        setExperience(
+            {
+                ...experience,
+                currentlyWorking: checked,
+            }
+        )
     };
 
     return (
-        <div className='p-5 w-[800px]'>
-            {/* <h2 className='font-bold text-lg'>Professional Experience</h2> */}
-            <div className='text-center flex ml-2 gap-4 font-semibold'><Edit /><span>Edit Experience</span></div>
-            <div className='grid grid-cols-2  gap-3  p-3 my-5 rounded-lg'>
-                <div>
+        <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:p-5 lg:w-[800px]'>
+            <div className='items-center flex ml-4 gap-3 font-semibold'>
+                <MdOutlineEditNote className='text-2xl' />
+                <span>Edit Experience</span>
+            </div>
+            <div className='grid grid-cols-2 text-xs sm:text-sm gap-3 p-3 my-5 rounded-lg'>
+                <div className='col-span-2'>
                     <label className='text-xs'>Position Title</label>
                     <Input
-                        name="title"
-                        onChange={handleChange}
-                        defaultValue={experience?.title}
+                        className='mt-1'
+                        {...register("title", {
+                            required: "Field Cannot Be Empty",
+                            onChange(event) {
+                                handleChange(event)
+                            },
+                        })}
+
+                        defaultValue={experienceData?.title}
                     />
+                    {errors.title && (
+                        <p className="text-cyan-500 text-xs mt-1">{errors.title.message}</p>
+                    )}
                 </div>
                 <div>
                     <label className='text-xs'>Company Name</label>
                     <Input
-                        name="companyName"
-                        onChange={handleChange}
+                        className='mt-1'
+                        {...register("companyName", {
+                            required: "Field Cannot Be Empty",
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={experience?.companyName}
                     />
+                    {errors.companyName && (
+                        <p className="text-cyan-500 text-xs mt-1">{errors.companyName.message}</p>
+                    )}
                 </div>
                 <div>
-                    <label className='text-xs'>City</label>
+                    <label className='text-xs'>Location</label>
                     <Input
-                        name="city"
-                        onChange={handleChange}
-                        defaultValue={experience?.city}
-                    />
-                </div>
-                <div>
-                    <label className='text-xs'>State</label>
-                    <Input
+                        className='mt-1'
                         name="state"
                         onChange={handleChange}
-                        defaultValue={experience?.state}
+                        defaultValue={experience?.location}
                     />
                 </div>
                 <div>
                     <label className='text-xs'>Start Date</label>
                     <SampleDatePicker
-                        index={index}
-                        sectionType="experience"
-                        defaultValue={experience?.startDate}
+                        currentlyWorking={experience.currentlyWorking}
+                        fieldValue={startDate}
                         fieldName="startDate"
+                        setFieldValue={setStartDate}
                     />
                 </div>
                 <div className='modal'>
                     <label className='text-xs'>End Date</label>
                     <SampleDatePicker
-                        index={index}
-                        sectionType="experience"
-                        defaultValue={experience?.endDate}
+                        currentlyWorking={experience.currentlyWorking}
+                        fieldValue={endDate}
                         fieldName="endDate"
+                        setFieldValue={setEndDate}
                     />
-                    <div className='mt-6 ml-2 flex justify-start items-center'>
+                    <div className='mt-4 ml-2 flex justify-start items-center'>
                         <Checkbox
                             className='border data-[state=checked]:bg-cyan-600 border-cyan-800'
                             checked={experience?.currentlyWorking ?? false}
@@ -153,16 +162,40 @@ function ExperienceDetails({ experienceData, index }: experienceProps) {
                         </label>
                     </div>
                 </div>
+                <div className='col-span-2 mt-2'>
+                    <label className='font-semibold text-cyan-400'>Skills Developed/Applied</label>
+                    <Input
+                        className='mt-1'
+                        name="skillPrompt"
+                        onChange={handleChange}
+                        defaultValue={experience?.skillPrompt}
+                    />
+                    {(promptMessage.length > 0 && skillPrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
+                </div>
+                <div className='col-span-2 mt-3'>
+                    <label className='font-semibold text-cyan-400'>Role in the Experience</label>
+                    <Input
+                        className='mt-1'
+                        name="rolePrompt"
+                        onChange={handleChange}
+                        defaultValue={experience?.rolePrompt}
+                    />
+                    {(promptMessage.length > 0 && rolePrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
+                </div>
                 <div className='col-span-2'>
-                    <RichTextJoditEditor contentType='experience' index={index} defaultValue={experience?.description ?? ""} />
+                    <RichTextJoditEditor setLoadingData={setLoading} experienceData={experience} rolePrompt={rolePrompt} skillPrompt={skillPrompt} setSummary={setSummary} setMessagePrompt={setPromptMessage} contentType='experience' defaultValue={experience?.description ?? ""} />
                 </div>
             </div>
-
-            <Button disabled={loading} onClick={onSave}>
-                {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
-            </Button>
-        </div>
+            <div className='flex justify-end gap-6 mr-4'>
+                <Button disabled={loading} onClick={closeModal}>
+                    Cancel
+                </Button>
+                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}>
+                    {actionType === "add" ? "Create" : "Save"}
+                </Button>
+            </div>
+        </form>
     );
 }
 
-export default ExperienceDetails;
+export default ExperienceForm;

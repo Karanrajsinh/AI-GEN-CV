@@ -21,9 +21,10 @@
                 "name": "next"
             }
         ],
+        "baseUrl": ".",
         "paths": {
             "@/*": [
-                "./src/*"
+                "./*"
             ]
         }
     },
@@ -32,7 +33,10 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "next.config.js"
+        "next.config.js",
+        "src/components/ResumeSidebar/ExperienceSectiontsx",
+        "src/components/ResumeSidebar/ExperienceSectiontsx",
+        "src/helpers/helper.js"
     ],
     "exclude": [
         "node_modules"

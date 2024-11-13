@@ -50,11 +50,6 @@ function PersonalDetailPreview({ resumeInfo }: PersonalDetailPreviewProps) {
                     {resumeInfo?.email}
                 </h2>
             </div>
-
-            {/* <hr className='border-[1.5px] my-2'
-                style={{
-                    borderColor: resumeInfo?.themeColor
-                }} /> */}
         </div>
     )
 }

@@ -2,7 +2,7 @@
 import React from 'react'
 
 import { format } from 'date-fns';
-import { Education } from '@/Types/ResumeTypes';
+import { Education } from '@/src/Types/ResumeTypes';
 
 
 type ResumeInfo = {
@@ -28,7 +28,7 @@ function EducationalPreview({ resumeInfo }: EducationalPreviewProps) {
             }} />
 
             {resumeInfo?.education.map((education, index) => (
-                <div key={index} className='my-5'>
+                <div key={index} className={`my-5 ${education.isVisible === true ? 'block' : 'hidden'}`}>
                     <h2 className='text-sm font-bold'
                         style={{
                             color: resumeInfo?.themeColor

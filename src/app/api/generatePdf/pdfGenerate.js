@@ -4,13 +4,6 @@ import puppeteer from "puppeteer"
 export const generatePdf = async (htmlContent, width, height) => {
   const browser = await puppeteer.launch({
     // executablePath: "chrome@130.0.6723.58 /vercel/path1/.cache/puppeteer/chrome/linux-130.0.6723.58/chrome-linux64/chrome",
-    args: ['--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--disable-setuid-sandbox',
-      '--no-first-run',
-      '--no-sandbox',
-      '--no-zygote',
-      '--single-process'], // Necessary for running Puppeteer on Vercel // Specify Chrome path for Vercel
     headless: true,  // Ensure it runs in headless mode
   });
   const page = await browser.newPage();

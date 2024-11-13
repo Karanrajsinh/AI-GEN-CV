@@ -1,4 +1,4 @@
-import { Skill } from "@/Types/ResumeTypes";
+import { Skill } from "@/src/Types/ResumeTypes";
 // Define the type for resumeInfo
 type ResumeInfo = {
     themeColor: string;
@@ -23,9 +23,9 @@ function SkillsPreview({ resumeInfo }: SkillsPreviewProps) {
                 borderColor: resumeInfo?.themeColor
             }} />
 
-            <div className='grid grid-cols-4 gap-4 w-full justify-items-center my-4'>
+            <div className='mx-auto flex flex-wrap  items-center gap-8 w-full  justify-start my-4'>
                 {resumeInfo?.skills.map((skill, index) => (
-                    <h2 key={index} className='text-xs'>{skill.name}</h2>
+                    <p key={index} className={`text-sm text-slate-700 leading-[0.5] text-center ${skill.isVisible === true ? 'block' : 'hidden'}`}>{skill.name}</p>
                 ))}
             </div>
         </div>

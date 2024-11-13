@@ -1,225 +1,100 @@
-// import { Button } from '@/components/ui/button';
-// import { Textarea } from '@/components/ui/textarea';
-// import { useResumeInfo } from '@/src/context/ResumeInfoContext';
-// import { useEffect, useState } from 'react';
-// import { useParams } from 'next/navigation';
-// // import GlobalApi from './../../../../../service/GlobalApi';
-// import { Brain, LoaderCircle } from 'lucide-react';
-// import { toast } from 'sonner';
-// // import { AIChatSession } from './../../../../../service/AIModal';
+"use client";
 
-// // Define the structure of the AI-generated summary
-
-
-// function Summery({ enabledNext }: { enabledNext: (value: boolean) => void }) {
-//     const { resumeInfo, setResumeInfo } = useResumeInfo();
-//     const [summary, setSummary] = useState<string | undefined>(resumeInfo?.summary || " ");
-//     const [loading, setLoading] = useState(false);
-//     const params = useParams<{ resumeId: string }>();
-//     // const [aiGeneratedSummaryList, setAiGenerateSummaryList] = useState<AIGeneratedSummary[] | undefined>();
-
-//     const prompt = "Job Title: {jobTitle} , Depends on job title give me list of summary for 3 experience level, Mid Level and Fresher level in 3 -4 lines in array format, With summary and experience_level Field in JSON Format";
-
-//     useEffect(() => {
-//         if (summary && setResumeInfo) {
-//             setResumeInfo((prev) => ({
-//                 ...prev,
-//                 // summary: summary,
-//                 summary: summary === "" ? "" : summary,
-//             }));
-//         }
-//     }, [summary, setResumeInfo]);
-
-//     // const GenerateSummaryFromAI = async () => {
-//     //     setLoading(true);
-//     //     const PROMPT = prompt.replace('{jobTitle}', resumeInfo?.jobTitle || '');
-//     //     console.log(PROMPT);
-//     //     const result = await AIChatSession.sendMessage(PROMPT);
-//     //     console.log(JSON.parse(result.response.text()));
-
-//     //     setAiGenerateSummaryList(JSON.parse(result.response.text()));
-//     //     setLoading(false);
-//     // };
-
-//     const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
-//         e.preventDefault();
-
-//         setLoading(true);
-//         const data = {
-//             data: {
-//                 summary: summary,
-//             },
-//         };
-
-//         // try {
-//         //     const resp = await GlobalApi.UpdateResumeDetail(params?.resumeId, data);
-//         //     console.log(resp);
-//         //     enabledNext(true);
-//         //     toast("Details updated");
-//         // } catch (error) {
-//         //     console.error(error);
-//         //     toast("Error updating details");
-//         // } finally {
-//         //     setLoading(false);
-//         // }
-//     };
-
-//     return (
-//         <div>
-//             <div className='p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10'>
-//                 <h2 className='font-bold text-lg'>Summary</h2>
-//                 <p>Add Summary for your job title</p>
-
-//                 <form className='mt-7' onSubmit={onSave}>
-//                     <div className='flex justify-between items-end'>
-//                         <label>Add Summary</label>
-//                         <Button
-//                             type="button" size="sm" className="flex gap-2">
-//                             <Brain className='h-4 w-4' />  Generate from AI
-//                         </Button>
-//                     </div>
-//                     <Textarea className="mt-5" required
-//                         value={summary}
-//                         onChange={(e) => setSummary(e.target.value || " ")}
-//                     />
-//                     <div className='mt-2 flex justify-end'>
-//                         <Button type="submit" disabled={loading}>
-//                             {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
-//                         </Button>
-//                     </div>
-//                 </form>
-//             </div>
-
-//             {/* {aiGeneratedSummaryList && (
-//                 <div className='my-5'>
-//                     <h2 className='font-bold text-lg'>Suggestions</h2>
-//                     {aiGeneratedSummaryList.map((item, index) => (
-//                         <div key={index}
-//                             onClick={() => setSummary(item.summary)}
-//                             className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
-//                             <h2 className='font-bold my-1 text-primary'>Level: {item.experience_level}</h2>
-//                             <p>{item.summary}</p>
-//                         </div>
-//                     ))}
-//                 </div>
-//             )} */}
-//         </div>
-//     );
-// }
-
-// export default Summery;
-
-"use client"
-import { Button } from '../../../components/ui/button';
-
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import { Brain, LoaderCircle } from 'lucide-react';
-// import { toast } from 'sonner';
-import { useResumeInfo } from '../../context/ResumeInfoContext';
-import { Textarea } from '../../../components/ui/textarea';
+import { useResumeInfo } from '@/src/context/ResumeInfoContext';
+import { Textarea } from '@/components/ui/textarea';
+import { MdOutlineEditNote } from 'react-icons/md';
+import { AIChatSession } from '@/services/AIModal';
+import { toast } from 'sonner';
 
 interface SummaryProps {
-    summaryData: string | undefined; // Prop to get initial summary
+    summaryData: string | undefined;
+    closeModal: () => void;
 }
 
-function Summery({ summaryData }: SummaryProps) {
-    const { setResumeInfo } = useResumeInfo(); // Using the context to update resume info
-    const [summary, setSummary] = useState<string | undefined>(summaryData || " ");
+function SummeryForm({ summaryData, closeModal }: SummaryProps) {
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
+    const [summary, setSummary] = useState<string | undefined>(summaryData || "");
     const [loading, setLoading] = useState(false);
-    const [aiGeneratedSummaryList, setAiGenerateSummaryList] = useState<{ summary: string; experience_level: string }[] | undefined>();
+    const [isTyping, setIsTyping] = useState(false);
 
-    const prompt = "Job Title: {jobTitle}, Depends on job title give me list of summary for 3 experience levels: Senior, Mid Level, and Fresher. Provide 3-4 lines in array format with summary and experience_level fields in JSON Format";
+    const example2 = `Professional finance client executive with over 15 years of experience in business development, relationship management, and portfolio and investment analysis. Skilled at educating clients and strategic partners on matters of portfolio optimization, securing and managing new business opportunities, and negotiating strategic partnerships. Excellent consultative approach with clients and stakeholders, and experience managing small teams, delivering quarterly earnings presentations, and collaborating cross-region with global finance organization.`
+    const example1 = `Enterprise account executive with a strong background in hardware infrastructure, server/storage virtualization, and emerging cloud technologies. Typically manage quotas in excess of $10MM annually, with a history of exceeding sales targets, leading acquisition efforts, and creating innovative selling approaches in conjunction with in-house marketing as well as extensive partner networks. Experience managing small inside teams including inside sales representatives, customer success agents, and implementation teams. Strong hunter mentality with a relentless drive for setting and exceeding personal goals fore excellence.`
+    const example = `Technical project manager with over seven years of experience managing both agile and waterfall projects for large technology organizations. Key strengths include budget management, contract and vendor relations, client-facing communications, stakeholder awareness, and cross-functional team management. Excellent leadership, organization, and communication skills, with special experience bridging large teams and providing process in the face of ambiguity.`
+    const prompt = `Take this examples of resume summary as reference ${JSON.stringify([example, example1, example2])}  , create a summary from the given experiences : ${JSON.stringify(resumeInfo.experience)} , projects : ${JSON.stringify(resumeInfo.projects)},with no exaggerated words or sentences, containing only main key words from experiences and projects which reflects on impact of the summary in max 100 words   nothing else like proven this , developed this , proficient in this , known for this  and the start of the summary should start with  ${resumeInfo.jobTitle} following with the comibined  duration of the expeirence in years  give response in text only like "your-response" nothing else `;
 
-    // Sync the initial summaryData from props
-    useEffect(() => {
-        if (summaryData) {
-            setSummary(summaryData);
-        }
-    }, [summaryData]);
 
-    // Update resume info when the summary changes
-    useEffect(() => {
-        setResumeInfo((prev) => ({
-            ...prev,
-            summary: summary === "" ? "" : summary,
-        }));
-    }, [summary, setResumeInfo]);
-
-    const GenerateSummaryFromAI = async () => {
-        setLoading(true);
-        // This prompt can be updated as per the provided job title
-        const PROMPT = prompt.replace('{jobTitle}', 'Developer'); // Replace 'Developer' with actual job title if required
-        console.log(PROMPT);
-
-        // Uncomment this to fetch AI-generated summaries
-        // const result = await AIChatSession.sendMessage(PROMPT);
-        // const aiGeneratedSummaries = JSON.parse(result.response.text());
-        // setAiGenerateSummaryList(aiGeneratedSummaries);
-        setLoading(false);
+    const typeWriterEffect = (text: string, delay = 20) => {
+        let index = -1;
+        setSummary("");
+        setIsTyping(true);
+        const interval = setInterval(() => {
+            if (index < text.length) {
+                setSummary((prev) => (prev ? prev + text.charAt(index) : text.charAt(index)));
+                index++;
+            } else {
+                clearInterval(interval);
+                setIsTyping(false);
+            }
+        }, delay);
     };
 
-    const onSave = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setLoading(true);
-        const data = {
-            data: {
-                summary: summary,
-            },
-        };
+    const GenerateSummaryFromAI = async () => {
+        try {
+            setLoading(true);
+            const result = await AIChatSession.sendMessage(prompt);
+            const response = result.response.text().replaceAll('"', '').replace(/.*summary:/, '') // Remove everything up to and including 'summary:'
+                .replace(/[\{\}]/g, '')
+                .trim();
+            typeWriterEffect(response);
+            setLoading(false);
+        } catch (err) {
+            console.log(err)
+            setLoading(false)
+            toast(`Error Generating In Summary Try Again`)
+        }
+    };
 
-        // Add your API call logic here to save the summary
-        // try {
-        //     const resp = await GlobalApi.UpdateResumeDetail(params?.resumeId, data);
-        //     console.log(resp);
-        //     enabledNext(true);
-        //     toast("Details updated");
-        // } catch (error) {
-        //     console.error(error);
-        //     toast("Error updating details");
-        // } finally {
-        //     setLoading(false);
-        // }
+    const onSave = async () => {
+        setResumeInfo((prev) => ({
+            ...prev,
+            summary: summary || '',
+        }));
+
+        closeModal();
     };
 
     return (
         <div>
             <div className='p-5 shadow-lg'>
-                <h2 className='font-bold text-lg'>Summary</h2>
-                <form className='mt-7' onSubmit={onSave}>
-                    <div className='flex justify-between items-end'>
-                        <label>Add Summary</label>
-                        <Button variant={'default'} type="button" size="sm" className="flex gap-2" onClick={GenerateSummaryFromAI}>
-                            <Brain className='h-4 w-4' /> Generate from AI
-                        </Button>
-                    </div>
-                    <Textarea className="mt-5 min-h-[250px]" required
-                        value={summary}
-                        onChange={(e) => setSummary(e.target.value || " ")}
-                    />
-                    <div className='mt-2 flex justify-end'>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
-                        </Button>
-                    </div>
-                </form>
+                <div className=' items-center flex  gap-3 font-semibold'>
+                    <MdOutlineEditNote className='text-2xl' /><span>Edit Summary</span>
+                </div>
+                <div className='flex justify-end items-center mt-6'>
+                    <Button variant={'default'} type="button" size="sm" className="flex gap-2" onClick={GenerateSummaryFromAI} disabled={loading || isTyping}>
+                        <Brain className='h-4 w-4' /> Generate from AI {loading && <LoaderCircle className='animate-spin' />}
+                    </Button>
+                </div>
+                <Textarea className="mt-5 text-sm min-h-[250px]" required
+                    placeholder='Write or generate a compelling summary of your career highlights and goals..'
+                    spellCheck='true'
+                    disabled={loading}
+                    value={summary}
+                    onChange={(e) => setSummary(e.target.value || "")}
+                />
+                <div className='flex justify-end gap-6 mr-1 mt-6'>
+                    <Button disabled={loading || isTyping} onClick={closeModal}>
+                        Cancel
+                    </Button>
+                    <Button className='bg-cyan-500 text-slate-950' disabled={loading || isTyping} onClick={onSave}>
+                        Save
+                    </Button>
+                </div>
             </div>
-
-            {/* Uncomment this section if you want to display AI-generated suggestions */}
-            {/* {aiGeneratedSummaryList && (
-          <div className='my-5'>
-            <h2 className='font-bold text-lg'>Suggestions</h2>
-            {aiGeneratedSummaryList.map((item, index) => (
-              <div key={index}
-                onClick={() => setSummary(item.summary)}
-                className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
-                <h2 className='font-bold my-1 text-primary'>Level: {item.experience_level}</h2>
-                <p>{item.summary}</p>
-              </div>
-            ))}
-          </div>
-        )} */}
         </div>
     );
 }
 
-export default Summery;
+export default SummeryForm;

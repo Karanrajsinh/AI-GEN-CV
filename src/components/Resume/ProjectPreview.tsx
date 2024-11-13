@@ -1,4 +1,4 @@
-import { Project } from "@/Types/ResumeTypes";
+import { Project } from "@/src/Types/ResumeTypes";
 import { format } from "date-fns";
 
 
@@ -26,7 +26,7 @@ function ProjectPreview({ resumeInfo }: ProjectPreviewProps) {
             }} />
 
             {resumeInfo?.projects?.map((project, index) => (
-                <div key={index} className='my-5'>
+                <div key={index} className={`my-5 ${project.isVisible === true ? 'block' : 'hidden'}`}>
                     <div className="flex items-center justify-between">
 
                         <p className='text-sm font-bold'

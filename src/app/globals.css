@@ -2,23 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .custom-scrollbar::-webkit-scrollbar {
-    width: 3px; /* Width of the entire scrollbar */
+    width: 5px; /* Width of the entire scrollbar */
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #00838F; /* Red color for the scrollbar thumb */
-    border-radius: 20px; /* Roundness of the scrollbar thumb */
+    border-radius: 0px; /* Roundness of the scrollbar thumb */
 }
 
-.jodit-popup__content,.jodit-ui-input__input
- {
-    z-index: 9999;
-    pointer-events: all !important;
- }
 
- .jodit-wysiwyg {
-    padding-left: 10px;
+.transition-glare {
+    transition: background-position 0.2s ease, opacity 0.2s ease;
+  }
+  
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999s;
 }
 
 ul {
@@ -34,32 +36,85 @@ td {
     border: solid 1px;
 }
 
-select.rdp-dropdown
-{
-    width: 80px;
+.jodit-ui-group{
     background-color: #0F172A;
-    border: 1px solid #00838fd2;
-    border-radius: 5px;
-    padding: 4px;
-    
+    color: white;
 }
-select.rdp-dropdown:focus
+
+
+
+
+.jodit-container
 {
-    outline: none;
-    offset: none;
+    border-color: #00838F !important;
+    border-radius: 0px !important;
 }
 
 
-select.rdp-dropdown::-webkit-scrollbar {
-    width: 3px; /* Width of the entire scrollbar */
+
+button.jodit-toolbar-button__button:hover{
+    background-color: #00838f88 !important;
 }
-select.rdp-dropdown::-webkit-scrollbar-thumb {
-    background-color: #00838F; /* Red color for the scrollbar thumb */
-    border-radius: 20px; /* Roundness of the scrollbar thumb */
+button.jodit-toolbar-button__button:focus{
+    background-color: #00838f88 !important;
+}
+.jodit-popup__content,.jodit-ui-input__input
+{
+    pointer-events: all !important;
+}
+
+.jodit-wysiwyg {
+    padding-left: 10px;
+    background-color: #0F172A;
+    color: white;
+}
+.jodit-wysiwyg::-webkit-scrollbar {
+    width: 6px; /* Width of the entire scrollbar */
+}
+.jodit-wysiwyg::-webkit-scrollbar-thumb {
+    background-color: #00838F; 
+    border-radius: 0px; /* Roundness of the scrollbar thumb */
+}
+.jodit-popup__content
+{
+    pointer-events: all !important;
+    overflow: hidden !important;
+    background-color: #0F172A !important;
+    border: 2px solid #00838F;
+    color: white !important;
+}
+
+span.jodit-toolbar-button__text
+{
+    color: white;
 }
 
 
-option:hover{
-    background-color: #00838F;
-    opacity: 0.5;
+svg.jodit-icon
+{
+    fill: white;
+}
+
+
+.jodit-toolbar-button__trigger{
+    fill: white;
+}
+
+.jodit-toolbar-button__trigger:hover{
+    background-color: #00838f88 !important;
+}
+
+.jodit-toolbar-button_ul:hover,.jodit-toolbar-button_ol:hover,.jodit-toolbar-button_left:hover
+{
+    border-color: transparent !important;
+}
+
+.jodit-toolbar-editor-collection:after,.jodit-toolbar-editor-collection:before
+{
+    background-color: #00838F !important;
+}
+
+.jodit-ui-separator
+{
+    border-color: #00838F !important;
 }

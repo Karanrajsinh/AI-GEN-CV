@@ -3,7 +3,7 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
 import { resumeData } from '../data/dummyData';
-import { ResumeInfo } from '@/Types/ResumeTypes';
+import { ResumeInfo } from '@/src/Types/ResumeTypes';
 
 // Define the context type
 type ResumeInfoContextType = {
@@ -33,3 +33,5 @@ export const useResumeInfo = () => {
     }
     return context;
 };
+
+
