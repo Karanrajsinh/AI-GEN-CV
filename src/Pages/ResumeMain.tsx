@@ -22,32 +22,22 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { GrLogout } from "react-icons/gr";
 import { RussoOne } from "../app/fonts/font";
-import supabase, { getResumeData } from "@/services/supabase";
+import supabase from "@/services/supabase";
 import { RxResume } from "react-icons/rx";
 import Link from "next/link";
 import { AiFillUpSquare } from "react-icons/ai";
 import DefualttUserImg from 'public/user.png'
 import { useResumeInfo } from "../context/ResumeInfoContext";
-import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import ResumeMainSkeleton from "../components/Skeleton/ResumeMainSekelton";
-
 
 export default function ResumeMain({ resumeData }: ResumeInfo) {
 
     const { setResumeInfo } = useResumeInfo();
 
 
-    // const { data, isLoading } = useQuery({
-    //     queryKey: ['resume', params?.id],
-    //     queryFn: () => getResumeData(params?.id),
-
-
-    // })
 
     useEffect(() => {
         if (resumeData) setResumeInfo(resumeData as never)
-    }, [])
+    },)
 
 
     const { userImg, ResetUserDetails } = useUserDetails();
