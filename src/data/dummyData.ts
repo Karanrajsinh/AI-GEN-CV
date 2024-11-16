@@ -1,6 +1,6 @@
 
 export const resumeData = {
-    resume_id: 1,
+    resume_id: '',
     fullName: 'James Carter',
     jobTitle: 'Front-End Developer',
     address: '525 N tryon Street, NC 28117',
