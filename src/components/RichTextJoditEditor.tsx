@@ -71,7 +71,6 @@ type EditorProps =
 
 
 
-// const PROMPT = 'position title: {positionTitle}, Depends on position title give me 5-7 bullet points for my experience in resume, give me result in <ul><li></li></ul> where li will be each point the response starts with html <ul> tag and ends with html </ul> enclosing tag no semilcolon ,or wrapping response in "" ';
 
 export default function RichTextJoditEditor({ setLoadingData, experienceData, projectData, contentType, defaultValue, skillPrompt, rolePrompt, setSummary, setMessagePrompt }: EditorProps) {
     const editor = useRef<Jodit>(null);
@@ -150,7 +149,7 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
         }
         catch (err) {
             console.log(err)
-            toast(`Error Occured in Generating Summary ${err}`)
+            toast(`Error Occured in Generating Summary! , Try Again`)
             setLoading(false)
             setLoadingData(false)
         }

@@ -1,8 +1,7 @@
 
 export const resumeData = {
-    id: 1,
-    firstName: 'James',
-    lastName: 'Carter',
+    resume_id: 1,
+    fullName: 'James Carter',
     jobTitle: 'Front-End Developer',
     address: '525 N tryon Street, NC 28117',
     phone: '(123)-456-7890',
@@ -18,7 +17,7 @@ export const resumeData = {
     isLanguageVisible: true,
     projects: [
         {
-            id: 1,
+            id: '1',
             isVisible: true,
             name: "E-commerce Platform",
             description: "I built a responsive e-commerce platform...",
@@ -29,7 +28,7 @@ export const resumeData = {
             rolePrompt: "Developed product browsing, cart functionality, and payment processes. Ensured fast load times and responsive design, improving user retention by 20%."
         },
         {
-            id: 2,
+            id: '2',
             isVisible: true,
             name: "Social Media Mobile App",
             description: "I developed a social media app...",
@@ -40,7 +39,7 @@ export const resumeData = {
             rolePrompt: "Led the implementation of real-time messaging and media sharing features, achieving a 99% uptime and seamless cross-platform performance."
         },
         {
-            id: 3,
+            id: '3',
             isVisible: true,
             name: "Task Management System",
             description: "This project was a task management system...",
@@ -54,7 +53,7 @@ export const resumeData = {
 
     experience: [
         {
-            id: 1,
+            id: '4',
             isVisible: true,
             title: 'Full Stack Developer Intern',
             companyName: 'Amazon',
@@ -67,7 +66,7 @@ export const resumeData = {
             rolePrompt: "Built RESTful APIs and optimized frontend performance, reducing page load times by 30% and increasing customer satisfaction scores by 15%."
         },
         {
-            id: 2,
+            id: '5',
             isVisible: true,
             title: 'Frontend Developer Intern',
             companyName: 'Google',
@@ -82,7 +81,7 @@ export const resumeData = {
     ],
     education: [
         {
-            id: 1,
+            id: '6',
             isVisible: true,
             universityName: 'Western Illinois University',
             startDate: 'Aug 2018',
@@ -91,7 +90,7 @@ export const resumeData = {
             major: 'Computer Science',
         },
         {
-            id: 2,
+            id: '7',
             isVisible: true,
             universityName: 'Western Illinois University',
             startDate: 'Aug 2018',
@@ -102,22 +101,22 @@ export const resumeData = {
     ],
     skills: [
         {
-            id: 1,
+            id: '1',
             isVisible: true,
             name: 'Angular',
         },
         {
-            id: 2,
+            id: '2',
             isVisible: true,
             name: 'React',
         },
         {
-            id: 3,
+            id: '3',
             isVisible: true,
             name: 'MySql',
         },
         {
-            id: 4,
+            id: '4',
             isVisible: true,
             name: 'React Native',
         },
@@ -130,9 +129,3 @@ export const resumeData = {
     languages: []
 }
 
-
-export const resumes =
-{
-    user_id: 1,
-    resumes_id: ['ab1', '22x']
-}

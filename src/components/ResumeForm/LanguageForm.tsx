@@ -8,6 +8,8 @@ import { MdOutlineEditNote } from "react-icons/md";
 import { useResumeInfo } from '../../context/ResumeInfoContext';
 import { Language } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 
 
 type LanguageFormProps = {
@@ -18,9 +20,8 @@ type LanguageFormProps = {
 };
 
 function LanguageForm({ actionType, languageData, index, closeModal }: LanguageFormProps) {
-    const { setResumeInfo } = useResumeInfo();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [language, setLanguage] = useState(languageData);
-    const [loading, setLoading] = useState(false);
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: language,
@@ -35,22 +36,34 @@ function LanguageForm({ actionType, languageData, index, closeModal }: LanguageF
         setLanguage((prevLanguage) => ({ ...prevLanguage, proficientLevel: value }));
     };
 
-    const onSave = () => {
-        if (actionType === 'edit') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                languages: prevResumeInfo.languages.map((lang, i) =>
-                    i === index ? { ...lang, ...language } : lang
-                ),
-            }));
-        } else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                languages: [...prevResumeInfo.languages, language],
-            }));
-        }
+    const onSave = async (data: Language) => {
 
-        closeModal();
+        const { id, ...filteredData } = data
+        try {
+
+
+            if (actionType === 'edit') {
+                await editSectionEntry('languages', id, { ...language })
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    languages: prevResumeInfo.languages.map((lang, i) =>
+                        i === index ? { ...lang, ...language } : lang
+                    ),
+                }));
+            } else if (actionType === 'add') {
+                const { id } = await addSectionEntry('languages', { ...filteredData, resume_id: resumeInfo.resume_id })
+
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    languages: [...prevResumeInfo.languages, { ...language, id: id }],
+                }));
+            }
+
+            closeModal();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     };
 
     return (
@@ -92,10 +105,10 @@ function LanguageForm({ actionType, languageData, index, closeModal }: LanguageF
                 </div>
             </div>
             <div className='flex justify-end gap-6 mr-4'>
-                <Button onClick={closeModal}>
+                <Button type='button' onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}>
+                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950'>
                     {actionType === "add" ? "Create" : "Save"}
                 </Button>
             </div>

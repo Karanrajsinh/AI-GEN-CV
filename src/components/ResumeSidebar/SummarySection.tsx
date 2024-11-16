@@ -31,7 +31,7 @@ const SummarySection = ({ setModalType, setSummary, openModal }: SummarySectionP
     return (
         resumeInfo.summary.length > 0 ? (
             <ContextMenu>
-                <ContextMenuTrigger className={`${resumeInfo.summaryVisible ? 'opacity-100' : 'opacity-60'}`}>
+                <ContextMenuTrigger className={`${resumeInfo.summaryVisible ? 'opacity-100' : 'opacity-60'} select-none`}>
                     <div id="summary" className="sm:p-5 px-3 py-4 ">
                         <h2 className={`sm:text-xl font-bold text-white ${RussoOne.className}`}>Summary</h2>
                         <div

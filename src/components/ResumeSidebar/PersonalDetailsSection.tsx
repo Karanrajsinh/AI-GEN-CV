@@ -22,8 +22,7 @@ const PersonalDetailsSection = ({ setModalType, setPersonalDetails, openModal }:
                 setModalType("personal-details");
                 setPersonalDetails(
                     {
-                        firstName: resumeInfo.firstName,
-                        lastName: resumeInfo.lastName,
+                        fullName: resumeInfo.fullName,
                         jobTitle: resumeInfo.jobTitle,
                         address: resumeInfo.address,
                         phone: resumeInfo.phone,
@@ -33,7 +32,7 @@ const PersonalDetailsSection = ({ setModalType, setPersonalDetails, openModal }:
                 openModal(); // Open dialog for specific experience
             }} className="mt-5 p-4 flex flex-col gap-2 bg-slate-900 border cursor-pointer border-cyan-800 hover:bg-cyan-600 hover:bg-opacity-30">
                 <h3 className="text-xs sm:text-sm font-semibold">
-                    {resumeInfo.firstName && resumeInfo.lastName ? `${resumeInfo.firstName} ${resumeInfo.lastName}` : 'Enter Your Personal Details Here'}
+                    {resumeInfo.fullName ? `${resumeInfo.fullName}` : 'Enter Your Personal Details Here'}
                 </h3>
                 {resumeInfo.jobTitle && <p className="text-xs">
                     {resumeInfo.jobTitle}

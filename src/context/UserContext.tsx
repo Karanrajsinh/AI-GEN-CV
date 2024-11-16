@@ -8,14 +8,15 @@ type UserContextProps =
     {
         isLoading: boolean,
         setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-        login: boolean,
-        setLogin: React.Dispatch<React.SetStateAction<boolean>>,
+        login: boolean | undefined,
+        setLogin: React.Dispatch<React.SetStateAction<boolean | undefined>>,
         email: string,
         setEmail: React.Dispatch<React.SetStateAction<string>>
         userID: string,
         setUserID: React.Dispatch<React.SetStateAction<string>>,
         name: string,
         userImg: string,
+        ResetUserDetails: () => void;
     }
 
 
@@ -24,7 +25,7 @@ const UserContext = createContext<UserContextProps | null>(null);
 
 function UserDetailsProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState<boolean | undefined>();
     const [email, setEmail] = useState("");
     const [userID, setUserID] = useState("");
     const [name, setName] = useState('')
@@ -47,8 +48,13 @@ function UserDetailsProvider({ children }: { children: ReactNode }) {
         })
     })
 
-
-
+    const ResetUserDetails = () => {
+        setEmail('')
+        setUserID('')
+        setName('')
+        setUserImg('')
+        setLogin(undefined)
+    }
 
     return (
         <UserContext.Provider
@@ -63,6 +69,7 @@ function UserDetailsProvider({ children }: { children: ReactNode }) {
                 setEmail,
                 isLoading,
                 setIsLoading,
+                ResetUserDetails
             }}
         >
             {children}

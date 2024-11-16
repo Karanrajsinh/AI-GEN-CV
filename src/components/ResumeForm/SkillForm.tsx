@@ -6,9 +6,10 @@ import { Skill } from '@/src/Types/ResumeTypes';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 
 
-// Define the type for each skill entry
 type SkillsProps =
     {
         index: number,
@@ -20,9 +21,8 @@ type SkillsProps =
 
 function SkillForm({ index, actionType, skillsData, closeModal }: SkillsProps) {
 
-    const { setResumeInfo } = useResumeInfo();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [skill, setSkill] = useState(skillsData)
-    const [loading, setLoading] = useState(false);
 
     const [editedFields, setEditedFields] = useState<{ [key: string]: string }>({});
 
@@ -41,31 +41,39 @@ function SkillForm({ index, actionType, skillsData, closeModal }: SkillsProps) {
         }));
     };
 
-    const onSave = () => {
+    const onSave = async (data: Skill) => {
+        try {
+            const { id, ...filteredData } = data
 
-        if (actionType === 'edit')  // Update resumeInfo with only the changed fields
-        {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                skills: prevResumeInfo.skills.map((exp, i) =>
-                    i === index ? { ...exp, ...editedFields } : exp
-                ),
-            }));
-        }
-
-        else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) =>
-            (
-                {
+            if (actionType === 'edit')  // Update resumeInfo with only the changed fields
+            {
+                await editSectionEntry('skills', id, { ...filteredData })
+                setResumeInfo((prevResumeInfo) => ({
                     ...prevResumeInfo,
-                    skills: [...prevResumeInfo.skills, skill]
-                }
-            ))
-        }
+                    skills: prevResumeInfo.skills.map((exp, i) =>
+                        i === index ? { ...exp, ...editedFields } : exp
+                    ),
+                }));
+            }
 
-        // Reset the editedFields after saving
-        setEditedFields({});
-        closeModal();
+            else if (actionType === 'add') {
+                const { id } = await addSectionEntry("skills", { ...filteredData, resume_id: resumeInfo.resume_id })
+                setResumeInfo((prevResumeInfo) =>
+                (
+                    {
+                        ...prevResumeInfo,
+                        skills: [...prevResumeInfo.skills, { ...skill, id: id }]
+                    }
+                ))
+            }
+
+            // Reset the editedFields after saving
+            setEditedFields({});
+            closeModal();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     };
 
     return (
@@ -91,10 +99,10 @@ function SkillForm({ index, actionType, skillsData, closeModal }: SkillsProps) {
             </div>
 
             <div className='flex justify-end gap-6 mr-1 mt-6'>
-                <Button disabled={loading} onClick={closeModal}>
+                <Button type='button' onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}>
+                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950'>
                     {actionType === "add" ? "Create" : "Save"}
                 </Button>
             </div>

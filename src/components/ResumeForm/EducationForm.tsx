@@ -8,6 +8,8 @@ import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { SampleDatePicker } from '../CustomDatePicker';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 
 
 
@@ -19,8 +21,7 @@ interface EducationFormProps {
 }
 
 function EducationForm({ actionType, educationData, index, closeModal }: EducationFormProps) {
-    const { setResumeInfo } = useResumeInfo();
-    const [loading, setLoading] = useState(false);
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [education, setEducation] = useState<Education>(educationData);
     const [startDate, setStartDate] = useState<Date | string>(education.startDate);
     const [endDate, setEndDate] = useState<Date | string>(education.endDate);
@@ -48,31 +49,38 @@ function EducationForm({ actionType, educationData, index, closeModal }: Educati
         }));
     };
 
-    const onSave = () => {
-
-        if (actionType === 'edit')  // Update resumeInfo with only the changed fields
-        {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                education: prevResumeInfo.education.map((exp, i) =>
-                    i === index ? { ...exp, ...editedFields, startDate: startDate, endDate: endDate } : exp
-                ),
-            }));
-        }
-
-        else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) =>
-            (
-                {
+    const onSave = async (data: Education) => {
+        try {
+            const { id, ...filteredData } = data
+            if (actionType === 'edit')  // Update resumeInfo with only the changed fields
+            {
+                await editSectionEntry('educations', id, { ...filteredData, startDate: startDate, endDate: endDate })
+                setResumeInfo((prevResumeInfo) => ({
                     ...prevResumeInfo,
-                    education: [...prevResumeInfo.education, education]
-                }
-            ))
-        }
+                    education: prevResumeInfo.education.map((exp, i) =>
+                        i === index ? { ...exp, ...editedFields, startDate: startDate, endDate: endDate } : exp
+                    ),
+                }));
+            }
 
-        // Reset the editedFields after saving
-        setEditedFields({});
-        closeModal();
+            else if (actionType === 'add') {
+                const { id } = await addSectionEntry("educations", { ...filteredData, resume_id: resumeInfo.resume_id, startDate: startDate, endDate: endDate })
+                setResumeInfo((prevResumeInfo) =>
+                (
+                    {
+                        ...prevResumeInfo,
+                        education: [...prevResumeInfo.education, { ...education, id: id, startDate: startDate, endDate: endDate }]
+                    }
+                ))
+            }
+
+            // Reset the editedFields after saving
+            setEditedFields({});
+            closeModal();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     };
 
 
@@ -145,10 +153,10 @@ function EducationForm({ actionType, educationData, index, closeModal }: Educati
                 </div>
             </div>
             <div className='flex justify-end gap-6 mr-1 mt-6'>
-                <Button disabled={loading} onClick={closeModal}>
+                <Button type='button' onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button type='submit' className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80  text-slate-950' disabled={loading} >
+                <Button type='submit' className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80  text-slate-950'  >
                     {actionType === "add" ? "Create" : "Save"}
                 </Button>
             </div>

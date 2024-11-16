@@ -16,6 +16,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { GrPowerReset } from "react-icons/gr";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
+import { toast } from "sonner";
 
 type ExperienceSectionProps =
     {
@@ -40,20 +42,37 @@ const ExperienceSection = ({ setActionType, setIndex, setExperience, setModalTyp
     };
 
 
-    const deleteExperience = (index: number) => {
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            experience: prevResumeInfo.experience.filter((_, i) => i !== index),
-        }));
+
+    const deleteExperience = async (id: string) => {
+
+        try {
+            await deleteSectionEntry('experiences', id)
+
+            setResumeInfo((prevResumeInfo) => ({
+                ...prevResumeInfo,
+                experience: prevResumeInfo.experience.filter((exp) => exp.id !== id),
+            }));
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     }
 
-    const resetExperienceSection = () => {
-        setResumeInfo((prevResumeInfo) => (
-            {
-                ...prevResumeInfo,
-                experience: []
-            }
-        ))
+    const resetExperienceSection = async () => {
+
+        try {
+            await deleteSection('experiences', resumeInfo.resume_id)
+
+            setResumeInfo((prevResumeInfo) => (
+                {
+                    ...prevResumeInfo,
+                    experience: []
+                }
+            ))
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     }
 
     return (
@@ -61,11 +80,14 @@ const ExperienceSection = ({ setActionType, setIndex, setExperience, setModalTyp
             <h2 className=" sm:text-xl flex items-center justify-between font-bold text-white">
                 <span className={RussoOne.className}>Experience</span>
                 <Popover>
-                    <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
+                    <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20  p-2">
                         <GiHamburgerMenu className=" cursor-pointer text-xl  " />
                     </PopoverTrigger>
-                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => toggleIsSectionVisible('Experience', setResumeInfo)} >{resumeInfo.isExperienceVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isExperienceVisible ? "Visible" : "Hidden"}</span> </Button>
+                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => {
+                            toggleIsSectionVisible('Experience', setResumeInfo)
+                            editResume(resumeInfo.resume_id, { isExperienceVisible: !resumeInfo.isExperienceVisible })
+                        }} >{resumeInfo.isExperienceVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isExperienceVisible ? "Visible" : "Hidden"}</span> </Button>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-4  gap-3 hover:bg-cyan-900 hover:bg-opacity-40"><GrPowerReset className="text-cyan-400" /><span className="font-normal">Reset</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -86,8 +108,8 @@ const ExperienceSection = ({ setActionType, setIndex, setExperience, setModalTyp
                 </Popover>
             </h2>
             {resumeInfo.experience.map((exp: Experience, index: number) => (
-                <ContextMenu key={index} >
-                    <ContextMenuTrigger className={`${(exp.isVisible && resumeInfo.isExperienceVisible) ? 'opacity-100' : "opacity-60"}`}>
+                <ContextMenu key={exp.id} >
+                    <ContextMenuTrigger className={`${(exp.isVisible && resumeInfo.isExperienceVisible) ? 'opacity-100' : "opacity-60"} `}>
                         <div
                             key={index}
                             onClick={() => {
@@ -111,7 +133,11 @@ const ExperienceSection = ({ setActionType, setIndex, setExperience, setModalTyp
                             setExperience(exp);
                             openModal();
                         }}> <FaCopy /><span>Duplicate</span></ContextMenuItem>
-                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => toggleIsVisible('experience', index, setResumeInfo)} ><TiTick className={`text-lg ${exp.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
+                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => {
+                            toggleIsVisible('experience', index, setResumeInfo)
+                            editSectionEntry('experiences', exp.id, { isVisible: !exp.isVisible })
+
+                        }} ><TiTick className={`text-lg ${exp.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40"><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -123,7 +149,7 @@ const ExperienceSection = ({ setActionType, setIndex, setExperience, setModalTyp
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="flex gap-3 mt-3">
                                     <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteExperience(index)}>Continue</AlertDialogAction>
+                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteExperience(exp.id)}>Delete</AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

@@ -2,8 +2,7 @@
 
 export const personalDetailsDefault =
 {
-    firstName: "",
-    lastName: "",
+    fullName: "",
     jobTitle: "",
     address: "",
     phone: "",
@@ -13,7 +12,7 @@ export const personalDetailsDefault =
 
 
 export const experienceDefault = {
-    id: 0,
+    id: "",
     isVisible: true,
     title: '',
     companyName: '',
@@ -28,7 +27,7 @@ export const experienceDefault = {
 
 // Default Project Object
 export const projectDefault = {
-    id: 0,
+    id: "",
     isVisible: true,
     name: '',
     description: '',
@@ -41,7 +40,7 @@ export const projectDefault = {
 
 // Default Education Object
 export const educationDefault = {
-    id: 0,
+    id: "",
     isVisible: true,
     universityName: '',
     startDate: new Date().toISOString(),
@@ -52,14 +51,14 @@ export const educationDefault = {
 
 // Default Skill Object
 export const skillDefault = {
-    id: 0,
+    id: "",
     isVisible: true,
     name: ''
 };
 
 export const certificateDefault =
 {
-    id: 0,
+    id: "",
     name: '',
     issuer: '',
     issueDate: new Date().toISOString(),
@@ -74,4 +73,11 @@ export const languageDefault = {
     name: "",
     proficientLevel: "None",
 };
+
+
+export const resumeDefault =
+{
+    name: '',
+    resumeDefault: false
+}
 

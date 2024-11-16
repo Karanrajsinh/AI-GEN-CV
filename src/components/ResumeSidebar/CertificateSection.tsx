@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { GrPowerReset } from "react-icons/gr";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
 
 type CertificateSectionProps = {
     setActionType: React.Dispatch<React.SetStateAction<'add' | 'edit'>>;
@@ -36,15 +37,19 @@ const CertificateSection = ({ setActionType, setIndex, setCertificate, setModalT
         setModalType('certificate');
         openModal();
     };
+    const deleteCertificate = async (id: string) => {
 
-    const deleteCertificate = (index: number) => {
+        deleteSectionEntry('certificates', id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
-            certificates: prevResumeInfo.certificates.filter((_, i) => i !== index),
+            certificates: prevResumeInfo.certificates.filter((cert) => cert.id !== id),
         }));
-    };
-
+    }
     const resetCertificateSection = () => {
+
+        deleteSection('certificates', resumeInfo.resume_id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
             certificates: []
@@ -60,8 +65,13 @@ const CertificateSection = ({ setActionType, setIndex, setCertificate, setModalT
                         <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
                             <GiHamburgerMenu className="cursor-pointer text-xl" />
                         </PopoverTrigger>
-                        <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                            <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400" onClick={() => toggleIsSectionVisible('Certificate', setResumeInfo)}>
+                        <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                            <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400" onClick={
+                                () => {
+                                    toggleIsSectionVisible('Certificate', setResumeInfo)
+                                    editResume(resumeInfo.resume_id, { isCertificateVisible: !resumeInfo.isCertificateVisible })
+                                }
+                            }>
                                 {resumeInfo.isCertificateVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isCertificateVisible ? "Visible" : "Hidden"}</span>
                             </Button>
                             <AlertDialog>
@@ -85,8 +95,8 @@ const CertificateSection = ({ setActionType, setIndex, setCertificate, setModalT
                     </Popover>
                 </h2>
                 {resumeInfo.certificates.map((cert: Certificate, index: number) => (
-                    <ContextMenu key={index}>
-                        <ContextMenuTrigger className={`${(cert.isVisible && resumeInfo.isCertificateVisible) ? 'opacity-100' : "opacity-60"}`}>
+                    <ContextMenu key={cert.id}>
+                        <ContextMenuTrigger className={`${(cert.isVisible && resumeInfo.isCertificateVisible) ? 'opacity-100' : "opacity-60"} select-none`}>
                             <div
                                 key={index}
                                 onClick={() => {
@@ -112,7 +122,12 @@ const CertificateSection = ({ setActionType, setIndex, setCertificate, setModalT
                             }}>
                                 <FaCopy /><span>Duplicate</span>
                             </ContextMenuItem>
-                            <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => toggleIsVisible('certificates', index, setResumeInfo)}>
+                            <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={
+                                () => {
+                                    toggleIsVisible('certificates', index, setResumeInfo)
+                                    editSectionEntry('certificates', cert.id, { isVisible: !cert.isVisible })
+                                }
+                            }>
                                 <TiTick className={`text-lg ${cert.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span>
                             </ContextMenuItem>
                             <AlertDialog >
@@ -126,7 +141,7 @@ const CertificateSection = ({ setActionType, setIndex, setCertificate, setModalT
                                     </AlertDialogHeader>
                                     <AlertDialogFooter className="flex gap-3 mt-3">
                                         <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                        <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteCertificate(index)}>Delete</AlertDialogAction>
+                                        <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteCertificate(cert.id)}>Delete</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

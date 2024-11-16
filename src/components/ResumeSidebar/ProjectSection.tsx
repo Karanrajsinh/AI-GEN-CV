@@ -13,6 +13,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { GrPowerReset } from "react-icons/gr";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
+import { toast } from "sonner";
 
 
 type ProjectSectionProps =
@@ -36,14 +38,24 @@ const ProjectSection = ({ setActionType, setIndex, setProject, setModalType, ope
         openModal();
     };
 
-    const deleteProject = (index: number) => {
-        setResumeInfo((prevResumeInfo) => ({
-            ...prevResumeInfo,
-            projects: prevResumeInfo.projects.filter((_, i) => i !== index),
-        }));
+    const deleteProject = async (id: string) => {
+        try {
+            await deleteSectionEntry('projects', id)
+            setResumeInfo((prevResumeInfo) => ({
+                ...prevResumeInfo,
+                projects: prevResumeInfo.projects.filter((proj) => proj.id !== id),
+            }));
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        catch (error: any) {
+            toast(`${error.message}`)
+        }
     }
 
     const resetProjectSection = () => {
+
+        deleteSection('projects', resumeInfo.resume_id)
+
         setResumeInfo((prevResumeInfo) => (
             {
                 ...prevResumeInfo,
@@ -61,8 +73,11 @@ const ProjectSection = ({ setActionType, setIndex, setProject, setModalType, ope
                     <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
                         <GiHamburgerMenu className=" cursor-pointer text-xl  " />
                     </PopoverTrigger>
-                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => toggleIsSectionVisible('Project', setResumeInfo)} >{resumeInfo.isProjectVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isProjectVisible ? "Visible" : "Hidden"}</span> </Button>
+                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => {
+                            toggleIsSectionVisible('Project', setResumeInfo);
+                            editResume(resumeInfo.resume_id, { isProjectVisible: !resumeInfo.isProjectVisible })
+                        }} >{resumeInfo.isProjectVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isProjectVisible ? "Visible" : "Hidden"}</span> </Button>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-4  gap-3 hover:bg-cyan-900 hover:bg-opacity-40"><GrPowerReset className="text-cyan-400" /><span className="font-normal">Reset</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -84,8 +99,8 @@ const ProjectSection = ({ setActionType, setIndex, setProject, setModalType, ope
             </h2>
             {resumeInfo.projects.map((proj: Project, index: number) => (
 
-                <ContextMenu key={index} >
-                    <ContextMenuTrigger className={`${(proj.isVisible && resumeInfo.isProjectVisible) ? 'opacity-100' : "opacity-60"}`}>
+                <ContextMenu key={proj.id} >
+                    <ContextMenuTrigger className={`${(proj.isVisible && resumeInfo.isProjectVisible) ? 'opacity-100' : "opacity-60"} select-none`}>
                         <div
                             key={index}
                             onClick={() => {
@@ -109,8 +124,11 @@ const ProjectSection = ({ setActionType, setIndex, setProject, setModalType, ope
                             setProject(proj)
                             openModal(); // Open dialog for specific experience
                         }}> <FaCopy /><span>Duplicate</span></ContextMenuItem>
-                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => toggleIsVisible('projects', index, setResumeInfo)} ><TiTick className={`text-lg ${proj.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
-                        <AlertDialog >
+                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => {
+                            toggleIsVisible('projects', index, setResumeInfo);
+                            editSectionEntry('projects', proj.id, { isVisible: !proj.isVisible })
+                        }} ><TiTick className={`text-lg ${proj.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
+                        <AlertDialog  >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40"><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
                                 <AlertDialogHeader>
@@ -121,7 +139,7 @@ const ProjectSection = ({ setActionType, setIndex, setProject, setModalType, ope
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="flex gap-3 mt-3">
                                     <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteProject(index)}>Delete</AlertDialogAction>
+                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteProject(proj.id)}>Delete</AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

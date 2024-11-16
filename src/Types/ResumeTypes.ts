@@ -2,8 +2,7 @@
 
 export type PersonalDetails =
     {
-        firstName: string,
-        lastName: string,
+        fullName: string,
         jobTitle: string,
         address: string,
         phone: string,
@@ -11,7 +10,7 @@ export type PersonalDetails =
     }
 
 export type Experience = {
-    id: number;
+    id: string;
     isVisible: boolean,
     title: string;
     companyName: string;
@@ -26,7 +25,7 @@ export type Experience = {
 
 
 export type Project = {
-    id: number;
+    id: string;
     isVisible: boolean,
     name: string;
     skillPrompt: string,
@@ -39,7 +38,7 @@ export type Project = {
 
 
 export type Education = {
-    id: number;
+    id: string;
     isVisible: boolean,
     universityName: string;
     degree: string;
@@ -49,14 +48,14 @@ export type Education = {
 };
 
 export type Skill = {
-    id: number,
+    id: string,
     isVisible: boolean,
     name: string
 };
 
 
 export type Certificate = {
-    id: number,
+    id: string,
     isVisible: boolean,
     name: string;
     issuer: string;
@@ -72,10 +71,9 @@ export type Language = {
 };
 
 export type ResumeInfo = {
-    id: number,
+    resume_id: string,
     themeColor: string;
-    firstName: string;
-    lastName: string;
+    fullName: string;
     jobTitle: string;
     address: string;
     phone: string;
@@ -103,13 +101,6 @@ export type ResumeInfo = {
 
 export type Resume =
     {
-        id: number;
-        name: string
-    }
-
-
-
-export type ResumeList =
-    {
-        resumes: Resume[]
+        resume_name: string,
+        resume_id: string
     }

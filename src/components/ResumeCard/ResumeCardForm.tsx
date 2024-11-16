@@ -1,29 +1,36 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useResumeInfo } from "@/src/context/ResumeInfoContext";
+import { addResume } from "@/services/supabase";
+import { useUserDetails } from "@/src/context/UserContext";
+import { resumeDefault } from "@/src/data/initialData";
+import { Resume } from "@/src/Types/ResumeTypes";
 import { useForm } from "react-hook-form";
 import { IoAddSharp } from "react-icons/io5";
 
 
 type ResumeCardFormProps =
     {
-        closeDialog: () => void
+        closeDialog: () => void;
+        setResumes: React.Dispatch<React.SetStateAction<Resume[]>>
     }
 
-function ResumeCardForm({ closeDialog }: ResumeCardFormProps) {
-    const { setResumeInfo } = useResumeInfo();
+function ResumeCardForm({ closeDialog, setResumes }: ResumeCardFormProps) {
 
+
+    const { name, email } = useUserDetails();
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {},
+        defaultValues: resumeDefault
     });
 
 
 
 
-    const onSave = () => {
+    const onSave = async (data: { name: string }) => {
+        const resume = await addResume(data.name, name, email)
+        setResumes((prevResumes) => [...prevResumes, resume])
 
-
+        closeDialog();
     };
 
     return (
@@ -34,7 +41,13 @@ function ResumeCardForm({ closeDialog }: ResumeCardFormProps) {
                     <label className='text-sm mb-2'>Name </label>
                     <Input
                         className='mt-2'
+                        {...register("name", {
+                            required: "Field Cannot Be Empty",
+                        })}
                     />
+                    {errors.name && (
+                        <p className="text-cyan-500 text-xs mt-1">{errors.name.message}</p>
+                    )}
                 </div>
             </div>
 
@@ -43,7 +56,7 @@ function ResumeCardForm({ closeDialog }: ResumeCardFormProps) {
                     Cancel
                 </Button>
                 <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' >
-
+                    Create
                 </Button>
             </div>
         </form >

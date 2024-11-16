@@ -2,10 +2,23 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { FiPlus } from "react-icons/fi"
 import ResumeCardForm from "./ResumeCardForm"
 import { useState } from "react";
+import { useUserDetails } from "@/src/context/UserContext";
+import { useResumeInfo } from "@/src/context/ResumeInfoContext";
+import { Resume } from "@/src/Types/ResumeTypes";
 
-function AddResumeCard() {
+type Props = {
+    setResumes: React.Dispatch<React.SetStateAction<Resume[]>>
+}
+
+function AddResumeCard({ setResumes }: Props) {
 
     const [open, setOpen] = useState(false);
+    const { resumeInfo } = useResumeInfo();
+    const { userID } = useUserDetails()
+
+
+
+
 
     const openDialog = () => {
         setOpen(true)
@@ -21,7 +34,7 @@ function AddResumeCard() {
                 <p className="text-left text-sm xl:text-base">Add Resume</p>
             </DialogTrigger>
             <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} style={{ borderRadius: "0px" }} className="bg-slate-900 border w-[95vw] min-h-fit sm:h-fit  md:min-w-max  text-white border-cyan-800 m-0 p-0 modal">
-                <ResumeCardForm closeDialog={closeDialog} />
+                <ResumeCardForm setResumes={setResumes} closeDialog={closeDialog} />
             </DialogContent>
         </Dialog>
     )

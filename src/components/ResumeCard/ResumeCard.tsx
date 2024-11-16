@@ -1,5 +1,6 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu"
+import { Resume } from "@/src/Types/ResumeTypes"
 
 import Link from "next/link"
 import { FaCopy } from "react-icons/fa"
@@ -9,17 +10,19 @@ import { MdEdit } from "react-icons/md"
 
 type ResuemCardProps =
     {
-        id: number,
-        name: string
+        id: string,
+        index: number
+        name: string,
+        setResumes: React.Dispatch<React.SetStateAction<Resume[]>>
     }
 
 function ResumeCard({ id, name }: ResuemCardProps) {
     return (
         <ContextMenu>
             <ContextMenuTrigger >
-                <div className=" cursor-pointer w-[250px] xl:w-[300px] min-h-[300px] xl:min-h-[400px] md:min-h-[300px]  active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900 border hover:bg-slate-800 border-cyan-700">
+                <Link href={`/dashboard/resume/${id}`} className=" cursor-pointer w-[250px] xl:w-[300px] min-h-[300px] xl:min-h-[400px] md:min-h-[300px]  active:scale-95 transition-all duration-150 ease-in-out transform  flex flex-col text-cyan-300 items-start p-4 justify-end bg-slate-900 border hover:bg-slate-800 border-cyan-700">
                     <p className="text-sm xl:text-base text-left ">{name}</p>
-                </div>
+                </Link>
             </ContextMenuTrigger>
             <ContextMenuContent className="bg-slate-950 rounded-none  border-gray-600 text-white ">
                 <ContextMenuItem className="text-white flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" > <FaCopy /><span>Duplicate</span></ContextMenuItem>

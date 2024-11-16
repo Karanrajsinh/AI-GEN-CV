@@ -16,6 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { GrPowerReset } from "react-icons/gr";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSection, deleteSectionEntry, editResume } from "@/services/supabase";
 
 type LanguageSectionProps = {
     setActionType: React.Dispatch<React.SetStateAction<'add' | 'edit'>>;
@@ -37,14 +38,20 @@ const LanguageSection = ({ setActionType, setIndex, setLanguage, setModalType, o
         openModal();
     };
 
-    const deleteLanguage = (index: number) => {
+    const deleteLanguage = async (id: string) => {
+
+        deleteSectionEntry('languages', id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
-            languages: prevResumeInfo.languages.filter((_, i) => i !== index),
+            languages: prevResumeInfo.languages.filter((lang) => lang.id !== id),
         }));
-    };
+    }
 
     const resetLanguageSection = () => {
+
+        deleteSection('languages', resumeInfo.resume_id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
             languages: []
@@ -61,7 +68,10 @@ const LanguageSection = ({ setActionType, setIndex, setLanguage, setModalType, o
                             <GiHamburgerMenu className="cursor-pointer text-xl" />
                         </PopoverTrigger>
                         <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                            <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400" onClick={() => toggleIsSectionVisible('Language', setResumeInfo)}>
+                            <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400" onClick={() => {
+                                toggleIsSectionVisible('Language', setResumeInfo)
+                                editResume(resumeInfo.resume_id, { isLanguageVisible: !resumeInfo.isLanguageVisible })
+                            }}>
                                 {resumeInfo.isLanguageVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isLanguageVisible ? "Visible" : "Hidden"}</span>
                             </Button>
                             <AlertDialog>
@@ -85,8 +95,8 @@ const LanguageSection = ({ setActionType, setIndex, setLanguage, setModalType, o
                     </Popover>
                 </h2>
                 {resumeInfo.languages.map((lang: Language, index: number) => (
-                    <ContextMenu key={index}>
-                        <ContextMenuTrigger className={`${(lang.isVisible && resumeInfo.isLanguageVisible) ? 'opacity-100' : "opacity-60"}`}>
+                    <ContextMenu key={lang.id}>
+                        <ContextMenuTrigger className={`${(lang.isVisible && resumeInfo.isLanguageVisible) ? 'opacity-100' : "opacity-60"} select-none`}>
                             <div
                                 key={index}
                                 onClick={() => {
@@ -128,7 +138,7 @@ const LanguageSection = ({ setActionType, setIndex, setLanguage, setModalType, o
                                     </AlertDialogHeader>
                                     <AlertDialogFooter className="flex gap-3 mt-3">
                                         <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                        <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteLanguage(index)}>Delete</AlertDialogAction>
+                                        <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteLanguage(lang.id)}>Delete</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

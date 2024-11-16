@@ -1,11 +1,11 @@
 "use client";
-import { Certificate, Education, Experience, Language, PersonalDetails, Project, Skill } from "@/src/Types/ResumeTypes";
-import { useState } from "react";
+import { Certificate, Education, Experience, Language, PersonalDetails, Project, ResumeInfo, Skill } from "@/src/Types/ResumeTypes";
+import { useEffect, useState } from "react";
 import ResumePreview from "@/src/components/ResumePreview";
 import { Dialog, DialogContent } from "../../components/ui/dialog";
 import EducationForm from "@/src/components/ResumeForm/EducationForm";
 import ProjectForm from "@/src/components/ResumeForm/ProjectForm";
-import { Sheet, SheetContent, SheetOverlay } from "../../components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "../../components/ui/sheet";
 import ExperienceForm from "@/src/components/ResumeForm/ExperienceForm";
 import SummeryForm from "@/src/components/ResumeForm/SummaryForm";
 import SkillForm from "@/src/components/ResumeForm/SkillForm";
@@ -22,18 +22,38 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { GrLogout } from "react-icons/gr";
 import { RussoOne } from "../app/fonts/font";
-import supabase from "@/services/supabase";
+import supabase, { getResumeData } from "@/services/supabase";
 import { RxResume } from "react-icons/rx";
 import Link from "next/link";
 import { AiFillUpSquare } from "react-icons/ai";
 import DefualttUserImg from 'public/user.png'
+import { useResumeInfo } from "../context/ResumeInfoContext";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import ResumeMainSkeleton from "../components/Skeleton/ResumeMainSekelton";
 
-export default function ResumeMain() {
-    const { userImg } = useUserDetails();
+
+export default function ResumeMain({ resumeData }: ResumeInfo) {
+
+    const { setResumeInfo } = useResumeInfo();
+
+
+    // const { data, isLoading } = useQuery({
+    //     queryKey: ['resume', params?.id],
+    //     queryFn: () => getResumeData(params?.id),
+
+
+    // })
+
+    useEffect(() => {
+        if (resumeData) setResumeInfo(resumeData as never)
+    }, [])
+
+
+    const { userImg, ResetUserDetails } = useUserDetails();
     const [isOpen, setIsOpen] = useState(false)
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
-    const [openSidebar, setOpenSidebar] = useState(false);
     const [modalType, setModalType] = useState('');
     const [actionType, setActionType] = useState<'add' | 'edit'>('edit');
     const [index, setIndex] = useState<number>(0);
@@ -50,25 +70,26 @@ export default function ResumeMain() {
         <>
             <div className="bg-slate-950 flex flex-col xl:hidden justify-start min-w-screen h-screen bg-grid-cyan-800/[0.2]">
                 <div className=" px-6 py-4 mt-3 flex items-center justify-between ">
-                    <GoSidebarCollapse className="text-cyan-500  text-3xl my-auto" onClick={() => setOpenSidebar(true)} />
+                    <Sheet >
+                        <SheetTrigger className="text-cyan-500  text-3xl my-auto" > <GoSidebarCollapse /></SheetTrigger>
+                        <SheetContent onOpenAutoFocus={(e) => e.preventDefault()} side={"left"} className="xl:hidden flex flex-col p-0 gap-12 overflow-y-scroll border-r border-r-cyan-800 bg-slate-950 text-white custom-scrollbar modal">
+                            <Sidebar setActionType={setActionType} openModal={openModal} setModalType={setModalType} setIndex={setIndex} setPersonalDetails={setPersonalDetails} setSummary={setSummary} setExperience={setExperience} setProject={setProject} setEducation={setEducation} setSkill={setSkill} setCertificate={setCertificate} setLanguage={setLanguage} />
+                        </SheetContent>
+                    </Sheet>
                     <Popover>
                         <PopoverTrigger>
-                            <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={DefualttUserImg} width={35} height={30} />
+                            <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={userImg ? userImg : DefualttUserImg} width={35} height={30} />
                         </PopoverTrigger>
                         <PopoverContent className="bg-slate-95 w-28 mr-5 z-50 border mt-2 rounded-none  border-gray-600 text-white p-0">
                             <Button onClick={() => {
                                 supabase.auth.signOut();
+                                ResetUserDetails();
                             }
                             } className="flex w-full items-center hover:bg-slate-950 bg-slate-950 border-none justify-center gap-3"><span className={RussoOne.className}>Log Out</span><GrLogout className="text-cyan-400" /></Button>
                         </PopoverContent>
                     </Popover>
                 </div>
-                <Sheet open={openSidebar}>
-                    <SheetOverlay onClick={() => setOpenSidebar(false)} />
-                    <SheetContent onOpenAutoFocus={(e) => e.preventDefault()} side={"left"} className="xl:hidden flex flex-col p-0 gap-12 overflow-y-scroll border-r border-r-cyan-800 bg-slate-950 text-white custom-scrollbar modal">
-                        <Sidebar setActionType={setActionType} openModal={openModal} setModalType={setModalType} setIndex={setIndex} setPersonalDetails={setPersonalDetails} setSummary={setSummary} setExperience={setExperience} setProject={setProject} setEducation={setEducation} setSkill={setSkill} setCertificate={setCertificate} setLanguage={setLanguage} />
-                    </SheetContent>
-                </Sheet>
+
                 <ResumePreview />
             </div>
             <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 hidden xl:flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
@@ -80,7 +101,7 @@ export default function ResumeMain() {
                             <Link className="hover:bg-cyan-800 hover:bg-opacity-30 p-2" href={'/'}>
                                 <RxResume className="text-2xl text-cyan-200" />
                             </Link>
-                            <Link className="hover:bg-cyan-800 hover:bg-opacity-30 p-2 mb-4" href={'/resumes'}>
+                            <Link className="hover:bg-cyan-800 hover:bg-opacity-30 p-2 mb-4" href={'/dashboard'}>
                                 <AiFillUpSquare className="text-2xl text-cyan-600" />
                             </Link>
                         </div>
@@ -92,6 +113,7 @@ export default function ResumeMain() {
                             <PopoverContent className="bg-slate-950 w-30 ml-5 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
                                 <Button onClick={() => {
                                     supabase.auth.signOut();
+                                    ResetUserDetails();
                                 }
                                 } className="flex w-full bg-slate-950 border-none justify-start gap-3"><span className={RussoOne.className}>Log Out</span><GrLogout className="text-cyan-400" /></Button>
                             </PopoverContent>

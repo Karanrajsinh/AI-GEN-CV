@@ -32,11 +32,10 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
+        "**/*.jsx",
         ".next/types/**/*.ts",
         "next.config.js",
-        "src/components/ResumeSidebar/ExperienceSectiontsx",
-        "src/components/ResumeSidebar/ExperienceSectiontsx",
-        "src/helpers/helper.js"
+        "src/helpers/helper.js",
     ],
     "exclude": [
         "node_modules"

@@ -7,6 +7,8 @@ import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { Certificate } from '@/src/Types/ResumeTypes';
 import { SampleDatePicker } from '../CustomDatePicker';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 
 
 type CertificateProps = {
@@ -17,9 +19,8 @@ type CertificateProps = {
 };
 
 function CertificateForm({ index, actionType, certificateData, closeModal }: CertificateProps) {
-    const { setResumeInfo } = useResumeInfo();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [certificate, setCertificate] = useState(certificateData);
-    const [loading, setLoading] = useState(false);
     const [editedFields, setEditedFields] = useState<{ [key: string]: string }>({});
     const [issueDate, setIssueDate] = useState<Date | string>(certificateData.issueDate);
 
@@ -37,22 +38,32 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
         }));
     };
 
-    const onSave = () => {
-        if (actionType === 'edit') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                certificates: prevResumeInfo.certificates.map((cert, i) =>
-                    i === index ? { ...cert, ...editedFields, issueDate: issueDate } : cert
-                ),
-            }));
-        } else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                certificates: [...prevResumeInfo.certificates, certificate],
-            }));
+    const onSave = async (data: Certificate) => {
+        try {
+            const { id, ...filteredData } = data
+            if (actionType === 'edit') {
+
+                await editSectionEntry('certificates', id, { ...filteredData, issueDate: issueDate })
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    certificates: prevResumeInfo.certificates.map((cert, i) =>
+                        i === index ? { ...cert, ...editedFields, issueDate: issueDate } : cert
+                    ),
+                }));
+            } else if (actionType === 'add') {
+
+                const { id } = await addSectionEntry("certificates", { ...filteredData, issueDate: issueDate, resume_id: resumeInfo.resume_id })
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    certificates: [...prevResumeInfo.certificates, { ...certificate, id: id }],
+                }));
+            }
+            setEditedFields({});
+            closeModal();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
         }
-        setEditedFields({});
-        closeModal();
     };
 
     return (
@@ -121,10 +132,10 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
             </div>
 
             <div className="flex justify-end gap-6 mr-1 mt-6">
-                <Button disabled={loading} onClick={closeModal}>
+                <Button onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}>
+                <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' >
                     {actionType === "add" ? "Create" : "Save"}
                 </Button>
             </div>

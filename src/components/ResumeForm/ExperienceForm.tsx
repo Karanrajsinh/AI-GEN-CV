@@ -10,6 +10,8 @@ import { SampleDatePicker } from '../CustomDatePicker';
 import RichTextJoditEditor from '../RichTextJoditEditor';
 import { Experience } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { toast } from 'sonner';
 
 
 type ExperienceProps = {
@@ -30,7 +32,6 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
     const [editedFields, setEditedFields] = useState<{ [key: string]: string }>({});
     const [startDate, setStartDate] = useState<Date | string>(experienceData.startDate);
     const [endDate, setEndDate] = useState<Date | string>(experienceData.endDate);
-
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: experience,
     });
@@ -57,22 +58,36 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
 
     };
 
-    const onSave = () => {
-        if (actionType === 'edit') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                experience: prevResumeInfo.experience.map((exp, i) =>
-                    i === index ? { ...exp, ...editedFields, currentlyWorking: experience.currentlyWorking, startDate: startDate, endDate: endDate, description: summary } : exp
-                ),
-            }));
-        } else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                experience: [...prevResumeInfo.experience, { ...experience, startDate: startDate, endDate: endDate, description: summary }],
-            }));
+    const onSave = async (data: Experience) => {
+
+        try {
+            const { id, ...filteredData } = data
+
+
+            if (actionType === 'edit') {
+                await editSectionEntry('experiences', id, { ...filteredData, description: summary, currentlyWorking: experience.currentlyWorking, startDate: startDate, endDate: endDate })
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    experience: prevResumeInfo.experience.map((exp, i) =>
+                        i === index ? { ...exp, ...editedFields, currentlyWorking: experience.currentlyWorking, startDate: startDate, endDate: endDate, description: summary } : exp
+                    ),
+                }));
+
+            } else if (actionType === 'add') {
+
+                const { id } = await addSectionEntry("experiences", { ...filteredData, startDate: startDate, endDate: endDate, description: summary, resume_id: resumeInfo.resume_id, currentlyWorking: experience.currentlyWorking })
+                setResumeInfo((prevResumeInfo) => ({
+                    ...prevResumeInfo,
+                    experience: [...prevResumeInfo.experience, { ...experience, id: id, startDate: startDate, endDate: endDate, description: summary }],
+                }));
+            }
+            setEditedFields({});
+            closeModal();
+
         }
-        setEditedFields({});
-        closeModal();
+        catch (error) {
+            return toast(`${error}`)
+        }
     };
 
     const handleCurrentlyWorkingToggle = (checked: boolean) => {
@@ -128,8 +143,11 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
                     <label className='text-xs'>Location</label>
                     <Input
                         className='mt-1'
-                        name="location"
-                        onChange={handleChange}
+                        {...register("location", {
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={experience?.location}
                     />
                 </div>
@@ -166,8 +184,11 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
                     <label className='font-semibold text-cyan-400'>Skills Developed/Applied</label>
                     <Input
                         className='mt-1'
-                        name="skillPrompt"
-                        onChange={handleChange}
+                        {...register("skillPrompt", {
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={experience?.skillPrompt}
                     />
                     {(promptMessage.length > 0 && skillPrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
@@ -176,8 +197,11 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
                     <label className='font-semibold text-cyan-400'>Role in the Experience</label>
                     <Input
                         className='mt-1'
-                        name="rolePrompt"
-                        onChange={handleChange}
+                        {...register("rolePrompt", {
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={experience?.rolePrompt}
                     />
                     {(promptMessage.length > 0 && rolePrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
@@ -187,7 +211,7 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
                 </div>
             </div>
             <div className='flex justify-end gap-6 mr-4'>
-                <Button disabled={loading} onClick={closeModal}>
+                <Button type='button' disabled={loading} onClick={closeModal}>
                     Cancel
                 </Button>
                 <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}>

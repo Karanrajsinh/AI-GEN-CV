@@ -1,8 +1,7 @@
 // Define the type for personal details in resumeInfo
 type ResumeInfo = {
     themeColor: string;
-    firstName: string;
-    lastName: string;
+    fullName: string;
     jobTitle: string;
     address: string;
     phone: string;
@@ -21,7 +20,7 @@ function PersonalDetailPreview({ resumeInfo }: PersonalDetailPreviewProps) {
                 style={{
                     color: resumeInfo?.themeColor
                 }}>
-                {resumeInfo?.firstName} {resumeInfo?.lastName}
+                {resumeInfo?.fullName}
             </h2>
 
             <h2 className='text-center text-sm font-medium'>

@@ -1,29 +1,28 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LoaderCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { editResume } from '@/services/supabase';
 
 type PersonalDetailsProps = {
     data: {
-        firstName: string;
-        lastName: string;
+        fullName: string
         jobTitle: string;
         address: string;
         phone: string;
         email: string;
-    }; // Prop to receive initial data
+    };
     closeModal: () => void
 
 }
 
 const PersonalDetailsForm = ({ data, closeModal }: PersonalDetailsProps) => {
-    const { setResumeInfo } = useResumeInfo();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [formData, setFormData] = useState(data);
-    const [loading, setLoading] = useState<boolean>(false);
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: formData,
@@ -44,48 +43,40 @@ const PersonalDetailsForm = ({ data, closeModal }: PersonalDetailsProps) => {
     };
 
     const onSave = async () => {
-        setResumeInfo((prevResumeInfo) =>
-        (
-            {
-                ...prevResumeInfo,
-                ...formData
-            }
-        ))
-        closeModal()
+
+        try {
+            await editResume(resumeInfo.resume_id, { ...formData })
+            setResumeInfo((prevResumeInfo) =>
+            (
+                {
+                    ...prevResumeInfo,
+                    ...formData
+                }
+            ))
+            closeModal()
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     };
 
     return (
         <form onSubmit={handleSubmit(onSave)} className='py-4 px-3 lg:p-5 lg:w-[500px]'>
             <div className=' items-center flex ml-2 gap-3 font-semibold'><MdOutlineEditNote className='text-2xl' /><span>Edit Personal Details</span></div>
             <div className='grid grid-cols-2 mt-5 gap-4'>
-                <div>
-                    <label className='text-sm'>First Name</label>
+                <div className='col-span-2'>
+                    <label className='text-sm'>Full Name</label>
                     <Input
-                        {...register("firstName", {
+                        {...register("fullName", {
                             required: "Field Cannot Be Empty",
                             onChange(event) {
                                 handleInputChange(event)
                             },
                         })}
-                        value={formData?.firstName}
+                        value={formData?.fullName}
                     />
-                    {errors.firstName && (
-                        <p className="text-cyan-500 text-xs mt-1">{errors.firstName.message}</p>
-                    )}
-                </div>
-                <div>
-                    <label className='text-sm'>Last Name</label>
-                    <Input
-                        {...register("lastName", {
-                            required: "Field Cannot Be Empty",
-                            onChange(event) {
-                                handleInputChange(event)
-                            },
-                        })}
-                        value={formData?.lastName}
-                    />
-                    {errors.lastName && (
-                        <p className="text-cyan-500 text-xs mt-1">{errors.lastName.message}</p>
+                    {errors.fullName && (
+                        <p className="text-cyan-500 text-xs mt-1">{errors.fullName.message}</p>
                     )}
                 </div>
                 <div className='col-span-2'>
@@ -107,7 +98,6 @@ const PersonalDetailsForm = ({ data, closeModal }: PersonalDetailsProps) => {
                     <label className='text-sm'>Address</label>
                     <Input
                         {...register("address", {
-                            required: "Field Cannot Be Empty",
                             onChange(event) {
                                 handleInputChange(event)
                             },
@@ -122,7 +112,6 @@ const PersonalDetailsForm = ({ data, closeModal }: PersonalDetailsProps) => {
                     <label className='text-sm'>Phone</label>
                     <Input
                         {...register("phone", {
-                            required: "Field Cannot Be Empty",
                             onChange(event) {
                                 handleInputChange(event)
                             },
@@ -150,11 +139,11 @@ const PersonalDetailsForm = ({ data, closeModal }: PersonalDetailsProps) => {
                 </div>
             </div>
             <div className='flex justify-end gap-6 mr-1 mt-6'>
-                <Button disabled={loading} onClick={closeModal}>
+                <Button onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button type='submit' className='bg-cyan-500  text-slate-950' disabled={loading} >
-                    {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
+                <Button type='submit' className='bg-cyan-500  text-slate-950'  >
+                    Save
                 </Button>
             </div>
         </form>

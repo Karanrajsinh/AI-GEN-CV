@@ -13,6 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { GrPowerReset } from "react-icons/gr";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
 
 
 type ProjectSectionProps =
@@ -37,10 +38,13 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
     };
 
 
-    const deleteSkill = (index: number) => {
+    const deleteSkill = async (id: string) => {
+
+        deleteSectionEntry('skills', id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
-            skills: prevResumeInfo.skills.filter((_, i) => i !== index),
+            skills: prevResumeInfo.skills.filter((skill) => skill.id !== id),
         }));
     }
 
@@ -61,8 +65,11 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
                     <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
                         <GiHamburgerMenu className=" cursor-pointer text-xl  " />
                     </PopoverTrigger>
-                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => toggleIsSectionVisible('Skill', setResumeInfo)} >{resumeInfo.isSkillVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isSkillVisible ? "Visible" : "Hidden"}</span> </Button>
+                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => {
+                            toggleIsSectionVisible('Skill', setResumeInfo)
+                            editResume(resumeInfo.resume_id, { isSkillVisible: !resumeInfo.isSkillVisible })
+                        }} >{resumeInfo.isSkillVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isSkillVisible ? "Visible" : "Hidden"}</span> </Button>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-4  gap-3 hover:bg-cyan-900 hover:bg-opacity-40"><GrPowerReset className="text-cyan-400" /><span className="font-normal">Reset</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -83,8 +90,8 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
                 </Popover>
             </h2>
             {resumeInfo.skills.map((skill: Skill, index: number) => (
-                <ContextMenu key={index} >
-                    <ContextMenuTrigger className={`${(skill.isVisible && resumeInfo.isSkillVisible) ? 'opacity-100' : "opacity-60"}`}>
+                <ContextMenu key={skill.id} >
+                    <ContextMenuTrigger className={`${(skill.isVisible && resumeInfo.isSkillVisible) ? 'opacity-100' : "opacity-60"} select-none`}>
                         <div
                             key={index}
                             onClick={() => {
@@ -107,7 +114,11 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
                             setSkill(skill)
                             openModal();
                         }}> <FaCopy /><span>Duplicate</span></ContextMenuItem>
-                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => toggleIsVisible('skills', index, setResumeInfo)} ><TiTick className={`text-lg ${skill.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
+                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => {
+                            toggleIsVisible('skills', index, setResumeInfo)
+                            editSectionEntry('skills', skill.id, { isVisible: !skill.isVisible })
+
+                        }} ><TiTick className={`text-lg ${skill.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40"><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -119,7 +130,7 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="flex gap-3 mt-3">
                                     <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteSkill(index)}>Delete</AlertDialogAction>
+                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteSkill(skill.id)}>Delete</AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

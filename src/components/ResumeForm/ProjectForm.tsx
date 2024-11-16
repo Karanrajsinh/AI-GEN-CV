@@ -10,8 +10,10 @@ import RichTextJoditEditor from '../RichTextJoditEditor';
 import { Project } from '@/src/Types/ResumeTypes';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 
-// Define the main component that now accepts a single project via props
+
 type ProjectProps = {
     actionType: 'add' | 'edit';
     projectData: Project;
@@ -20,7 +22,7 @@ type ProjectProps = {
 };
 
 function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProps) {
-    const { setResumeInfo } = useResumeInfo();
+    const { resumeInfo, setResumeInfo } = useResumeInfo();
     const [summary, setSummary] = useState(projectData.description);
     const [skillPrompt, setSkillPrompt] = useState(projectData.skillPrompt);
     const [rolePrompt, setRolePrompt] = useState(projectData.rolePrompt);
@@ -51,41 +53,48 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
         }
 
 
-        // Update the project state with the new value
         setProject((prevProject) => ({ ...prevProject, [name]: value }));
 
-        // Track the edited fields
         setEditedFields((prevFields) => ({
             ...prevFields,
             [name]: value,
         }));
     };
 
-    const onSave = () => {
+    const onSave = async (data: Project) => {
 
-        if (actionType === 'edit')  // Update resumeInfo with only the changed fields
-        {
-            setResumeInfo((prevResumeInfo) => ({
-                ...prevResumeInfo,
-                projects: prevResumeInfo.projects.map((proj, i) =>
-                    i === index ? { ...proj, ...editedFields, currentlyWorking: project.currentlyWorking, description: summary, startDate: startDate, endDate: endDate } : proj
-                ),
-            }));
-        }
+        try {
+            const { id, ...filteredData } = data
 
-        else if (actionType === 'add') {
-            setResumeInfo((prevResumeInfo) =>
-            (
-                {
+
+            if (actionType === 'edit') {
+
+                await editSectionEntry('projects', id, { ...filteredData, description: summary, currentlyWorking: project.currentlyWorking, startDate: startDate, endDate: endDate })
+                setResumeInfo((prevResumeInfo) => ({
                     ...prevResumeInfo,
-                    projects: [...prevResumeInfo.projects, project]
-                }
-            ))
-        }
+                    projects: prevResumeInfo.projects.map((proj, i) =>
+                        i === index ? { ...proj, ...editedFields, currentlyWorking: project.currentlyWorking, description: summary, startDate: startDate, endDate: endDate } : proj
+                    ),
+                }));
+            }
 
-        // Reset the editedFields after saving
-        setEditedFields({});
-        closeModal();
+            else if (actionType === 'add') {
+                const { id } = await addSectionEntry("projects", { ...filteredData, startDate: startDate, endDate: endDate, description: summary, resume_id: resumeInfo.resume_id, currentlyWorking: project.currentlyWorking })
+                setResumeInfo((prevResumeInfo) =>
+                (
+                    {
+                        ...prevResumeInfo,
+                        projects: [...prevResumeInfo.projects, { ...project, id: id, startDate: startDate, endDate: endDate, description: summary }]
+                    }
+                ))
+            }
+
+            setEditedFields({});
+            closeModal();
+        }
+        catch (error) {
+            toast(`${error}`)
+        }
     };
 
 
@@ -150,8 +159,11 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
                     <label className=' font-semibold text-cyan-300'>Give The Skills Developed/Applied In Project </label>
                     <Input
                         className='mt-1'
-                        name="skillPrompt"
-                        onChange={handleChange}
+                        {...register("skillPrompt", {
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={project?.skillPrompt}
                     />
                     {(promptMessage.length > 0 && skillPrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
@@ -161,8 +173,11 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
                     <label className=' font-semibold text-cyan-300'>Describe The Implementation Of The Project </label>
                     <Input
                         className='mt-1'
-                        name="rolePrompt"
-                        onChange={handleChange}
+                        {...register("rolePrompt", {
+                            onChange(event) {
+                                handleChange(event)
+                            }
+                        })}
                         defaultValue={project?.rolePrompt}
                     />
                     {(promptMessage.length > 0 && skillPrompt.length < 1) && <p className='text-cyan-200 text-xs mt-1'>{promptMessage}</p>}
@@ -174,7 +189,7 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
             </div>
 
             <div className='flex justify-end gap-6 mr-1 mt-6'>
-                <Button disabled={loading} onClick={closeModal}>
+                <Button type='button' disabled={loading} onClick={closeModal}>
                     Cancel
                 </Button>
                 <Button type='submit' className='bg-cyan-500  hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading}  >

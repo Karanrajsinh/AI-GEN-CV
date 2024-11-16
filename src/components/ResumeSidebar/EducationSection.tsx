@@ -15,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { GrPowerReset } from "react-icons/gr";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { RussoOne } from "@/src/app/fonts/font";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
 
 
 
@@ -41,14 +42,20 @@ const EducationSection = ({ setActionType, setIndex, setEducation, setModalType,
     };
 
 
-    const deleteEducation = (index: number) => {
+    const deleteEducation = (id: string) => {
+
+        deleteSectionEntry('educations', id)
+
         setResumeInfo((prevResumeInfo) => ({
             ...prevResumeInfo,
-            education: prevResumeInfo.education.filter((_, i) => i !== index),
+            education: prevResumeInfo.education.filter((edu) => edu.id !== id),
         }));
     }
 
     const resetEducationSection = () => {
+
+        deleteSection('educations', resumeInfo.resume_id)
+
         setResumeInfo((prevResumeInfo) => (
             {
                 ...prevResumeInfo,
@@ -65,8 +72,11 @@ const EducationSection = ({ setActionType, setIndex, setEducation, setModalType,
                     <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
                         <GiHamburgerMenu className=" cursor-pointer text-xl  " />
                     </PopoverTrigger>
-                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => toggleIsSectionVisible('Education', setResumeInfo)} >{resumeInfo.isEducationVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isEducationVisible ? "Visible" : "Hidden"}</span> </Button>
+                    <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                        <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400 " onClick={() => {
+                            toggleIsSectionVisible('Education', setResumeInfo)
+                            editResume(resumeInfo.resume_id, { isEducationVisible: !resumeInfo.isEducationVisible })
+                        }} >{resumeInfo.isEducationVisible ? <IoEye /> : <IoEyeOff />} <span className="text-white">{resumeInfo.isEducationVisible ? "Visible" : "Hidden"}</span> </Button>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-4  gap-3 hover:bg-cyan-900 hover:bg-opacity-40"><GrPowerReset className="text-cyan-400" /><span className="font-normal">Reset</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -87,8 +97,8 @@ const EducationSection = ({ setActionType, setIndex, setEducation, setModalType,
                 </Popover>
             </h2>
             {resumeInfo?.education.map((edu: Education, index: number) => (
-                <ContextMenu key={index} >
-                    <ContextMenuTrigger className={`${(edu.isVisible && resumeInfo.isEducationVisible) ? 'opacity-100' : "opacity-60"}`}>
+                <ContextMenu key={edu.id} >
+                    <ContextMenuTrigger className={`${(edu.isVisible && resumeInfo.isEducationVisible) ? 'opacity-100' : "opacity-60"} select-none`}>
                         <div
                             key={index}
                             onClick={() => {
@@ -112,7 +122,10 @@ const EducationSection = ({ setActionType, setIndex, setEducation, setModalType,
                             setEducation(edu)
                             openModal();
                         }}> <FaCopy /><span>Duplicate</span></ContextMenuItem>
-                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => toggleIsVisible('education', index, setResumeInfo)} ><TiTick className={`text-lg ${edu.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
+                        <ContextMenuItem className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => {
+                            toggleIsVisible('education', index, setResumeInfo);
+                            editSectionEntry('educations', edu.id, { isVisible: !edu.isVisible })
+                        }} ><TiTick className={`text-lg ${edu.isVisible ? 'visible' : 'invisible'}`} /> <span>Visible</span> </ContextMenuItem>
                         <AlertDialog >
                             <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40"><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
                             <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
@@ -124,7 +137,7 @@ const EducationSection = ({ setActionType, setIndex, setEducation, setModalType,
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="flex gap-3 mt-3">
                                     <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteEducation(index)}>Delete</AlertDialogAction>
+                                    <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={() => deleteEducation(edu.id)}>Delete</AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { AIChatSession } from '@/services/AIModal';
 import { toast } from 'sonner';
+import { editResume } from '@/services/supabase';
 
 interface SummaryProps {
     summaryData: string | undefined;
@@ -43,6 +44,8 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
 
     const GenerateSummaryFromAI = async () => {
         try {
+
+            if (resumeInfo.experience.length < 1 || resumeInfo.projects.length < 1) return toast(`Needs At Least One Project And Experience To Generate Summary`)
             setLoading(true);
             const result = await AIChatSession.sendMessage(prompt);
             const response = result.response.text().replaceAll('"', '').replace(/.*summary:/, '') // Remove everything up to and including 'summary:'
@@ -58,12 +61,19 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
     };
 
     const onSave = async () => {
-        setResumeInfo((prev) => ({
-            ...prev,
-            summary: summary || '',
-        }));
 
-        closeModal();
+        try {
+            await editResume(resumeInfo.resume_id, { summary: summary })
+            setResumeInfo((prev) => ({
+                ...prev,
+                summary: summary || '',
+            }));
+
+            closeModal();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast(`${error.message}`)
+        }
     };
 
     return (
@@ -85,7 +95,7 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
                     onChange={(e) => setSummary(e.target.value || "")}
                 />
                 <div className='flex justify-end gap-6 mr-1 mt-6'>
-                    <Button disabled={loading || isTyping} onClick={closeModal}>
+                    <Button type='button' disabled={loading || isTyping} onClick={closeModal}>
                         Cancel
                     </Button>
                     <Button className='bg-cyan-500 text-slate-950' disabled={loading || isTyping} onClick={onSave}>
