@@ -1,7 +1,5 @@
 'use client'
 import React from "react";
-import Dashboard from "../Pages/ResumeMain";
-
 
 
 
@@ -11,8 +9,8 @@ import Dashboard from "../Pages/ResumeMain";
 export default function HomePage() {
 
   return (
-    <>
-      <Dashboard />
-    </>
+    <div className="w-screen  h-screen bg-slate-950 bg-grid-cyan-800/[0.2]">
+
+    </div>
   );
 }
