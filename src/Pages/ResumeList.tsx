@@ -4,33 +4,33 @@
 import { RxResume } from "react-icons/rx";
 import { RussoOne } from "../app/fonts/font";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { GrLogout } from "react-icons/gr";
 import ResumeCard from "@/src/components/ResumeCard/ResumeCard";
 import AddResumeCard from "../components/ResumeCard/AddResumeCard";
-import { GoSidebarCollapse } from "react-icons/go";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Image from "next/image";
-import supabase from "@/services/supabase";
 import DefualttUserImg from 'public/user.png'
 import { useUserDetails } from "../context/UserContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Resume } from "../Types/ResumeTypes";
 
-
-
-export default function ResumeList() {
-
-
-    const [open, setOpen] = useState(false);
-    const openDialog = () => {
-        setOpen(true)
+type Props =
+    {
+        userResumes: Resume[]
     }
-    const closeDialog = () => {
-        setOpen(false);
-    }
-    const { ResetUserDetails } = useUserDetails();
+
+
+
+export default function ResumeList({ userResumes }: Props) {
+
     const [resumes, setResumes] = useState<Resume[]>([])
+
+    useEffect(() => {
+        if (userResumes) setResumes(userResumes)
+    }, [])
+    const { userImg, name, ResetUserDetails } = useUserDetails();
+
+
 
     return (
         <div className="h-screen min-w-screen flex flex-col lg:flex-row bg-slate-950">
@@ -41,25 +41,27 @@ export default function ResumeList() {
                 </div>
                 <div className="w-[90%] flex flex-col gap-4 items-center justify-center">
                     <hr className="border-[0.5] border-cyan-900 w-full " />
-                    <Button className={`${RussoOne.className} w-full flex items-center gap-4 p-6 border-none bg-transparent sm:text-base xl:text-lg`} onClick={() => {
-                        supabase.auth.signOut();
-                        ResetUserDetails();
-                    }
-                    }><span>Logout</span><GrLogout className="text-cyan-300" /></Button>
+                    <Popover>
+                        <PopoverTrigger className="flex min-w-full p-2 items-center justify-center gap-4 hover:bg-cyan-800 hover:bg-opacity-40">
+                            <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={userImg ? userImg : DefualttUserImg} width={35} height={30} />
+                            <span>{name}</span>
+                        </PopoverTrigger>
+                        <PopoverContent className="bg-slate-95 w-36 mb-2 mr-10  z-50 border  rounded-none  border-gray-600 text-white p-0">
+                            <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none  sm:text-base xl:text-lg`} >
+                                <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
+                        </PopoverContent>
+                    </Popover>
                 </div>
             </div>
             <div className="lg:hidden border-b border-cyan-600  px-6 py-4 mt-3 flex items-center justify-between ">
-                <GoSidebarCollapse className="text-cyan-500  text-3xl my-auto" />
+                <Link href={'/'} className="  hover:bg-cyan-800 hover:bg-opacity-30 p-2 " ><RxResume className="text-cyan-600 text-3xl" /></Link>
                 <Popover>
                     <PopoverTrigger>
-                        <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={DefualttUserImg} width={35} height={30} />
+                        <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={userImg ? userImg : DefualttUserImg} width={35} height={30} />
                     </PopoverTrigger>
                     <PopoverContent className="bg-slate-95 w-28 mr-5 z-50 border mt-2 rounded-none  border-gray-600 text-white p-0">
-                        <Button onClick={() => {
-                            supabase.auth.signOut();
-                            ResetUserDetails();
-                        }
-                        } className="flex w-full items-center hover:bg-slate-950 bg-slate-950 border-none justify-center gap-3"><span className={RussoOne.className}>Log Out</span><GrLogout className="text-cyan-400" /></Button>
+                        <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
+                            <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
                     </PopoverContent>
                 </Popover>
             </div>

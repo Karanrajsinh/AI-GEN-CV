@@ -19,10 +19,8 @@ import LanguageForm from "../components/ResumeForm/LanguageForm";
 import Image from "next/image";
 import { useUserDetails } from "../context/UserContext";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { GrLogout } from "react-icons/gr";
 import { RussoOne } from "../app/fonts/font";
-import supabase from "@/services/supabase";
 import { RxResume } from "react-icons/rx";
 import Link from "next/link";
 import { AiFillUpSquare } from "react-icons/ai";
@@ -37,7 +35,7 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
 
     useEffect(() => {
         if (resumeData) setResumeInfo(resumeData as never)
-    },)
+    }, [])
 
 
     const { userImg, ResetUserDetails } = useUserDetails();
@@ -71,11 +69,8 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
                             <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={userImg ? userImg : DefualttUserImg} width={35} height={30} />
                         </PopoverTrigger>
                         <PopoverContent className="bg-slate-95 w-28 mr-5 z-50 border mt-2 rounded-none  border-gray-600 text-white p-0">
-                            <Button onClick={() => {
-                                supabase.auth.signOut();
-                                ResetUserDetails();
-                            }
-                            } className="flex w-full items-center hover:bg-slate-950 bg-slate-950 border-none justify-center gap-3"><span className={RussoOne.className}>Log Out</span><GrLogout className="text-cyan-400" /></Button>
+                            <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
+                                <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
                         </PopoverContent>
                     </Popover>
                 </div>
@@ -101,11 +96,8 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
                                 <Image className="border-2 border-cyan-400 rounded-full object-cover" src={userImg ? userImg : DefualttUserImg} alt="img" width={40} height={40} />
                             </PopoverTrigger>
                             <PopoverContent className="bg-slate-950 w-30 ml-5 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                                <Button onClick={() => {
-                                    supabase.auth.signOut();
-                                    ResetUserDetails();
-                                }
-                                } className="flex w-full bg-slate-950 border-none justify-start gap-3"><span className={RussoOne.className}>Log Out</span><GrLogout className="text-cyan-400" /></Button>
+                                <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none  sm:text-base xl:text-lg`} >
+                                    <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
                             </PopoverContent>
                         </Popover>
                     </div>

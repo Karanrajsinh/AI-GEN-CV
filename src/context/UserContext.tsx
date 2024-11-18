@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import supabase from "@/services/supabase";
+import supabase from "@/utils/supabase/client";
 
 
 type UserContextProps =

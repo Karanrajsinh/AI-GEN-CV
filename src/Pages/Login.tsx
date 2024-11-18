@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import supabase from '@/services/supabase';
+import supabase from '@/utils/supabase/client';
 import { RussoOne } from '@/src/app/fonts/font'
 function Login() {
 
@@ -35,7 +35,7 @@ function Login() {
                 }}
                 providers={['google']}
                 theme="dark"
-                redirectTo="http://localhost:3000/dashboard"
+                redirectTo="http://localhost:3000/auth/callback"
             />
         </div>
     );
