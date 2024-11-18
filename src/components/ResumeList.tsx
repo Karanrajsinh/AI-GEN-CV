@@ -10,9 +10,9 @@ import AddResumeCard from "../components/ResumeCard/AddResumeCard";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Image from "next/image";
 import DefualttUserImg from 'public/user.png'
-import { useUserDetails } from "../context/UserContext";
 import { useEffect, useState } from "react";
 import { Resume } from "../Types/ResumeTypes";
+import { useUserDetails } from "../context/UserContext";
 
 type Props =
     {
@@ -24,11 +24,12 @@ type Props =
 export default function ResumeList({ userResumes }: Props) {
 
     const [resumes, setResumes] = useState<Resume[]>([])
+    const { userImg, name } = useUserDetails();
 
     useEffect(() => {
         if (userResumes) setResumes(userResumes)
     }, [])
-    const { userImg, name, ResetUserDetails } = useUserDetails();
+
 
 
 

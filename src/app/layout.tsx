@@ -2,7 +2,7 @@
 import { ResumeInfoProvider } from '@/src/context/ResumeInfoContext';
 import '@/src/app/globals.css'
 import { Toaster } from '@/components/ui/sonner';
-import { UserDetailsProvider } from '../context/UserContext';
+import { UserDetailsProvider } from '@/src/context/UserContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 
@@ -10,8 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang='en' suppressHydrationWarning>
-      <body   >
-
+      <body>
         <ResumeInfoProvider >
           <UserDetailsProvider>
             {children}

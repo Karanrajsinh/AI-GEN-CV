@@ -1,6 +1,7 @@
 
 import { getResumeData } from "@/services/supabase"
-import ResumeMain from "@/src/Pages/ResumeMain"
+import ResumeMain from "@/src/components/ResumeMain";
+
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 

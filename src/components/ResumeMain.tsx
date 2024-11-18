@@ -17,7 +17,6 @@ import { certificateDefault, educationDefault, experienceDefault, languageDefaul
 import CertificateForm from "../components/ResumeForm/CertificateForm";
 import LanguageForm from "../components/ResumeForm/LanguageForm";
 import Image from "next/image";
-import { useUserDetails } from "../context/UserContext";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { GrLogout } from "react-icons/gr";
 import { RussoOne } from "../app/fonts/font";
@@ -26,6 +25,7 @@ import Link from "next/link";
 import { AiFillUpSquare } from "react-icons/ai";
 import DefualttUserImg from 'public/user.png'
 import { useResumeInfo } from "../context/ResumeInfoContext";
+import { useUserDetails } from "../context/UserContext";
 
 export default function ResumeMain({ resumeData }: ResumeInfo) {
 
@@ -38,7 +38,7 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
     }, [])
 
 
-    const { userImg, ResetUserDetails } = useUserDetails();
+    const { userImg } = useUserDetails();
     const [isOpen, setIsOpen] = useState(false)
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
