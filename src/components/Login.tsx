@@ -35,7 +35,7 @@ function Login() {
                 }}
                 providers={['google']}
                 theme="dark"
-                redirectTo="http://localhost:3000/auth/callback"
+                redirectTo="https://resume-builder-kv.vercel.app/auth/callback"
             />
         </div>
     );
