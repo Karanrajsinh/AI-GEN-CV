@@ -1,7 +1,10 @@
 import supabase from "@/utils/supabase/client";
 
 
-
+export const logout = async () => {
+    await fetch("/logout"); // Server-side logout request
+    window.location.reload(true); // Forces a full page reload, bypassing cache
+};
 
 export async function addResume(resumeName, userName, email) {
     const { data, error } = await supabase
@@ -17,13 +20,56 @@ export async function addResume(resumeName, userName, email) {
         .single();
 
     if (error) {
-        console.error("Error creating resume:", error.message);
-        return null;
+        throw Error("Unable To Create Resume Try Again !")
     }
 
     return data;
 }
 
+
+
+export const addResumeWithData = async (resumeData) => {
+
+    // Insert the resume and retrieve the resume_id
+    const { data: resumeResult, error: resumeError } = await supabase
+        .from('resumes')
+        .insert({
+            resume_name: resumeData.resume_name,
+            fullName: resumeData.fullName,
+            jobTitle: resumeData.jobTitle,
+            address: resumeData.address,
+            phone: resumeData.phone,
+            email: resumeData.email,
+            themeColor: resumeData.themeColor,
+            summary: resumeData.summary,
+        })
+        .select('*')
+        .single();
+
+    if (resumeError) {
+        console.error("Error adding resume:", resumeError);
+        return { error: ` error occured ${resumeError.message}` };
+    }
+
+    // Helper function to insert multiple entries into a section
+    const addEntries = async (section, entries) => {
+        for (const entry of entries) {
+            const dataWithResumeId = { ...entry, resume_id: resumeResult.resume_id };
+            await addSectionEntry(section, dataWithResumeId);
+        }
+    };
+
+    // Insert associated sections
+    await addEntries("projects", resumeData.projects);
+    await addEntries("experiences", resumeData.experience);
+    await addEntries("educations", resumeData.education);
+    await addEntries("skills", resumeData.skills);
+    await addEntries("certificates", resumeData.certificates);
+    await addEntries("languages", resumeData.languages);
+
+    // Return the created resume
+    return resumeResult;
+};
 
 export async function getUserResumes(userId) {
 
@@ -43,12 +89,52 @@ export async function getUserResumes(userId) {
 
 
 
+export const duplicateResume = async (resumeId, userId, resumeName) => {
+    // Step 1: Fetch the original resume data
+    const originalResumeData = await getResumeData(resumeId, userId);
+    /* eslint-disable */
+    const sanitizedResumeData = {
+        ...originalResumeData,
+        resume_name: resumeName,
+        projects: originalResumeData.projects.map(({ id, ...rest }) => rest),
+        experience: originalResumeData.experience.map(({ id, ...rest }) => rest),
+        education: originalResumeData.education.map(({ id, ...rest }) => rest),
+        skills: originalResumeData.skills.map(({ id, ...rest }) => rest),
+        certificates: originalResumeData.certificates.map(({ id, ...rest }) => rest),
+        languages: originalResumeData.languages.map(({ id, ...rest }) => rest),
+    };
+    /* eslint-enable */
+    if (!originalResumeData) {
+        throw new Error('Original resume data not found');
+    }
 
-export async function getResumeData(resumeId) {
+    // Step 2: Create a new resume with the same data
+    const newResume = await addResumeWithData(sanitizedResumeData);
+
+    // Return the newly created resume instance
+    return newResume;
+
+};
+
+export async function getResumeName(resumeId) {
+    const { data } = await supabase
+        .from('resumes')
+        .select('resume_name')
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true })
+
+
+
+    return data
+}
+
+
+export async function getResumeData(resumeId, userId) {
     const { data: resume, error: resumeError } = await supabase
         .from('resumes')
         .select(
             `
+            resume_name,
             resume_id,  
             themeColor,
             fullName,
@@ -67,6 +153,7 @@ export async function getResumeData(resumeId) {
 `
         )
         .eq('resume_id', resumeId)
+        .eq('user_id', userId)
         .single();
 
     if (resumeError || !resume) {
@@ -103,7 +190,8 @@ export async function getResumeData(resumeId) {
             name`
 
         )
-        .eq('resume_id', resumeId);
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true });
 
     const { data: projects, error: projectsError } = await supabase
         .from('projects')
@@ -120,7 +208,8 @@ export async function getResumeData(resumeId) {
             currentlyWorking`
 
         )
-        .eq('resume_id', resumeId);
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true });
 
     const { data: certificates, error: certificatesError } = await supabase
         .from('certificates')
@@ -134,7 +223,8 @@ export async function getResumeData(resumeId) {
             website`
 
         )
-        .eq('resume_id', resumeId);
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true });
 
     const { data: languages, error: languagesError } = await supabase
         .from('languages')
@@ -146,7 +236,8 @@ export async function getResumeData(resumeId) {
             proficientLevel
 `
         )
-        .eq('resume_id', resumeId);
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true })
 
     const errors = [experienceError, educationError, skillsError, projectsError, certificatesError, languagesError];
     if (errors.some(err => err)) {
@@ -226,4 +317,11 @@ export async function editResume(resumeId, updatedData) {
     handleSupabaseError(error)
 
     return data;
+}
+
+export async function deleteResume(resume_id) {
+    const { error } = await supabase.from('resumes').delete().eq("resume_id", resume_id);
+    handleSupabaseError(error)
+
+    return true;
 }

@@ -10,6 +10,7 @@ import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 
@@ -88,7 +89,7 @@ function EducationForm({ actionType, educationData, index, closeModal }: Educati
 
     return (
         <form onSubmit={handleSubmit(onSave)} className="lg:p-5 py-4 px-3">
-            <div className=' items-center flex ml-4 gap-3 font-semibold'><MdOutlineEditNote className='text-2xl' /><span>Edit Education</span></div>
+            <div className=' items-center flex ml-4 gap-3 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Education</span></div>
             <div className="grid grid-cols-2 gap-3 p-3 my-5 rounded-lg">
                 <div className="col-span-2">
                     <label className='text-xs'>University Name</label>

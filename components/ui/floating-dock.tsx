@@ -82,7 +82,6 @@ function IconContainer({
     const section = document.getElementById(target);
     if (section) {
       const offsetTop = section.offsetTop;
-      console.log(offsetTop)
       setTimeout(() => {
         scrollArea?.scrollTo({ top: offsetTop, behavior: 'smooth' })
       }, 100);
@@ -95,7 +94,7 @@ function IconContainer({
       onHoverEnd={() => setHovered(false)}
       whileHover={{ translateX: 10, scale: 1.1 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="relative h-8 w-8 bg-transparent flex items-center justify-center"
+      className="relative h-8 w-8 bg-transparent cursor-pointer flex items-center justify-center"
       onClick={() => handleScroll(target)}
     // Add scroll on click
     >

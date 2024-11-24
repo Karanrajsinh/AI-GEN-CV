@@ -12,6 +12,7 @@ import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 type ProjectProps = {
@@ -108,7 +109,7 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
 
     return (
         <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:py-5 lg:px-5 h-[80vh] flex flex-col justify-start  overflow-y-scroll custom-scrollbar lg:w-[800px]'>
-            <div className=' items-center flex ml-4 gap-3 font-semibold'><MdOutlineEditNote className='text-2xl' /><span>Edit Project</span></div>
+            <div className=' items-center flex ml-4 gap-3 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Project</span></div>
             <div className='grid grid-cols-2 text-xs sm:text-sm gap-3 p-3 my-5 rounded-lg'>
                 <div className='col-span-2'>
                     <label>Project Name</label>

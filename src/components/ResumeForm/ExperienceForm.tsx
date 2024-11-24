@@ -12,6 +12,7 @@ import { Experience } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
 import { toast } from 'sonner';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 type ExperienceProps = {
@@ -102,8 +103,7 @@ function ExperienceForm({ actionType, experienceData, index, closeModal }: Exper
     return (
         <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:py-7 lg:px-5 h-[85vh] flex flex-col justify-start  overflow-y-scroll custom-scrollbar  lg:w-[800px]'>
             <div className='items-center flex  ml-4 gap-3 font-semibold'>
-                <MdOutlineEditNote className='text-2xl' />
-                <span>Edit Experience</span>
+                {actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Experience</span>
             </div>
             <div className='grid grid-cols-2 text-xs sm:text-sm gap-3 p-3 my-5 rounded-lg'>
                 <div className='col-span-2'>

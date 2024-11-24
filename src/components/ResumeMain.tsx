@@ -20,25 +20,32 @@ import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { GrLogout } from "react-icons/gr";
 import { RussoOne } from "../app/fonts/font";
-import { RxResume } from "react-icons/rx";
 import Link from "next/link";
-import { AiFillUpSquare } from "react-icons/ai";
 import DefualttUserImg from 'public/user.png'
 import { useResumeInfo } from "../context/ResumeInfoContext";
-import { useUserDetails } from "../context/UserContext";
+import { RiHomeFill } from "react-icons/ri";
+import { logout } from "@/services/supabase";
 
-export default function ResumeMain({ resumeData }: ResumeInfo) {
+
+type Props = {
+    resumeData: ResumeInfo,
+    user: {
+        img: string
+    }
+}
+
+export default function ResumeMain({ resumeData, user }: Props) {
 
     const { setResumeInfo } = useResumeInfo();
 
-
-
     useEffect(() => {
         if (resumeData) setResumeInfo(resumeData as never)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
-    const { userImg } = useUserDetails();
+    const { img } = user;
     const [isOpen, setIsOpen] = useState(false)
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
@@ -64,17 +71,17 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
                             <Sidebar setActionType={setActionType} openModal={openModal} setModalType={setModalType} setIndex={setIndex} setPersonalDetails={setPersonalDetails} setSummary={setSummary} setExperience={setExperience} setProject={setProject} setEducation={setEducation} setSkill={setSkill} setCertificate={setCertificate} setLanguage={setLanguage} />
                         </SheetContent>
                     </Sheet>
+                    <Link href={'/dashboard'} className="flex items-center justify-center text-white gap-2 text-base" ><RiHomeFill className="text-cyan-600 text-xl mb-0.5" />/<span className={`text-white ${RussoOne.className}`}> Dashboard</span></Link>
                     <Popover>
                         <PopoverTrigger>
-                            <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={userImg ? userImg : DefualttUserImg} width={35} height={30} />
+                            <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={img ? img : DefualttUserImg} width={35} height={30} />
                         </PopoverTrigger>
                         <PopoverContent className="bg-slate-95 w-28 mr-5 z-50 border mt-2 rounded-none  border-gray-600 text-white p-0">
-                            <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
-                                <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
+                            <div onClick={logout} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
+                                <span>Logout</span><GrLogout className="text-cyan-300" /></div>
                         </PopoverContent>
                     </Popover>
                 </div>
-
                 <ResumePreview />
             </div>
             <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 hidden xl:flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
@@ -83,21 +90,19 @@ export default function ResumeMain({ resumeData }: ResumeInfo) {
 
                     <div className="hidden xl:flex flex-col justify-between h-[95%] items-center my-4  ">
                         <div className="flex border-b border-cyan-700 items-center w-full flex-col gap-4">
-                            <Link className="hover:bg-cyan-800 hover:bg-opacity-30 p-2" href={'/'}>
-                                <RxResume className="text-2xl text-cyan-200" />
-                            </Link>
+
                             <Link className="hover:bg-cyan-800 hover:bg-opacity-30 p-2 mb-4" href={'/dashboard'}>
-                                <AiFillUpSquare className="text-2xl text-cyan-600" />
+                                < RiHomeFill className="text-xl text-cyan-600" />
                             </Link>
                         </div>
                         <SidebarNavigaition />
                         <Popover>
                             <PopoverTrigger>
-                                <Image className="border-2 border-cyan-400 rounded-full object-cover" src={userImg ? userImg : DefualttUserImg} alt="img" width={40} height={40} />
+                                <Image className="border-2 border-cyan-400 rounded-full object-cover" src={img ? img : DefualttUserImg} alt="img" width={35} height={35} />
                             </PopoverTrigger>
-                            <PopoverContent className="bg-slate-950 w-30 ml-5 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
-                                <Link href={'/logout'} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none  sm:text-base xl:text-lg`} >
-                                    <span>Logout</span><GrLogout className="text-cyan-300" /></Link>
+                            <PopoverContent className="bg-slate-950 w-30 ml-5 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
+                                <div onClick={logout} className={`${RussoOne.className} min-w-full hover:bg-cyan-950 bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-1 border-none `} >
+                                    <span>Logout</span><GrLogout className="text-cyan-300" /></div>
                             </PopoverContent>
                         </Popover>
                     </div>

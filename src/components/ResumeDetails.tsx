@@ -26,7 +26,7 @@ function ResumeDetails() {
 
             setheight(`${pdfRef.current.offsetHeight}px`);
         }
-    }, [resumeInfo,]);
+    }, [resumeInfo]);
 
 
     return (

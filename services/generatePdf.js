@@ -1,4 +1,6 @@
-const handleGeneratePdf = async (setPdfDownload) => {
+import { toast } from "sonner";
+
+const handleGeneratePdf = async (setPdfDownload, name) => {
     try {
         setPdfDownload(true)
         const pdfElement = document.getElementById('pdf');
@@ -18,6 +20,8 @@ const handleGeneratePdf = async (setPdfDownload) => {
             // Get the width and height of the pdfElement
             const width = pdfElement.offsetWidth;
             const height = pdfElement.offsetHeight;
+
+
             // Wrap the HTML content with the necessary <html> structure and styles
             const fullHtmlContent = `
                 <!DOCTYPE html>
@@ -29,10 +33,9 @@ const handleGeneratePdf = async (setPdfDownload) => {
                 </html>
             `;
 
-            console.log(fullHtmlContent, width, height)
-
+            console.log(fullHtmlContent, height, width)
             // Send HTML content along with dimensions
-            const response = await fetch('/api/generatePdf', {
+            const response = await fetch('https://resume-builder-server-y5to.onrender.com/generatePdf', {
 
                 method: 'POST',
                 headers: {
@@ -42,7 +45,7 @@ const handleGeneratePdf = async (setPdfDownload) => {
                     htmlContent: fullHtmlContent,
                     width,
                     height
-                }), // Include width and height
+                }),
             });
 
             if (!response.ok) {
@@ -61,8 +64,10 @@ const handleGeneratePdf = async (setPdfDownload) => {
         } else {
             console.error('Element with ID "pdf" not found');
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error('Error generating PDF:', error);
+        setPdfDownload(false)
+        toast(`Unable To Generate Pdf! Try Again`)
     }
 };
 

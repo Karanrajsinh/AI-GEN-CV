@@ -77,7 +77,32 @@ export const languageDefault = {
 
 export const resumeDefault =
 {
-    name: '',
-    resumeDefault: false
+    resume_id: '',
+    resume_name: '',
+    sampleResume: false
 }
 
+
+export const resumeInfoDefault = {
+    resume_id: '',
+    fullName: '',
+    jobTitle: '',
+    address: '',
+    phone: '',
+    email: '',
+    themeColor: '#4d4d4d',
+    summary: '',
+    summaryVisible: true,
+    isExperienceVisible: true,
+    isProjectVisible: true,
+    isEducationVisible: true,
+    isSkillVisible: true,
+    isCertificateVisible: true,
+    isLanguageVisible: true,
+    experience: [],
+    projects: [],
+    education: [],
+    skills: [],
+    languages: [],
+    certificates: []
+}

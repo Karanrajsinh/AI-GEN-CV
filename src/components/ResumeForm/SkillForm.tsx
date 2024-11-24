@@ -8,6 +8,7 @@ import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 type SkillsProps =
@@ -78,7 +79,7 @@ function SkillForm({ index, actionType, skillsData, closeModal }: SkillsProps) {
 
     return (
         <form onSubmit={handleSubmit(onSave)} className='p-5 '>
-            <div className=' items-center flex ml-4 gap-3 font-semibold'><MdOutlineEditNote className='text-2xl' /><span>Edit Skill</span></div>
+            <div className=' items-center flex ml-4 gap-3 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Skill</span></div>
             <div className='grid grid-cols- gap-3 p-3 my-5 rounded-lg'>
                 <div className='col-span-2'>
                     <label className='text-sm mb-2'>Skill </label>

@@ -6,8 +6,7 @@ export async function POST(request) {
 
     try {
         const pdfBuffer = await generatePdf(htmlContent, width, height);
-        // console.log(pdfBuffer, "route.js")
-        // Return the PDF as a response
+
         return new NextResponse(pdfBuffer, {
             status: 200,
             headers: {

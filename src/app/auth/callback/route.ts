@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     const code = requestUrl.searchParams.get('code'); // Extract the authorization code from the query parameters
 
     if (code) {
-        const supabase = createClient(); // Create Supabase client
+        const supabase = await createClient();
         const { error } = await supabase.auth.exchangeCodeForSession(code); // Exchange code for session
 
         if (error) {

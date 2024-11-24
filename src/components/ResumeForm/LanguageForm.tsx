@@ -10,6 +10,7 @@ import { Language } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 type LanguageFormProps = {
@@ -69,7 +70,7 @@ function LanguageForm({ actionType, languageData, index, closeModal }: LanguageF
     return (
         <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:p-5 '>
             <div className='flex items-center ml-4 gap-3 font-semibold'>
-                <MdOutlineEditNote className='text-2xl' /><span>{actionType === 'add' ? "Add Language" : "Edit Language"}</span>
+                {actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Language</span>
             </div>
             <div className='grid grid-cols-2  text-xs sm:text-sm gap-3 p-3 my-5'>
                 <div>

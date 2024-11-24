@@ -6,6 +6,7 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import supabase from '@/utils/supabase/client';
 import { RussoOne } from '@/src/app/fonts/font'
+import { RxResume } from 'react-icons/rx';
 function Login() {
 
     const [isLoaded, setIsLoaded] = useState(false);
@@ -19,7 +20,7 @@ function Login() {
             className={`text-white ${RussoOne.className} transition-transform duration-1000 ease-out ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-20'
                 }`}
         >
-            <p className="text-2xl text-center mb-10 ">Student Portfolio</p>
+            <p className="text-2xl gap-4 justify-center items-center flex text-center mb-10 "><RxResume className='text-3xl text-cyan-600 mb-1' /><span>AI-GEN CV</span></p>
             <Auth
                 supabaseClient={supabase}
                 appearance={{
@@ -35,7 +36,7 @@ function Login() {
                 }}
                 providers={['google']}
                 theme="dark"
-                redirectTo="https://resume-builder-kv.vercel.app/auth/callback"
+                redirectTo="http://localhost:3000/auth/callback"
             />
         </div>
     );

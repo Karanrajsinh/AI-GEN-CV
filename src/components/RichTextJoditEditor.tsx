@@ -138,17 +138,17 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
         try {
             if (skillPrompt === '' || rolePrompt === '') return setMessagePrompt('Prompt Is Required To Generate Summary')
             setLoading(true)
-            const result = await AIChatSession.sendMessage(contentType === "experience" ? experiencePrompt : projectPrompt);
+            const prompt = contentType === "experience" ? experiencePrompt : projectPrompt;
+            const result = await AIChatSession.sendMessage(prompt);
             const response = result.response.text().replaceAll('"', '').replace(/.*summary:/, '')
                 .replace(/[\{\}]/g, '')
                 .trim();
             setSummary(response)
             typeWriterEffect(response.replace('[', '').replace(']', '').replaceAll('"', ''));
-            console.log(response)
             setLoading(false)
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         catch (err) {
-            console.log(err)
             toast(`Error Occured in Generating Summary! , Try Again`)
             setLoading(false)
             setLoadingData(false)

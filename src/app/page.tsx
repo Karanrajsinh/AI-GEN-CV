@@ -1,16 +1,13 @@
 
-import React from "react";
+
+import Login from "@/src/components/Login"
 
 
-
-
-
-
-export default function HomePage() {
-
+export default function LoginPage() {
   return (
-    <div className="w-screen  h-screen bg-slate-950 bg-grid-cyan-800/[0.2]">
+    <div className="h-screen min-w-screen dark:bg-black bg-slate-950 flex justify-center items-center bg-grid-cyan-950/[0.2]">
 
+      <Login />
     </div>
-  );
+  )
 }

@@ -3,13 +3,10 @@ import puppeteer from "puppeteer"
 
 export const generatePdf = async (htmlContent, width, height) => {
   const browser = await puppeteer.launch({
-    // executablePath: "chrome@130.0.6723.58 /vercel/path1/.cache/puppeteer/chrome/linux-130.0.6723.58/chrome-linux64/chrome",
     headless: true,  // Ensure it runs in headless mode
   });
   const page = await browser.newPage();
-  const executablePath = puppeteer.executablePath();
-  console.log('Puppeteer Executable Path:', executablePath);
-  // console.log(htmlContent, 'pdfGenerate.js')
+
   // Set the content of the page to the passed HTML
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
 

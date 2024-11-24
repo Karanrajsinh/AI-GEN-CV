@@ -2,16 +2,15 @@ import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import { TransformWrapper, TransformComponent, ReactZoomPanPinchContentRef } from "react-zoom-pan-pinch";
 import ResumeDetails from "./ResumeDetails";
 import { Button } from "@/components/ui/button";
-import { IoIosArrowUp } from "react-icons/io";
 import { TbZoomReset } from "react-icons/tb";
 import { MdOutlineZoomIn, MdOutlineZoomOut } from "react-icons/md";
 import { FaCircle, FaFileDownload } from "react-icons/fa";
 import { handleGeneratePdf } from "@/services/generatePdf";
 import { ImSpinner8 } from "react-icons/im";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useResumeInfo } from "../context/ResumeInfoContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GoSidebarCollapse } from "react-icons/go";
+import { editResume } from "@/services/supabase";
 
 
 const THEMECOLORS = [
@@ -46,6 +45,9 @@ function ResumePreview() {
     const { resumeInfo, setResumeInfo } = useResumeInfo();
 
     const onThemeChange = (color: string) => {
+
+        editResume(resumeInfo.resume_id, { themeColor: color })
+
         setResumeInfo((prev) =>
         ({
             ...prev,
@@ -100,7 +102,7 @@ function ResumePreview() {
 
                 <Controls pageNumber={0} pinchRefs={pinchRefs} />
                 <Button className="w-min text-cyan-200" onClick={() => handleGeneratePdf(setPdfDownload)}>{pdfDownlaod ? <ImSpinner8 className="animate-spin" /> : <FaFileDownload />}</Button>
-                <Select defaultValue={resumeInfo.themeColor} onValueChange={onThemeChange}>
+                <Select value={resumeInfo.themeColor} onValueChange={onThemeChange}>
                     <SelectTrigger className="bg-slate-900 text-sm text-white border-cyan-600">
                         <FaCircle style={{ color: `${resumeInfo.themeColor}` }} />
                     </SelectTrigger>

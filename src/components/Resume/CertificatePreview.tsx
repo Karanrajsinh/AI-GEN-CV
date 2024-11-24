@@ -16,7 +16,7 @@ type CertificatePreviewProps = {
 
 function CertificatePreview({ resumeInfo }: CertificatePreviewProps) {
 
-    console.log(resumeInfo)
+
 
     return (
         <div className='my-6'>

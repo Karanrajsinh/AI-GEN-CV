@@ -2,8 +2,9 @@
 
 import React, { createContext, useState, ReactNode } from 'react';
 
-import { resumeData } from '../data/dummyData';
+
 import { ResumeInfo } from '@/src/Types/ResumeTypes';
+import { resumeInfoDefault } from '../data/initialData';
 
 // Define the context type
 type ResumeInfoContextType = {
@@ -17,7 +18,7 @@ const ResumeInfoContext = createContext<ResumeInfoContextType | null>(null);
 // Provide the context to the component tree
 export const ResumeInfoProvider = ({ children }: { children: ReactNode }) => {
     // Create a state for resumeInfo with initial default values or empty object
-    const [resumeInfo, setResumeInfo] = useState<ResumeInfo>(resumeData);
+    const [resumeInfo, setResumeInfo] = useState<ResumeInfo>(resumeInfoDefault);
     return (
         <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
             {children}

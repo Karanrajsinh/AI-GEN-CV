@@ -13,7 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { GrPowerReset } from "react-icons/gr";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { RussoOne } from "@/src/app/fonts/font";
-import { deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
 
 
 type ProjectSectionProps =
@@ -49,6 +49,9 @@ const SkillSection = ({ setActionType, setIndex, setSkill, setModalType, openMod
     }
 
     const resetSkillSection = () => {
+
+        deleteSection('skills', resumeInfo.resume_id)
+
         setResumeInfo((prevResumeInfo) => (
             {
                 ...prevResumeInfo,

@@ -9,6 +9,7 @@ import { SampleDatePicker } from '../CustomDatePicker';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { IoAddSharp } from 'react-icons/io5';
 
 
 type CertificateProps = {
@@ -69,8 +70,7 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
     return (
         <form onSubmit={handleSubmit(onSave)} className="p-5">
             <div className="items-center flex ml-4 gap-3 font-semibold">
-                <MdOutlineEditNote className="text-2xl" />
-                <span>{actionType === 'edit' ? 'Edit Certificate' : 'Add Certificate'}</span>
+                {actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Certificate</span>
             </div>
             <div className="grid grid-cols-2 gap-3 p-3 my-5 rounded-lg">
                 <div className='col-span-2'>

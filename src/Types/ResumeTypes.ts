@@ -101,6 +101,7 @@ export type ResumeInfo = {
 
 export type Resume =
     {
-        resume_name: string,
         resume_id: string
+        resume_name: string,
+        sampleResume: boolean
     }

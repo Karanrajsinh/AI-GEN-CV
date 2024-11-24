@@ -24,7 +24,7 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
     const example2 = `Professional finance client executive with over 15 years of experience in business development, relationship management, and portfolio and investment analysis. Skilled at educating clients and strategic partners on matters of portfolio optimization, securing and managing new business opportunities, and negotiating strategic partnerships. Excellent consultative approach with clients and stakeholders, and experience managing small teams, delivering quarterly earnings presentations, and collaborating cross-region with global finance organization.`
     const example1 = `Enterprise account executive with a strong background in hardware infrastructure, server/storage virtualization, and emerging cloud technologies. Typically manage quotas in excess of $10MM annually, with a history of exceeding sales targets, leading acquisition efforts, and creating innovative selling approaches in conjunction with in-house marketing as well as extensive partner networks. Experience managing small inside teams including inside sales representatives, customer success agents, and implementation teams. Strong hunter mentality with a relentless drive for setting and exceeding personal goals fore excellence.`
     const example = `Technical project manager with over seven years of experience managing both agile and waterfall projects for large technology organizations. Key strengths include budget management, contract and vendor relations, client-facing communications, stakeholder awareness, and cross-functional team management. Excellent leadership, organization, and communication skills, with special experience bridging large teams and providing process in the face of ambiguity.`
-    const prompt = `Take this examples of resume summary as reference ${JSON.stringify([example, example1, example2])}  , create a summary from the given experiences : ${JSON.stringify(resumeInfo.experience)} , projects : ${JSON.stringify(resumeInfo.projects)},with no exaggerated words or sentences, containing only main key words from experiences and projects which reflects on impact of the summary in max 100 words   nothing else like proven this , developed this , proficient in this , known for this  and the start of the summary should start with  ${resumeInfo.jobTitle} following with the comibined  duration of the expeirence in years  give response in text only like "your-response" nothing else `;
+    const prompt = `Take this examples of resume summary as reference ${JSON.stringify([example, example1, example2])}  , create a summary from the given experiences : ${JSON.stringify(resumeInfo.experience)} , projects : ${JSON.stringify(resumeInfo.projects)},with no exaggerated words or sentences, containing only main key words from experiences and projects which reflects on impact of the summary in max 100 words   nothing else like proven this , developed this , proficient in this , known for this  and the start of the summary should start with  ${JSON.stringify(resumeInfo.jobTitle)} following with the comibined  duration of the expeirence in years  give response in text only like "your-response" nothing else `;
 
 
     const typeWriterEffect = (text: string, delay = 20) => {
@@ -53,8 +53,8 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
                 .trim();
             typeWriterEffect(response);
             setLoading(false);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
-            console.log(err)
             setLoading(false)
             toast(`Error Generating In Summary Try Again`)
         }

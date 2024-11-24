@@ -5,6 +5,7 @@ import { toggleIsVisible } from "@/src/helpers/helper";
 import { GrPowerReset } from "react-icons/gr";
 import { TiTick } from "react-icons/ti";
 import { RussoOne } from "@/src/app/fonts/font";
+import { editResume } from "@/services/supabase";
 
 type SummarySectionProps = {
     setModalType: React.Dispatch<React.SetStateAction<string>>,
@@ -20,6 +21,9 @@ const SummarySection = ({ setModalType, setSummary, openModal }: SummarySectionP
     const { resumeInfo, setResumeInfo } = useResumeInfo();
 
     const resetSummary = () => {
+
+        editResume(resumeInfo.resume_id, { summary: '' })
+
         setResumeInfo((prev) => {
             return {
                 ...prev,
@@ -49,7 +53,10 @@ const SummarySection = ({ setModalType, setSummary, openModal }: SummarySectionP
                 <ContextMenuContent className="bg-slate-950 rounded-none border-gray-600 text-white">
                     <ContextMenuItem
                         className="flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40"
-                        onClick={() => toggleIsVisible('summary', undefined, setResumeInfo)}
+                        onClick={() => {
+                            editResume(resumeInfo.resume_id, { summaryVisible: !resumeInfo.summaryVisible })
+                            toggleIsVisible('summary', undefined, setResumeInfo)
+                        }}
                     >
                         <TiTick className={`text-lg ${resumeInfo.summaryVisible ? 'visible' : 'invisible'}`} />
                         <span>Visible</span>

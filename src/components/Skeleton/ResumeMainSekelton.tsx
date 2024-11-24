@@ -8,6 +8,7 @@ export default function ResumeMainSkeleton() {
                 <div className=" px-6 py-4 mt-3 flex items-center justify-between ">
 
                     <Skeleton className="p-4" />
+                    <Skeleton className="py-3 px-20" />
                     <Skeleton className="border-2 w-[35px] h-[35px] border-cyan-400 rounded-full object-cover" />
                 </div>
                 <div className="flex flex-col gap-4 items-center w-[90%] justify-center  mx-auto xl:mx-0 xl:w-[50%] xl:my-8">
