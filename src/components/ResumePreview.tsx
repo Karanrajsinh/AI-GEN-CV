@@ -101,7 +101,7 @@ function ResumePreview() {
             <div className="flex items-center justify-center">
 
                 <Controls pageNumber={0} pinchRefs={pinchRefs} />
-                <Button className="w-min text-cyan-200" onClick={() => handleGeneratePdf(setPdfDownload)}>{pdfDownlaod ? <ImSpinner8 className="animate-spin" /> : <FaFileDownload />}</Button>
+                <Button className="w-min text-cyan-200" onClick={() => handleGeneratePdf(setPdfDownload, resumeInfo.resume_name)}>{pdfDownlaod ? <ImSpinner8 className="animate-spin" /> : <FaFileDownload />}</Button>
                 <Select value={resumeInfo.themeColor} onValueChange={onThemeChange}>
                     <SelectTrigger className="bg-slate-900 text-sm text-white border-cyan-600">
                         <FaCircle style={{ color: `${resumeInfo.themeColor}` }} />

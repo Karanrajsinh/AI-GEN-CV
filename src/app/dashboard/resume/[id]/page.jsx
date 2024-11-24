@@ -28,8 +28,10 @@ export default async function ResumePage({ params }) {
     const supabase = createClient()
 
     const { data } = await supabase.auth.getUser();
+
+
     const user = {
-        img: data.user.user_metadata.picture,
+        img: data.user?.user_metadata.picture
     }
     const resumeData = await getResumeData(params.id, data.user.id)
 

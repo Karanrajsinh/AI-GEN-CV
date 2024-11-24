@@ -56,7 +56,7 @@ const handleGeneratePdf = async (setPdfDownload, name) => {
             const pdfUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = pdfUrl;
-            link.setAttribute('download', 'document.pdf');
+            link.setAttribute('download', `${name}.pdf`);
             document.body.appendChild(link);
             setPdfDownload(false)
             link.click();
