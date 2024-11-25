@@ -114,6 +114,9 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
                                 value: /^https:\/\/.*/,
                                 message: "URL must start with 'https://'",
                             },
+                            onChange(event) {
+                                handleChange(event)
+                            }
                         })}
                         defaultValue={certificate.website}
                     />

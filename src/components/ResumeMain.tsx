@@ -82,9 +82,9 @@ export default function ResumeMain({ resumeData, user }: Props) {
                         </PopoverContent>
                     </Popover>
                 </div>
-                <ResumePreview />
+                <ResumePreview id={'pdf-mobile'} />
             </div>
-            <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 hidden xl:flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
+            <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
 
                 <div className="flex text-white   xl:items-start justify-start min-h-screen xl:bg-slate-950 w-max">
 
@@ -116,7 +116,7 @@ export default function ResumeMain({ resumeData, user }: Props) {
 
 
                 </div>
-                <ResumePreview />
+                <ResumePreview id={'pdf-desktop'} />
             </div >
             <Dialog open={isOpen}>
                 <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} style={{ borderRadius: "0px" }} className="bg-slate-900 border w-[95vw] min-h-fit sm:h-fit  md:min-w-max  text-white border-cyan-800 m-0 p-0 modal">

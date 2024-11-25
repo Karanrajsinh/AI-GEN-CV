@@ -38,7 +38,7 @@ const Controls = ({ pageNumber, pinchRefs }: { pageNumber: number; pinchRefs: Mu
     );
 };
 
-function ResumePreview() {
+function ResumePreview({ id }: { id: string }) {
     const [loading, setLoading] = useState(true);
     const [pdfDownlaod, setPdfDownload] = useState(false);
     const pinchRefs = useRef<(ReactZoomPanPinchContentRef | null)[]>([]);  // Array of refs
@@ -56,7 +56,7 @@ function ResumePreview() {
     }
 
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 300);  // Simulate loading delay
+        const timer = setTimeout(() => setLoading(false), 5000);  // Simulate loading delay
         return () => clearTimeout(timer);
     }, []);
 
@@ -92,8 +92,8 @@ function ResumePreview() {
                     panning={{ disabled: false }}
                 >
                     <div className={`transform transition-transform duration-500 ${loading ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'}`}>
-                        <TransformComponent contentClass="flex justify-center items-center">
-                            <ResumeDetails />
+                        <TransformComponent>
+                            <ResumeDetails id={id} />
                         </TransformComponent>
                     </div>
                 </TransformWrapper>
@@ -101,7 +101,7 @@ function ResumePreview() {
             <div className="flex items-center justify-center">
 
                 <Controls pageNumber={0} pinchRefs={pinchRefs} />
-                <Button className="w-min text-cyan-200" onClick={() => handleGeneratePdf(setPdfDownload, resumeInfo.resume_name)}>{pdfDownlaod ? <ImSpinner8 className="animate-spin" /> : <FaFileDownload />}</Button>
+                <Button className="w-min text-cyan-200" onClick={() => handleGeneratePdf(setPdfDownload, resumeInfo.resume_name, id)}>{pdfDownlaod ? <ImSpinner8 className="animate-spin" /> : <FaFileDownload />}</Button>
                 <Select value={resumeInfo.themeColor} onValueChange={onThemeChange}>
                     <SelectTrigger className="bg-slate-900 text-sm text-white border-cyan-600">
                         <FaCircle style={{ color: `${resumeInfo.themeColor}` }} />

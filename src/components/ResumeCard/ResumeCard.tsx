@@ -3,6 +3,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { deleteResume } from "@/services/supabase"
 import { Resume } from "@/src/Types/ResumeTypes"
 import Link from "next/link"
+import { useState } from "react"
 import { FaCopy } from "react-icons/fa"
 import { ImBin2 } from "react-icons/im"
 import { MdEdit } from "react-icons/md"
@@ -20,6 +21,8 @@ type ResuemCardProps =
 
 function ResumeCard({ id, name, setActionType, openDialog, setResumeData, setResumes }: ResuemCardProps) {
 
+    const [deleting, setDeleting] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
 
     function createDuplicateResume() {
         setActionType('duplicate')
@@ -35,11 +38,14 @@ function ResumeCard({ id, name, setActionType, openDialog, setResumeData, setRes
 
     async function removeResume() {
         try {
+            setDeleting(true)
             await deleteResume(id)
             setResumes((prevResumes) => prevResumes.filter((res) => res.resume_id !== id));
+            setDeleting(false)
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         catch (error: any) {
+            setDeleting(false)
             toast(`${error.message}`)
         }
     }
@@ -54,8 +60,8 @@ function ResumeCard({ id, name, setActionType, openDialog, setResumeData, setRes
             <ContextMenuContent className="bg-slate-950 rounded-none  border-gray-600 text-white ">
                 <ContextMenuItem className="text-white flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={createDuplicateResume} > <FaCopy /><span>Duplicate</span></ContextMenuItem>
                 <ContextMenuItem className="text-white flex justify-start gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={renameResume} > <MdEdit className="text-base" /><span>Rename</span></ContextMenuItem>
-                <AlertDialog >
-                    <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40"><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
+                <AlertDialog open={alertOpen} >
+                    <AlertDialogTrigger className="flex w-full bg-slate-950 text-sm items-center border-none justify-start py-2 px-2 text-cyan-400  gap-3 hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => setAlertOpen(true)}><ImBin2 /> <span>Delete</span></AlertDialogTrigger>
                     <AlertDialogContent className="rounded-none border-cyan-800 bg-slate-900 w-[95vw]  text-white">
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -64,8 +70,8 @@ function ResumeCard({ id, name, setActionType, openDialog, setResumeData, setRes
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex gap-3 mt-3">
-                            <AlertDialogCancel className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={removeResume} >Delete</AlertDialogAction>
+                            <AlertDialogCancel disabled={deleting} className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
+                            <AlertDialogAction disabled={deleting} className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={removeResume} >Delete</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>

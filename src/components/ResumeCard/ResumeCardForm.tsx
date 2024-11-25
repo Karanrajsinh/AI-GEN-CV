@@ -64,9 +64,9 @@ function ResumeCardForm({ actionType, closeDialog, setResumes, resumeData, name,
     };
 
     return (
-        <form onSubmit={handleSubmit(onSave)} className='p-5 '>
-            <div className=' items-center flex ml-4 gap-3 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Resume</span></div>
-            <div className='grid grid-cols- gap-3 p-3 my-5 rounded-lg'>
+        <form onSubmit={handleSubmit(onSave)} className=' py-3 px-1 lg:p-5 '>
+            <div className=' items-center flex ml-4 gap-3 mt-2 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Resume</span></div>
+            <div className='grid grid-cols- lg:gap-3 px-2 lg:p-3 my-5 rounded-lg'>
                 <div className='col-span-2'>
                     <label className='text-sm mb-2'>Name </label>
                     <Input
@@ -79,7 +79,7 @@ function ResumeCardForm({ actionType, closeDialog, setResumes, resumeData, name,
                         <p className="text-cyan-500 text-xs mt-1">{errors.resume_name.message}</p>
                     )}
                 </div>
-                <div className='mt-4 ml-2 flex justify-start items-center'>
+                <div className='mt-4  flex justify-start items-center'>
                     <Checkbox
                         checked={sampleResume}
                         onCheckedChange={handleResumeToggle}

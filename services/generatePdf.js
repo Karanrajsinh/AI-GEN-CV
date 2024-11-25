@@ -1,10 +1,12 @@
 import { toast } from "sonner";
 
-const handleGeneratePdf = async (setPdfDownload, name) => {
+const handleGeneratePdf = async (setPdfDownload, name, id) => {
     try {
         setPdfDownload(true)
-        const pdfElement = document.getElementById('pdf');
+        const pdfElement = document.getElementById(id);
         if (pdfElement) {
+            const width = pdfElement.offsetWidth;
+            const height = pdfElement.offsetHeight;
             const htmlContent = pdfElement.outerHTML; // Get the HTML content of the element
 
             // Optionally extract styles
@@ -18,8 +20,6 @@ const handleGeneratePdf = async (setPdfDownload, name) => {
             }).join('\n');
 
             // Get the width and height of the pdfElement
-            const width = pdfElement.offsetWidth;
-            const height = pdfElement.offsetHeight;
 
 
             // Wrap the HTML content with the necessary <html> structure and styles
@@ -32,8 +32,6 @@ const handleGeneratePdf = async (setPdfDownload, name) => {
                     <body>${htmlContent}</body>
                 </html>
             `;
-
-            console.log(fullHtmlContent, height, width)
             // Send HTML content along with dimensions
             const response = await fetch('https://resume-builder-server-y5to.onrender.com/generatePdf', {
 

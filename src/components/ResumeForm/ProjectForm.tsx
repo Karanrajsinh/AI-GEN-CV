@@ -111,7 +111,7 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
         <form onSubmit={handleSubmit(onSave)} className='py-4 px-1 lg:py-5 lg:px-5 h-[80vh] flex flex-col justify-start  overflow-y-scroll custom-scrollbar lg:w-[800px]'>
             <div className=' items-center flex ml-4 gap-3 font-semibold'>{actionType === 'edit' ? <MdOutlineEditNote className='text-2xl' /> : <IoAddSharp className="text-2xl" />}<span> {actionType === 'edit' ? "Edit" : "Create"} Project</span></div>
             <div className='grid grid-cols-2 text-xs sm:text-sm gap-3 p-3 my-5 rounded-lg'>
-                <div className='col-span-2'>
+                <div>
                     <label>Project Name</label>
                     <Input
                         className='mt-1'
@@ -125,6 +125,26 @@ function ProjectForm({ actionType, projectData, index, closeModal }: ProjectProp
                     />
                     {errors.name && (
                         <p className="text-cyan-500 text-xs mt-1">{errors.name.message}</p>
+                    )}
+                </div>
+                <div>
+                    <label className='text-xs'>Website</label>
+                    <Input
+                        className='mt-1'
+                        {...register("website", {
+                            pattern: {
+                                value: /^https:\/\/.*/,
+                                message: "URL must start with 'https://'",
+                            },
+                            onChange(event) {
+                                handleChange(event)
+                            },
+                        })}
+
+                        defaultValue={project?.website}
+                    />
+                    {errors.website && (
+                        <p className="text-cyan-500 text-xs mt-1">{errors.website.message}</p>
                     )}
                 </div>
                 <div>

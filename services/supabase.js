@@ -1,6 +1,5 @@
 import supabase from "@/utils/supabase/client";
 
-
 export const logout = async () => {
     await fetch("/logout"); // Server-side logout request
     window.location.reload(true); // Forces a full page reload, bypassing cache
@@ -77,7 +76,8 @@ export async function getUserResumes(userId) {
     const { data, error } = await supabase
         .from('resumes')
         .select('resume_id, resume_name')
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .order('created_at', { ascending: true })
 
     if (error) {
         console.error('Error fetching resumes:', error.message);
@@ -121,7 +121,7 @@ export async function getResumeName(resumeId) {
         .from('resumes')
         .select('resume_name')
         .eq('resume_id', resumeId)
-        .order('created_at', { ascending: true })
+        .single()
 
 
 
@@ -168,74 +168,31 @@ export async function getResumeData(resumeId, userId) {
 
     const { data: education, error: educationError } = await supabase
         .from('educations')
-        .select(
-            `
-            id,
-            isVisible,
-            universityName,
-            degree,
-            major,
-            startDate,
-            endDate`
-
-        )
-        .eq('resume_id', resumeId);
+        .select('*')
+        .eq('resume_id', resumeId)
+        .order('created_at', { ascending: true })
 
     const { data: skills, error: skillsError } = await supabase
         .from('skills')
-        .select(
-
-            ` id,
-            isVisible,
-            name`
-
-        )
+        .select('*')
         .eq('resume_id', resumeId)
         .order('created_at', { ascending: true });
 
     const { data: projects, error: projectsError } = await supabase
         .from('projects')
-        .select(
-
-            ` id,
-            isVisible,
-            name,
-            skillPrompt,
-            rolePrompt,
-            description,
-            startDate,
-            endDate,
-            currentlyWorking`
-
-        )
+        .select('*')
         .eq('resume_id', resumeId)
         .order('created_at', { ascending: true });
 
     const { data: certificates, error: certificatesError } = await supabase
         .from('certificates')
-        .select(
-
-            `  id,
-            isVisible,
-            name,
-            issuer,
-            issueDate,
-            website`
-
-        )
+        .select('*')
         .eq('resume_id', resumeId)
         .order('created_at', { ascending: true });
 
     const { data: languages, error: languagesError } = await supabase
         .from('languages')
-        .select(
-
-            `  id,
-            isVisible,
-            name,
-            proficientLevel
-`
-        )
+        .select('*')
         .eq('resume_id', resumeId)
         .order('created_at', { ascending: true })
 
@@ -320,6 +277,15 @@ export async function editResume(resumeId, updatedData) {
 }
 
 export async function deleteResume(resume_id) {
+
+    await deleteSection('experiences', resume_id)
+    await deleteSection('projects', resume_id)
+    await deleteSection('educations', resume_id)
+    await deleteSection('skills', resume_id)
+    await deleteSection('languages', resume_id)
+    await deleteSection('certificates', resume_id)
+
+
     const { error } = await supabase.from('resumes').delete().eq("resume_id", resume_id);
     handleSupabaseError(error)
 

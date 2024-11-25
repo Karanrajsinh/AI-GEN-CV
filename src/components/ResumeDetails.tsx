@@ -13,7 +13,7 @@ import LanguagePreview from './Resume/LanguagePreview';
 import { OpenSans } from '../app/fonts/font';
 
 
-function ResumeDetails() {
+function ResumeDetails({ id }: { id: string }) {
 
     const { resumeInfo } = useResumeInfo();
 
@@ -23,7 +23,6 @@ function ResumeDetails() {
     useEffect(() => {
         // Trigger height expansion/collapse when content changes
         if (pdfRef.current) {
-
             setheight(`${pdfRef.current.offsetHeight}px`);
         }
     }, [resumeInfo]);
@@ -36,9 +35,9 @@ function ResumeDetails() {
             style={{ height: height }}
         >
             <div
-                id="pdf"
+                id={id}
                 ref={pdfRef}
-                className={`${OpenSans.className} bg-white text-black min-w-[756px] min-h-[1100px] max-w-[756px] p-14 `}
+                className={`${OpenSans.className} bg-white pointer-events-none text-black min-w-[756px] min-h-[1100px] max-w-[756px] p-14 `}
                 style={{
                     borderColor: resumeInfo?.themeColor,
                 }}
@@ -46,11 +45,11 @@ function ResumeDetails() {
                 {/* Content components */}
                 <PersonalDetailPreview resumeInfo={resumeInfo} />
                 <SummeryPreview resumeInfo={resumeInfo} />
-                {resumeInfo.projects.length > 0 && resumeInfo.isProjectVisible && (
-                    <ProjectPreview resumeInfo={resumeInfo} />
-                )}
                 {resumeInfo.experience.length > 0 && resumeInfo.isExperienceVisible && (
                     <ExperiencePreview resumeInfo={resumeInfo} />
+                )}
+                {resumeInfo.projects.length > 0 && resumeInfo.isProjectVisible && (
+                    <ProjectPreview resumeInfo={resumeInfo} />
                 )}
                 {resumeInfo.skills.length > 0 && resumeInfo.isSkillVisible && (
                     <SkillsPreview resumeInfo={resumeInfo} />

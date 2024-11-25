@@ -21,6 +21,7 @@ export type Experience = {
     skillPrompt: string,
     rolePrompt: string,
     description: string;
+
 };
 
 
@@ -34,6 +35,7 @@ export type Project = {
     startDate: string | Date;
     endDate: string | Date;
     currentlyWorking: boolean;
+    website: string
 };
 
 

@@ -1,5 +1,4 @@
 "use client"
-
 import { Experience } from "@/src/Types/ResumeTypes";
 import { format } from "date-fns"; // Make sure to import format
 
@@ -28,7 +27,7 @@ function ExperiencePreview({ resumeInfo }: ExperiencePreviewProps) {
 
             {resumeInfo?.experience?.map((experience, index) => (
                 <div key={index} className={`my-5 ${experience.isVisible === true ? 'block' : 'hidden'}`}>
-                    <h2 className='text-sm font-bold'
+                    <h2 className='text-sm flex items-center gap-1 font-bold'
                         style={{
                             color: resumeInfo?.themeColor
                         }}>{experience?.title}</h2>

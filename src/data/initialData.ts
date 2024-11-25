@@ -22,7 +22,7 @@ export const experienceDefault = {
     currentlyWorking: false,
     description: '',
     skillPrompt: '',
-    rolePrompt: ''
+    rolePrompt: '',
 };
 
 // Default Project Object
@@ -35,7 +35,8 @@ export const projectDefault = {
     endDate: new Date().toISOString(),
     currentlyWorking: false,
     skillPrompt: '',
-    rolePrompt: ''
+    rolePrompt: '',
+    website: ''
 };
 
 // Default Education Object
