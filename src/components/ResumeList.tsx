@@ -74,7 +74,7 @@ export default function ResumeList({ userResumes, user }: Props) {
                                 <span className="lg:text-sm xl:text-base">{name}</span>
                             </PopoverTrigger>
                             <PopoverContent className="bg-slate-950 w-36 mb-2 mr-10  z-50 border  rounded-none  border-gray-600 text-white p-1">
-                                <div onClick={logout} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4  hover:bg-cyan-950 border-none p-1 sm:text-base xl:text-lg`} >
+                                <div onClick={logout} className={`${RussoOne.className} min-w-full cursor-pointer bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4  hover:bg-cyan-950 border-none p-1 sm:text-base xl:text-lg`} >
                                     <span>Logout</span><GrLogout className="text-cyan-300" /></div>
                             </PopoverContent>
                         </Popover>
@@ -87,7 +87,7 @@ export default function ResumeList({ userResumes, user }: Props) {
                             <Image className="border-[2px] rounded-full border-cyan-500 object-cover" alt="img" src={img ? img : DefualttUserImg} width={35} height={30} />
                         </PopoverTrigger>
                         <PopoverContent className="bg-slate-95 w-28 mr-5 z-50 border mt-2 rounded-none  border-gray-600 text-white p-0">
-                            <div onClick={logout} className={`${RussoOne.className} min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
+                            <div onClick={logout} className={`${RussoOne.className} cursor-pointer min-w-full bg-slate-950  transition-all duration-150 ease-in-out transform active:scale-95 flex items-center justify-center gap-4 p-2 border-none text-sm  sm:text-base xl:text-lg`} >
                                 <span>Logout</span><GrLogout className="text-cyan-300" /></div>
                         </PopoverContent>
                     </Popover>
