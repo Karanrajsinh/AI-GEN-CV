@@ -70,7 +70,7 @@ function ResumeCard({ id, name, setActionType, openDialog, setResumeData, setRes
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex gap-3 mt-3">
-                            <AlertDialogCancel disabled={deleting} className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40">Cancel</AlertDialogCancel>
+                            <AlertDialogCancel disabled={deleting} className="border border-cyan-600  bg-transparent hover:text-current hover:bg-cyan-800 hover:bg-opacity-40" onClick={() => setAlertOpen(false)}>Cancel</AlertDialogCancel>
                             <AlertDialogAction disabled={deleting} className="bg-cyan-500 text-slate-950 border-none hover:bg-cyan-500 hover:bg-opacity-100" onClick={removeResume} >Delete</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
