@@ -32,7 +32,7 @@ const handleGeneratePdf = async (setPdfDownload, name, id) => {
                 </html>
             `;
             // Send HTML content along with dimensions
-            const response = await fetch('/api/generatePdf', {
+            const response = await fetch('https://resume-builder-server-y5to.onrender.com/generatePdf', {
 
                 method: 'POST',
                 headers: {
