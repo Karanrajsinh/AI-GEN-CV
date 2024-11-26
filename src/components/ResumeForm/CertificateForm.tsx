@@ -43,7 +43,6 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
         try {
             const { id, ...filteredData } = data
             if (actionType === 'edit') {
-
                 await editSectionEntry('certificates', id, { ...filteredData, issueDate: issueDate })
                 setResumeInfo((prevResumeInfo) => ({
                     ...prevResumeInfo,
@@ -52,11 +51,10 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
                     ),
                 }));
             } else if (actionType === 'add') {
-
                 const { id } = await addSectionEntry("certificates", { ...filteredData, issueDate: issueDate, resume_id: resumeInfo.resume_id })
                 setResumeInfo((prevResumeInfo) => ({
                     ...prevResumeInfo,
-                    certificates: [...prevResumeInfo.certificates, { ...certificate, id: id }],
+                    certificates: [...prevResumeInfo.certificates, { ...certificate, id: id, issueDate: issueDate }],
                 }));
             }
             setEditedFields({});

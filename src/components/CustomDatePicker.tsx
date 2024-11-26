@@ -24,11 +24,7 @@ export function SampleDatePicker({ fieldName, fieldValue, setFieldValue, current
     const [date, setDate] = React.useState<Date | undefined>(defaultDate);
 
 
-
-
-
     const handleDateChange = (newDate: Date) => {
-
         setDate(newDate);
         setFieldValue(newDate || "");
     };

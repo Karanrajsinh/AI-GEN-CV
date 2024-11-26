@@ -21,7 +21,6 @@ const handleGeneratePdf = async (setPdfDownload, name, id) => {
 
             // Get the width and height of the pdfElement
 
-
             // Wrap the HTML content with the necessary <html> structure and styles
             const fullHtmlContent = `
                 <!DOCTYPE html>
@@ -33,7 +32,7 @@ const handleGeneratePdf = async (setPdfDownload, name, id) => {
                 </html>
             `;
             // Send HTML content along with dimensions
-            const response = await fetch('https://resume-builder-server-y5to.onrender.com/generatePdf', {
+            const response = await fetch('/api/generatePdf', {
 
                 method: 'POST',
                 headers: {

@@ -84,7 +84,7 @@ export default function ResumeMain({ resumeData, user }: Props) {
                 </div>
                 <ResumePreview id={'pdf-mobile'} />
             </div>
-            <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
+            <div className=" h-screen min-w-screen dark:bg-black bg-slate-950 hidden xl:flex  justify-center lg:justify-between  bg-grid-cyan-800/[0.2]">
 
                 <div className="flex text-white   xl:items-start justify-start min-h-screen xl:bg-slate-950 w-max">
 
