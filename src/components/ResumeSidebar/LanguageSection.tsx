@@ -67,7 +67,7 @@ const LanguageSection = ({ setActionType, setIndex, setLanguage, setModalType, o
                         <PopoverTrigger className="hover:bg-cyan-300 hover:bg-opacity-20 p-2">
                             <GiHamburgerMenu className="cursor-pointer text-xl" />
                         </PopoverTrigger>
-                        <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-2">
+                        <PopoverContent className="bg-slate-950 w-36 z-50 border rounded-none mt-3 border-gray-600 text-white p-1">
                             <Button className="flex w-full bg-slate-950 border-none justify-start gap-3 hover:bg-cyan-900 hover:bg-opacity-40 text-cyan-400" onClick={() => {
                                 toggleIsSectionVisible('Language', setResumeInfo)
                                 editResume(resumeInfo.resume_id, { isLanguageVisible: !resumeInfo.isLanguageVisible })

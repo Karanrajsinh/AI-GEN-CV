@@ -133,7 +133,7 @@ function CertificateForm({ index, actionType, certificateData, closeModal }: Cer
             </div>
 
             <div className="flex justify-end gap-6 mr-1 mt-6">
-                <Button onClick={closeModal}>
+                <Button type='button' onClick={closeModal}>
                     Cancel
                 </Button>
                 <Button type="submit" className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' >

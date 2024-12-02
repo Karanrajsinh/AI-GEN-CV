@@ -98,7 +98,7 @@ function SummeryForm({ summaryData, closeModal }: SummaryProps) {
                     <Button type='button' disabled={loading || isTyping} onClick={closeModal}>
                         Cancel
                     </Button>
-                    <Button className='bg-cyan-500 text-slate-950' disabled={loading || isTyping} onClick={onSave}>
+                    <Button className='bg-cyan-500 hover:bg-cyan-500 hover:bg-opacity-80 text-slate-950' disabled={loading || isTyping} onClick={onSave}>
                         Save
                     </Button>
                 </div>
