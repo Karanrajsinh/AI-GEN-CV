@@ -36,7 +36,7 @@ function Login() {
                 }}
                 providers={['google']}
                 theme="dark"
-                redirectTo="https://aigencv.vercel.app/auth/callback"
+                redirectTo="http://localhost:3000/auth/callback"
             />
         </div>
     );

@@ -24,7 +24,7 @@ import Link from "next/link";
 import DefualttUserImg from 'public/user.png'
 import { useResumeInfo } from "../context/ResumeInfoContext";
 import { RiHomeFill } from "react-icons/ri";
-import { logout } from "@/services/supabase";
+import { logout } from "@/src/services/supabase";
 
 
 type Props = {

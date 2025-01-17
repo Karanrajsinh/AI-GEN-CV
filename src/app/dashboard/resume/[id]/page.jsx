@@ -1,5 +1,5 @@
 
-import { getResumeData, getResumeName } from "@/services/supabase"
+import { getResumeData, getResumeName } from "@/src/services/supabase"
 import ResumeMain from "@/src/components/ResumeMain";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";

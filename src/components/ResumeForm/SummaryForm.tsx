@@ -6,9 +6,9 @@ import { Brain, LoaderCircle } from 'lucide-react';
 import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { Textarea } from '@/components/ui/textarea';
 import { MdOutlineEditNote } from 'react-icons/md';
-import { AIChatSession } from '@/services/AIModal';
+import { AIChatSession } from '@/src/services/AIModal';
 import { toast } from 'sonner';
-import { editResume } from '@/services/supabase';
+import { editResume } from '@/src/services/supabase';
 
 interface SummaryProps {
     summaryData: string | undefined;

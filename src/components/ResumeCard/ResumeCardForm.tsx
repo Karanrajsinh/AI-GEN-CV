@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { addResume, addResumeWithData, duplicateResume, editResume } from "@/services/supabase";
+import { addResume, addResumeWithData, duplicateResume, editResume } from "@/src/services/supabase";
 import { sampleData } from "@/src/data/sampleData";
 import { Resume } from "@/src/Types/ResumeTypes";
 import { useState } from "react";

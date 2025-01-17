@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu"
-import { deleteResume } from "@/services/supabase"
+import { deleteResume } from "@/src/services/supabase"
 import { Resume } from "@/src/Types/ResumeTypes"
 import Link from "next/link"
 import { useState } from "react"

@@ -7,7 +7,7 @@ const JoditEditor = dynamic(() => import('jodit-react'), {
 });
 import { Button } from "../../components/ui/button";
 import { Brain, LoaderCircle } from "lucide-react";
-import { AIChatSession } from '../../services/AIModal'
+import { AIChatSession } from '../services/AIModal'
 import 'jodit/es2021/jodit.min.css'
 import { toast } from "sonner";
 import { Experience, Project } from "../Types/ResumeTypes";
@@ -76,7 +76,7 @@ export default function RichTextJoditEditor({ setLoadingData, experienceData, pr
     const editor = useRef<Jodit>(null);
     const [data, setData] = useState(defaultValue);
     const [isTyping, setIsTyping] = useState(false);
-
+    
     const experiencePrompt = `From ${experienceData?.skillPrompt} and ${experienceData?.rolePrompt} With Positon ${experienceData?.title} At Company ${experienceData?.companyName} create a summary of this experience in html tags only which is <p>'your response here'</p> no any other commmas or format should be used to generate the response and not to cover the response with any word , symbol or char just response between the html tags nothing else ,it should contain the main key words of the experience and the summary should be in normal words yet professional and simple words like how a person will explain his experience in a professional  conversation  `
 
     const projectPrompt = `From ${projectData?.skillPrompt} and ${projectData?.rolePrompt} With Project ${projectData?.name} create a summary of this project in html tags only which is <p>'your response here'</p> no any other commas or format should be used to generate the response and not to cover the response with any word, symbol or char just response between the html tags nothing else, it should contain the main keywords of the project and the summary should be in normal yet professional and simple words like how a person will explain their project to someone in a casual conversation.`;

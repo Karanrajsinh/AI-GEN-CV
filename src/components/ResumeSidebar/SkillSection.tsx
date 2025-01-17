@@ -13,7 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { GrPowerReset } from "react-icons/gr";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { RussoOne } from "@/src/app/fonts/font";
-import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/src/services/supabase";
 
 
 type ProjectSectionProps =

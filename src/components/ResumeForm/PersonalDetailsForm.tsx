@@ -6,7 +6,7 @@ import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { MdOutlineEditNote } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { editResume } from '@/services/supabase';
+import { editResume } from '@/src/services/supabase';
 
 type PersonalDetailsProps = {
     data: {

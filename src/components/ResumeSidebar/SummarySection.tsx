@@ -5,7 +5,7 @@ import { toggleIsVisible } from "@/src/helpers/helper";
 import { GrPowerReset } from "react-icons/gr";
 import { TiTick } from "react-icons/ti";
 import { RussoOne } from "@/src/app/fonts/font";
-import { editResume } from "@/services/supabase";
+import { editResume } from "@/src/services/supabase";
 
 type SummarySectionProps = {
     setModalType: React.Dispatch<React.SetStateAction<string>>,

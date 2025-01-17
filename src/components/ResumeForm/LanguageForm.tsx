@@ -9,7 +9,7 @@ import { useResumeInfo } from '../../context/ResumeInfoContext';
 import { Language } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { addSectionEntry, editSectionEntry } from '@/src/services/supabase';
 import { IoAddSharp } from 'react-icons/io5';
 
 

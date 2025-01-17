@@ -8,7 +8,7 @@ import { Certificate } from '@/src/Types/ResumeTypes';
 import { SampleDatePicker } from '../CustomDatePicker';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { addSectionEntry, editSectionEntry } from '@/src/services/supabase';
 import { IoAddSharp } from 'react-icons/io5';
 
 

@@ -16,7 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { GrPowerReset } from "react-icons/gr";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { RussoOne } from "@/src/app/fonts/font";
-import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/services/supabase";
+import { deleteSection, deleteSectionEntry, editResume, editSectionEntry } from "@/src/services/supabase";
 import { toast } from "sonner";
 
 type ExperienceSectionProps =

@@ -7,7 +7,7 @@ import { MdOutlineEditNote } from 'react-icons/md';
 import { useResumeInfo } from '@/src/context/ResumeInfoContext';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { addSectionEntry, editSectionEntry } from '@/src/services/supabase';
 import { IoAddSharp } from 'react-icons/io5';
 
 

@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { TbZoomReset } from "react-icons/tb";
 import { MdOutlineZoomIn, MdOutlineZoomOut } from "react-icons/md";
 import { FaCircle, FaFileDownload } from "react-icons/fa";
-import { handleGeneratePdf } from "@/services/generatePdf";
+import { handleGeneratePdf } from "@/src/services/generatePdf";
 import { ImSpinner8 } from "react-icons/im";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { useResumeInfo } from "../context/ResumeInfoContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { editResume } from "@/services/supabase";
+import { editResume } from "@/src/services/supabase";
 
 
 const THEMECOLORS = [

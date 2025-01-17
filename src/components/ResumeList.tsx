@@ -14,7 +14,7 @@ import { Resume } from "../Types/ResumeTypes";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import ResumeCardForm from "./ResumeCard/ResumeCardForm";
 import { resumeDefault } from "../data/initialData";
-import { logout } from "@/services/supabase";
+import { logout } from "@/src/services/supabase";
 
 type Props =
     {

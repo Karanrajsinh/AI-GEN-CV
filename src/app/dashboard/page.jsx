@@ -1,4 +1,4 @@
-import { getUserResumes } from "@/services/supabase";
+import { getUserResumes } from "@/src/services/supabase";
 import ResumeList from "@/src/components/ResumeList";
 
 import { createClient } from "@/utils/supabase/server"

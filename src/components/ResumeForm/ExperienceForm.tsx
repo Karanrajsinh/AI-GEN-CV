@@ -10,7 +10,7 @@ import { SampleDatePicker } from '../CustomDatePicker';
 import RichTextJoditEditor from '../RichTextJoditEditor';
 import { Experience } from '@/src/Types/ResumeTypes';
 import { useForm } from 'react-hook-form';
-import { addSectionEntry, editSectionEntry } from '@/services/supabase';
+import { addSectionEntry, editSectionEntry } from '@/src/services/supabase';
 import { toast } from 'sonner';
 import { IoAddSharp } from 'react-icons/io5';
 
